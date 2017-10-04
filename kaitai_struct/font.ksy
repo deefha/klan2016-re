@@ -6,36 +6,15 @@ meta:
   endian: le
   encoding: UTF-8
   ks-version: 0.7
+  imports:
+    - common_header
 doc-ref: https://wiki.klan2016.cz/knihovny/fonty.html
 seq:
   - id: header
-    type: m_header
+    type: t_header
   - id: fat
     type: m_fat
 types:
-  m_header:
-    seq:
-#      - id: magic
-#        contents: 'SNOPsoft'
-      - id: signature
-        type: str
-        size: 8
-      - id: version
-        type: u4
-      - id: type
-        type: u2
-      - id: filesize
-        type: u4
-      - id: filetime
-        type: u2
-      - id: filedate
-        type: u2
-      - id: foo_1
-        type: u4
-      - id: foo_2
-        type: u4
-      - id: crc
-        type: u2
   m_fat:
     seq:
       - id: count
