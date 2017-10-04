@@ -5,7 +5,7 @@
 
 http://kaitai.io
 
-### Kaitai Struct Compiler
+### Kaitai Struct Compiler (ksc)
 
 https://github.com/kaitai-io/kaitai_struct_compiler
 
@@ -16,7 +16,7 @@ sudo apt-get update
 sudo apt-get install kaitai-struct-compiler
 ```
 
-### Kaitai Struct Visualizer
+### Kaitai Struct Visualizer (ksv)
 
 https://github.com/kaitai-io/kaitai_struct_visualizer
 
