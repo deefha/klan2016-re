@@ -5,52 +5,63 @@ meta:
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
-  ks-version: 0.7
   imports:
     - common_header
+
 doc-ref: https://wiki.klan2016.cz/knihovny/fonty.html
+
 seq:
   - id: header
     type: t_header
   - id: fat
-    type: m_fat
+    type: t_fat
+
+instances:
+  fonts:
+    pos: fat.offsets[_index]
+    type: t_font(fat.offsets[_index])
+    if: fat.offsets[_index] != 0
+    repeat: expr
+    repeat-expr: 59
+
 types:
-  m_fat:
+  t_fat:
     seq:
       - id: count
         type: u4
       - id: foo_1
         size: 16
       - id: offsets
-        type: m_offset
+        type: u4
         repeat: expr
         repeat-expr: 59
-  m_offset:
-    seq:
+
+  t_font:
+    params:
       - id: offset
         type: u4
-    instances:
-      font:
-        pos: offset
-        type: m_font
-        if: offset != 0
-  m_font:
     seq:
       - id: datalength
         type: u4
       - id: height
         type: u4
-      - id: palette
-        type: m_palette
-      - id: characters
-        type: m_characters
-  m_palette:
-    seq:
-      - id: color
-        type: m_color
+      - id: colors
+        type: t_color
         repeat: expr
         repeat-expr: 256
-  m_color:
+      - id: characters
+        type: t_character
+        repeat: expr
+        repeat-expr: 256
+    instances:
+      data:
+        pos: offset + 8 + 768 + 1024 + characters[_index].offset
+        type: t_data(characters[_index].width, height)
+        if: characters[_index].width != 0
+        repeat: expr
+        repeat-expr: 256
+
+  t_color:
     seq:
       - id: r
         type: u1
@@ -58,13 +69,8 @@ types:
         type: u1
       - id: b
         type: u1
-  m_characters:
-    seq:
-      - id: characters
-        type: m_character
-        repeat: expr
-        repeat-expr: 256
-  m_character:
+
+  t_character:
     seq:
       - id: offset_and_width
         type: u4
@@ -73,13 +79,15 @@ types:
         value: offset_and_width & 0xffffff
       width:
         value: offset_and_width >> 0x18
-      data:
-        pos: offset + _parent._parent._parent.offset + 8 + 768 + 1024
-        type: m_data
-        if: width != 0
-  m_data:
+
+  t_data:
+    params:
+      - id: width
+        type: u4
+      - id: height
+        type: u4
     seq:
       - id: rows
-        size: _parent.width
+        size: width
         repeat: expr
-        repeat-expr: _parent._parent._parent.height
+        repeat-expr: height
