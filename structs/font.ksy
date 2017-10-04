@@ -4,7 +4,7 @@ meta:
   title: KLAN font library
   application: KLAN discmag engine
   endian: le
-  encoding: UTF-8
+  encoding: ASCII
   ks-version: 0.7
   imports:
     - common_header

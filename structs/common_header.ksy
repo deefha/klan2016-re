@@ -1,8 +1,10 @@
 meta:
   id: t_header
+  endian: le
+  encoding: ASCII
 seq:
   - id: magic
-    contents: 'SNOPsoft'
+    contents: 'SNOPSoft'
   - id: version
     type: u4
   - id: type
