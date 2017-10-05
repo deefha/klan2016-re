@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ksv ../data/source/00/font.lib ../structs/font.ksy
+ksv ../data/sources/00/font.lib ../structs/font.ksy

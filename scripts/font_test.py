@@ -2,7 +2,7 @@
 
 from klan_font import KlanFont
 
-font = KlanFont.from_file('../data/source/00/font.lib')
+font = KlanFont.from_file('../data/sources/00/font.lib')
 
 print "Count: %d" % font.fat.count
 
