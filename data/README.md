@@ -6,8 +6,8 @@ Adresář obsahuje zdrojová data z CD-ROM jednotlivých čísel KLANu. Vzhledem
 
 Je tedy potřeba:
 
-* ručně vytvořit adresář `sources`
 * stáhnout ISO obrazy CD-ROM z https://drive.google.com/drive/folders/0Bw1iZK6iA4_xa29vN0IyWjFDUzA
-* umístit obsah jednotlivých CD-ROM (nikoliv samotné ISO obrazy!) do adresářů pojmenovaných `00` - `42` podle čísla KLANu
+* ručně vytvořit adresář `sources`
+* umístit do něj obsahy jednotlivých CD-ROM (nikoliv samotné ISO obrazy!), a to do adresářů pojmenovaných `00` - `42` podle čísla KLANu
 
 Do budoucna by měl vzniknout skript, který tento proces zautomatizuje.
