@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+import sys
+sys.path.insert(0, '../libs/')
+
 from klan_font import KlanFont
 
 font = KlanFont.from_file('../data/sources/00/font.lib')
