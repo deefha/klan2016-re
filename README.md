@@ -15,6 +15,7 @@ sudo apt-get install python python-pip
 ## Kaitai Struct
 
 http://kaitai.io  
+https://github.com/kaitai-io/kaitai_struct  
 http://doc.kaitai.io/user_guide.html  
 http://doc.kaitai.io/ksy_reference.html
 
