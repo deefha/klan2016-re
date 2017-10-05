@@ -1,5 +1,16 @@
 # KLAN 2016
-Časopis nové generace pro novou generaci (po 20 letech)
+
+Nástroje pro reverzní inženýring.
+
+## Python
+
+https://www.python.org
+
+Instalace:
+
+```bash
+sudo apt-get install python python-pip
+```
 
 ## Kaitai Struct
 
@@ -7,9 +18,10 @@ http://kaitai.io
 http://doc.kaitai.io/user_guide.html  
 http://doc.kaitai.io/ksy_reference.html
 
-### Kaitai Struct Compiler (ksc)
+### Kaitai Struct: compiler (ksc)
 
-https://github.com/kaitai-io/kaitai_struct_compiler
+https://github.com/kaitai-io/kaitai_struct_compiler  
+http://doc.kaitai.io/developers.html
 
 Kompilace aktuální verze ze zdrojových kódů (jako DEB balíček pro Debian/*buntu):
 
@@ -25,7 +37,7 @@ cd jvm/target
 sudo dpkg -i *.deb
 ```
 
-### Kaitai Struct Visualizer (ksv)
+### Kaitai Struct: visualizer (ksv)
 
 https://github.com/kaitai-io/kaitai_struct_visualizer
 
@@ -37,4 +49,17 @@ git clone https://github.com/kaitai-io/kaitai_struct_visualizer
 cd kaitai_struct_visualizer
 gem build kaitai-struct-visualizer.gemspec
 sudo gem install kaitai-struct-visualizer-0.7.gem
+```
+
+### Kaitai Struct: runtime library for Python
+
+https://github.com/kaitai-io/kaitai_struct_python_runtime  
+https://pypi.python.org/pypi/kaitaistruct  
+http://doc.kaitai.io/lang_python.html
+
+Instalace z PyPI:
+
+```bash
+sudo apt-get install python python-pip python-enum34
+pip install kaitaistruct
 ```
