@@ -38,7 +38,7 @@ types:
 
   t_font:
     params:
-      - id: offset
+      - id: font_offset
         type: u4
     seq:
       - id: datalength
@@ -55,7 +55,7 @@ types:
         repeat-expr: 256
     instances:
       data:
-        pos: offset + 8 + 768 + 1024 + characters[_index].offset
+        pos: font_offset + 8 + 768 + 1024 + characters[_index].offset
         type: t_data(characters[_index].width, height)
         if: characters[_index].width != 0
         repeat: expr
@@ -88,6 +88,16 @@ types:
         type: u4
     seq:
       - id: rows
-        size: width
+        type: t_row(width)
         repeat: expr
         repeat-expr: height
+
+  t_row:
+    params:
+      - id: width
+        type: u4
+    seq:
+      - id: index
+        type: u1
+        repeat: expr
+        repeat-expr: width
