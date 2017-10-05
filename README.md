@@ -10,6 +10,7 @@ Instalace:
 
 ```bash
 sudo apt-get install python python-pip
+pip install objdict
 ```
 
 ## Kaitai Struct
