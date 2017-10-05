@@ -115,7 +115,7 @@ class KlanFont(KaitaiStruct):
                     self._io.seek(((((self.offset + 8) + 768) + 1024) + self.characters[i].offset))
                     self._m_matrices[i] = self._root.TMatrix(self.characters[i].width, self.height, self._io, self, self._root)
 
-            self._io.seek(_pos)
+                self._io.seek(_pos)
 
             return self._m_matrices if hasattr(self, '_m_matrices') else None
 
@@ -159,7 +159,7 @@ class KlanFont(KaitaiStruct):
                 self._io.seek(self.fat.offsets[i])
                 self._m_fonts[i] = self._root.TFont(self.fat.offsets[i], self._io, self, self._root)
 
-        self._io.seek(_pos)
+            self._io.seek(_pos)
 
         return self._m_fonts if hasattr(self, '_m_fonts') else None
 
