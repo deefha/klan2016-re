@@ -63,3 +63,7 @@ Instalace z PyPI:
 sudo apt-get install python python-pip python-enum34
 pip install kaitaistruct
 ```
+
+## 010 Editor
+
+https://www.sweetscape.com/010editor/
