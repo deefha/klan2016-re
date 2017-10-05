@@ -4,6 +4,8 @@
 ## Kaitai Struct
 
 http://kaitai.io
+http://doc.kaitai.io/user_guide.html
+http://doc.kaitai.io/ksy_reference.html
 
 ### Kaitai Struct Compiler (ksc)
 
