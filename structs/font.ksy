@@ -38,7 +38,7 @@ types:
 
   t_font:
     params:
-      - id: font_offset
+      - id: offset
         type: u4
     seq:
       - id: datalength
@@ -54,9 +54,9 @@ types:
         repeat: expr
         repeat-expr: 256
     instances:
-      data:
-        pos: font_offset + 8 + 768 + 1024 + characters[_index].offset
-        type: t_data(characters[_index].width, height)
+      matrices:
+        pos: offset + 8 + 768 + 1024 + characters[_index].offset
+        type: t_matrix(characters[_index].width, height)
         if: characters[_index].width != 0
         repeat: expr
         repeat-expr: 256
@@ -80,7 +80,7 @@ types:
       width:
         value: offset_and_width >> 0x18
 
-  t_data:
+  t_matrix:
     params:
       - id: width
         type: u4
@@ -97,7 +97,7 @@ types:
       - id: width
         type: u4
     seq:
-      - id: index
+      - id: columns
         type: u1
         repeat: expr
         repeat-expr: width
