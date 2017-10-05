@@ -20,7 +20,6 @@ sudo apt-get update
 sudo apt-get install sbt git dpkg-dev dpkg-sig lintian fakeroot
 git clone https://github.com/kaitai-io/kaitai_struct_compiler
 cd kaitai_struct_compiler
-mkdir -p jvm/src/main/resources # workaround pro chybu https://github.com/kaitai-io/kaitai_struct/issues/276
 sbt compilerJVM/debian:packageBin
 cd jvm/target
 sudo dpkg -i *.deb
