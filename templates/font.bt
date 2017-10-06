@@ -1,0 +1,107 @@
+typedef struct {
+} tBlank;
+
+typedef struct {
+    CHAR signature[8] <bgcolor=cRed, fgcolor=cWhite>;
+    UINT version;
+    USHORT type <bgcolor=cDkGreen, fgcolor=cLtGray>;
+    UINT filesize;
+    DOSTIME filetime <bgcolor=cDkGreen, fgcolor=cLtGray>;
+    DOSDATE filedate;
+    UBYTE foo_1[4] <bgcolor=cDkGreen, fgcolor=cLtGray, format=hex>;
+    UBYTE foo_2[4] <format=hex>;
+    USHORT crc <bgcolor=cDkGreen, fgcolor=cLtGray>;
+} tHeader <bgcolor=cLtGreen>;
+
+typedef struct {
+    UINT count <bgcolor=cRed, fgcolor=cWhite>;
+    UBYTE foo_1[16];
+
+    for (lOffsetIndex = 0; lOffsetIndex < 59; lOffsetIndex++) {
+        if (lOffsetIndex % 2) {
+            UINT offsets <format=hex>;
+        }
+        else {
+            UINT offsets <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        }
+    }
+} tFAT <bgcolor=cLtPurple>;
+
+typedef struct {
+    UBYTE r <format=hex>;
+    UBYTE g <format=hex>;
+    UBYTE b <format=hex>;
+} tColor;
+
+typedef struct {
+    local UINT lIndex;
+
+    for (lIndex = 0; lIndex < 256; lIndex++) {
+        tColor color;
+    }
+} tColors <bgcolor=cDkAqua, fgcolor=cLtGray>;
+
+typedef UBYTE tCharacterOffset[3] <read=fCharacterOffsetRead>;
+
+string fCharacterOffsetRead(tCharacterOffset o) {
+    string s;
+
+    SPrintf(s, "%u", o[0] + (o[1] * 256) + (o[2] * 256 * 256));
+
+    return s;
+}
+
+typedef struct {
+    tCharacterOffset offset;
+    UBYTE width;
+} tCharacter;
+
+typedef struct {
+    local UINT lIndex;
+
+    for (lIndex = 0; lIndex < 256; lIndex++) {
+        tCharacter character;
+    }
+} tCharacters;
+
+typedef struct {
+    UBYTE data[height * characters.character[lIndex].width];
+} tMatrix;
+
+typedef struct {
+    local UINT lIndex;
+
+    for (lIndex = 0; lIndex < 256; lIndex++) {
+        if (characters.character[lIndex].width != 0) {
+            tMatrix matrix;
+        }
+        else {
+            tBlank matrix;
+        }
+    }
+} tMatrices <bgcolor=cDkAqua, fgcolor=cLtGray>;
+
+typedef struct {
+    UINT datalength <bgcolor=cRed, fgcolor=cWhite>;
+    UINT height;
+    tColors colors;
+    tCharacters characters;
+    tMatrices matrices;
+} tFont <bgcolor=cLtAqua>;
+
+typedef struct {
+    for (lOffsetIndex = 0; lOffsetIndex < 59; lOffsetIndex++) {
+        lOffset = fat.offsets[lOffsetIndex];
+        if (lOffset != 0x00000000) {
+            FSeek(lOffset);
+            tFont font;
+        }
+    }
+} tFonts;
+
+local UINT lOffsetIndex;
+local UINT lOffset;
+
+tHeader header;
+tFAT fat;
+tFonts fonts;
