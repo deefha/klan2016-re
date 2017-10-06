@@ -1,6 +1,6 @@
 # KLAN 2016
 
-Nástroje pro reverzní inženýring. Cílem je získat pro všechny instanci každé binární knihovny strukturovaná JSON (meta)data a zdrojové bloby. Z těch bude následně možné vytvářet objekty jednotlivých typů (texty, fonty, obrázky, hudba, audia, videa...) v obecně standardizovaných formátech (HTML, GIF, PNG, MOD, WAV, AVI...).
+Nástroje pro reverzní inženýring. Cílem je vytvořit pro každou instanci všech binárních knihoven strukturovaná JSON (meta)data a zdrojové bloby. Na základě těchto podkladů bude následně možné vytvářet objekty jednotlivých typů (texty, fonty, obrázky, hudba, audia, videa...) v obecně standardizovaných formátech (HTML, GIF, PNG, MOD, WAV, AVI...).
 
 ## Python
 
