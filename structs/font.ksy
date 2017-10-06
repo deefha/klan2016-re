@@ -22,19 +22,17 @@ instances:
     type: t_font(fat.offsets[_index])
     if: fat.offsets[_index] != 0
     repeat: expr
-    repeat-expr: 59
+    repeat-expr: 63
 
 types:
   t_fat:
     seq:
       - id: count
         type: u4
-      - id: foo_1
-        size: 16
       - id: offsets
         type: u4
         repeat: expr
-        repeat-expr: 59
+        repeat-expr: 63
 
   t_font:
     params:
