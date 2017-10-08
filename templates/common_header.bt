@@ -1,0 +1,11 @@
+typedef struct {
+    CHAR signature[8] <bgcolor=cRed, fgcolor=cWhite>;
+    UINT version;
+    USHORT type <bgcolor=cDkGreen, fgcolor=cLtGray>;
+    UINT filesize;
+    DOSTIME filetime <bgcolor=cDkGreen, fgcolor=cLtGray>;
+    DOSDATE filedate;
+    UBYTE foo_1[4] <bgcolor=cDkGreen, fgcolor=cLtGray, format=hex>;
+    UBYTE foo_2[4] <format=hex>;
+    USHORT crc <bgcolor=cDkGreen, fgcolor=cLtGray>;
+} tHeader <bgcolor=cLtGreen>;
