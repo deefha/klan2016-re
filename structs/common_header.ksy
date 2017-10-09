@@ -2,6 +2,9 @@ meta:
   id: t_header
   endian: le
   encoding: ASCII
+
+doc-ref: https://wiki.klan2016.cz/knihovny/spolecna-hlavicka.html
+
 seq:
   - id: magic
     contents: 'SNOPSoft'
