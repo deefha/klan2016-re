@@ -1,3 +1,7 @@
+data/blobs/*
+data/blobs/**/
+data/meta/*
+data/meta/**/
 data/sources/*
 data/sources/**/
 libs/*.pyc
