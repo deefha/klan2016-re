@@ -3,6 +3,8 @@
 import os, sys
 sys.path.insert(0, '../libs/')
 
+from PIL import Image
+
 from objdict import ObjDict
 from klan_font import KlanFont
 
@@ -32,23 +34,47 @@ f = open('../data/meta/00/font.json', 'w')
 f.write(data.dumps())
 f.close
 
-#print "Count: %d" % font.fat.count
+print "Count: %d" % font.fat.count
 
-#for index, offset in enumerate(font.fat.offsets):
-	#print "Offset #%d: %d" % (index, offset)
+for offset_index, offset in enumerate(font.fat.offsets):
+	print "Offset #%d: %d" % (offset_index, offset)
 
-#for index, font in enumerate(font.fonts):
-	#if font:
-		#print "Font #%d: offset=%d, datalength=%d, height=%d" % (index, font.offset, font.datalength, font.height)
+for font_index, font in enumerate(font.fonts):
+	if font:
+		print "Font #%d: offset=%d, datalength=%d, height=%d" % (font_index, font.offset, font.datalength, font.height)
 
-		##print "\tColors"
-		##for index, color in enumerate(font.colors):
-			##print "\t\tColor #%d: R=%d, G=%d, B=%d" % (index, color.r, color.g, color.b)
+		if not os.path.exists('../data/blobs/00/font/%02d/' % font_index):
+			os.makedirs('../data/blobs/00/font/%02d/' % font_index)
 
-		#print "\tCharacters"
-		#for index, character in enumerate(font.characters):
-			#if character.width:
-				#print "\t\tCharacter #%d: offset=%d, width=%d" % (index, character.offset, character.width)
+		if not os.path.exists('../data/blobs/00/font/%02d/matrices/' % font_index):
+			os.makedirs('../data/blobs/00/font/%02d/matrices/' % font_index)
+
+
+		if not os.path.exists('../data/objects/00/font/%02d/matrices/' % font_index):
+			os.makedirs('../data/objects/00/font/%02d/matrices/' % font_index)
+
+		print "\tColormap"
+		f = open('../data/blobs/00/font/%02d/colormap.bin' % font_index, 'wb')
+		f.write(font.colormap)
+		f.close
+
+		print "\tCharacters"
+		for character_index, character in enumerate(font.characters):
+			if character.width:
+				print "\t\tCharacter #%d: offset=%d, width=%d" % (character_index, character.offset, character.width)
+
+		print "\tMatrices"
+		for matrix_index, matrix in enumerate(font.matrices):
+			if matrix:
+				print "\t\tMatrix #%d" % (matrix_index)
+
+				f = open('../data/blobs/00/font/%02d/matrices/%03d.bin' % (font_index, matrix_index), 'wb')
+				f.write(matrix)
+				f.close
+
+				i = Image.frombytes('P', (font.characters[matrix_index].width, font.height), matrix)
+				i.putpalette(font.colormap)
+				i.save('../data/objects/00/font/%02d/matrices/%03d.gif' % (font_index, matrix_index))
 
 		#print "\tMatrices"
 		#for index, matrix in enumerate(font.matrices):
