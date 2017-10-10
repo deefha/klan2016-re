@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys
+import os, sys
 sys.path.insert(0, '../libs/')
 
 from objdict import ObjDict
@@ -20,7 +20,17 @@ data.header.foo_1 = font.header.foo_1
 data.header.foo_2 = font.header.foo_2
 data.header.crc = font.header.crc
 
+if not os.path.exists('../data/blobs/00/font/'):
+	os.makedirs('../data/blobs/00/font/')
+
+if not os.path.exists('../data/meta/00/font/'):
+	os.makedirs('../data/meta/00/font/')
+
 print data.dumps()
+
+f = open('../data/meta/00/font.json', 'w')
+f.write(data.dumps())
+f.close
 
 #print "Count: %d" % font.fat.count
 
