@@ -60,14 +60,14 @@ class KlanFont(KaitaiStruct):
             if hasattr(self, '_m_matrices'):
                 return self._m_matrices if hasattr(self, '_m_matrices') else None
 
-            _pos = self._io.pos()
-            self._m_matrices = [None] * (256)
-            for i in range(256):
-                if self.characters[i].width != 0:
-                    self._io.seek(((((self.offset + 8) + 768) + 1024) + self.characters[i].offset))
+            if self.characters[i].width != 0:
+                _pos = self._io.pos()
+                self._io.seek(((((self.offset + 8) + 768) + 1024) + self.characters[i].offset))
+                self._m_matrices = [None] * (256)
+                for i in range(256):
                     self._m_matrices[i] = self._io.read_bytes((self.characters[i].width * self.height))
 
-            self._io.seek(_pos)
+                self._io.seek(_pos)
 
             return self._m_matrices if hasattr(self, '_m_matrices') else None
 
@@ -104,14 +104,14 @@ class KlanFont(KaitaiStruct):
         if hasattr(self, '_m_fonts'):
             return self._m_fonts if hasattr(self, '_m_fonts') else None
 
-        _pos = self._io.pos()
-        self._m_fonts = [None] * (63)
-        for i in range(63):
-            if self.fat.offsets[i] != 0:
-                self._io.seek(self.fat.offsets[i])
+        if self.fat.offsets[i] != 0:
+            _pos = self._io.pos()
+            self._io.seek(self.fat.offsets[i])
+            self._m_fonts = [None] * (63)
+            for i in range(63):
                 self._m_fonts[i] = self._root.TFont(self.fat.offsets[i], self._io, self, self._root)
 
-        self._io.seek(_pos)
+            self._io.seek(_pos)
 
         return self._m_fonts if hasattr(self, '_m_fonts') else None
 
