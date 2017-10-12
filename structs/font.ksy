@@ -43,10 +43,6 @@ types:
         type: u4
       - id: height
         type: u4
-#      - id: colors
-#        type: t_color
-#        repeat: expr
-#        repeat-expr: 256
       - id: colormap
         size: 768
       - id: characters
@@ -56,20 +52,10 @@ types:
     instances:
       matrices:
         pos: offset + 8 + 768 + 1024 + characters[_index].offset
-#        type: t_matrix(characters[_index].width, height)
         size: characters[_index].width * height
         if: characters[_index].width != 0
         repeat: expr
         repeat-expr: 256
-
-#  t_color:
-#    seq:
-#      - id: r
-#        type: u1
-#      - id: g
-#        type: u1
-#      - id: b
-#        type: u1
 
   t_character:
     seq:
@@ -80,25 +66,3 @@ types:
         value: offset_and_width & 0xffffff
       width:
         value: offset_and_width >> 0x18
-
-#  t_matrix:
-#    params:
-#      - id: width
-#        type: u4
-#      - id: height
-#        type: u4
-#    seq:
-#      - id: rows
-#        type: t_row(width)
-#        repeat: expr
-#        repeat-expr: height
-
-#  t_row:
-#    params:
-#      - id: width
-#        type: u4
-#    seq:
-#      - id: columns
-#        type: u1
-#        repeat: expr
-#        repeat-expr: width
