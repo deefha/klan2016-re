@@ -22,6 +22,90 @@ class KlanFont(KaitaiStruct):
     def _read(self):
         self.header = THeader(self._io)
         self.fat = self._root.TFat(self._io, self, self._root)
+        self.data = self._root.TData(self._io, self, self._root)
+
+    class TData(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def fonts(self):
+            if hasattr(self, '_m_fonts'):
+                return self._m_fonts if hasattr(self, '_m_fonts') else None
+
+            self._m_fonts = [None] * (63)
+            for i in range(63):
+                self._m_fonts[i] = self._root.TFont(self._parent.fat.offsets[i], self._io, self, self._root)
+
+            return self._m_fonts if hasattr(self, '_m_fonts') else None
+
+
+    class TMatrices(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.matrices = [None] * (256)
+            for i in range(256):
+                self.matrices[i] = self._root.TMatrice(self._parent.characters[i].offset, self._parent.characters[i].width, self._parent.height, self._io, self, self._root)
+
+
+
+    class TFontBody(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.matrices_size = self._io.read_u4le()
+            self.height = self._io.read_u4le()
+            self.colormap = self._io.read_bytes(768)
+            self.characters = [None] * (256)
+            for i in range(256):
+                self.characters[i] = self._root.TCharacter(self._io, self, self._root)
+
+            self._raw_matrices = self._io.read_bytes(self.matrices_size)
+            io = KaitaiStream(BytesIO(self._raw_matrices))
+            self.matrices = self._root.TMatrices(io, self, self._root)
+
+
+    class TMatrice(KaitaiStruct):
+        def __init__(self, matrice_offset, matrice_width, matrice_height, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.matrice_offset = matrice_offset
+            self.matrice_width = matrice_width
+            self.matrice_height = matrice_height
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def body(self):
+            if hasattr(self, '_m_body'):
+                return self._m_body if hasattr(self, '_m_body') else None
+
+            if self.matrice_width != 0:
+                _pos = self._io.pos()
+                self._io.seek(self.matrice_offset)
+                self._m_body = self._io.read_bytes((self.matrice_width * self.matrice_height))
+                self._io.seek(_pos)
+
+            return self._m_body if hasattr(self, '_m_body') else None
+
 
     class TFat(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -39,37 +123,28 @@ class KlanFont(KaitaiStruct):
 
 
     class TFont(KaitaiStruct):
-        def __init__(self, offset, _io, _parent=None, _root=None):
+        def __init__(self, font_offset, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.offset = offset
+            self.font_offset = font_offset
             self._read()
 
         def _read(self):
-            self.datalength = self._io.read_u4le()
-            self.height = self._io.read_u4le()
-            self.colormap = self._io.read_bytes(768)
-            self.characters = [None] * (256)
-            for i in range(256):
-                self.characters[i] = self._root.TCharacter(self._io, self, self._root)
-
+            pass
 
         @property
-        def matrices(self):
-            if hasattr(self, '_m_matrices'):
-                return self._m_matrices if hasattr(self, '_m_matrices') else None
+        def body(self):
+            if hasattr(self, '_m_body'):
+                return self._m_body if hasattr(self, '_m_body') else None
 
-            if self.characters[i].width != 0:
+            if self.font_offset != 0:
                 _pos = self._io.pos()
-                self._io.seek(((((self.offset + 8) + 768) + 1024) + self.characters[i].offset))
-                self._m_matrices = [None] * (256)
-                for i in range(256):
-                    self._m_matrices[i] = self._io.read_bytes((self.characters[i].width * self.height))
-
+                self._io.seek(self.font_offset)
+                self._m_body = self._root.TFontBody(self._io, self, self._root)
                 self._io.seek(_pos)
 
-            return self._m_matrices if hasattr(self, '_m_matrices') else None
+            return self._m_body if hasattr(self, '_m_body') else None
 
 
     class TCharacter(KaitaiStruct):
@@ -98,21 +173,5 @@ class KlanFont(KaitaiStruct):
             self._m_width = (self.offset_and_width >> 24)
             return self._m_width if hasattr(self, '_m_width') else None
 
-
-    @property
-    def fonts(self):
-        if hasattr(self, '_m_fonts'):
-            return self._m_fonts if hasattr(self, '_m_fonts') else None
-
-        if self.fat.offsets[i] != 0:
-            _pos = self._io.pos()
-            self._io.seek(self.fat.offsets[i])
-            self._m_fonts = [None] * (63)
-            for i in range(63):
-                self._m_fonts[i] = self._root.TFont(self.fat.offsets[i], self._io, self, self._root)
-
-            self._io.seek(_pos)
-
-        return self._m_fonts if hasattr(self, '_m_fonts') else None
 
 
