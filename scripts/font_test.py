@@ -44,14 +44,15 @@ for offset_index, offset in enumerate(font.fat.offsets):
 
 for font_index, font in enumerate(font.data.fonts):
 	data_font = ObjDict()
-	data_font.offset = font.offset
+	data_font.param_offset = font.param_offset
 	data_font.content = ObjDict()
 
 	if font.content:
-		print "Font #%d: offset=%d, matrices_size=%d, height=%d" % (font_index, font.offset, font.content.matrices_size, font.content.height)
+		print "Font #%d: param_offset=%d, matrices_size=%d, height=%d, computed_matrices_offset=%d" % (font_index, font.param_offset, font.content.matrices_size, font.content.height, font.content.computed_matrices_offset)
 
 		data_font.content.matrices_size = font.content.matrices_size
 		data_font.content.height = font.content.height
+		data_font.content.computed_matrices_offset = font.content.computed_matrices_offset
 		data_font.content.colormap = 'blobs://00/font/%02d/colormap.bin' % font_index
 		data_font.content.characters = ObjDict()
 		data_font.content.matrices = ObjDict()
@@ -74,20 +75,22 @@ for font_index, font in enumerate(font.data.fonts):
 		for character_index, character in enumerate(font.content.characters):
 			data_character = ObjDict()
 			data_character.offset_and_width = character.offset_and_width
-			data_character.offset = character.offset
-			data_character.width = character.width
+			data_character.computed_offset = character.computed_offset
+			data_character.computed_width = character.computed_width
 
-			if character.width:
-				print "\t\tCharacter #%d: offset=%d, width=%d" % (character_index, character.offset, character.width)
+			print "\t\tCharacter #%d: offset_and_width=%d, computed_offset=%d, computed_width=%d" % (character_index, character.offset_and_width, character.computed_offset, character.computed_width)
 
 			data_font.content.characters[str(character_index)] = data_character
 
 		print "\tMatrices"
 		for matrix_index, matrix in enumerate(font.content.matrices):
 			data_matrix = ObjDict()
+			data_matrix.param_offset = matrix.param_offset
+			data_matrix.param_width = matrix.param_width
+			data_matrix.param_height = matrix.param_height
 
 			if matrix.content:
-				print "\t\tMatrix #%d" % (matrix_index)
+				print "\t\tMatrix #%d: param_offset=%d, param_width=%d, param_height=%d" % (matrix_index, matrix.param_offset, matrix.param_width, matrix.param_height)
 
 				data_matrix.content = 'blobs://00/font/%02d/matrices/%03d.bin' % (font_index, matrix_index)
 
@@ -95,14 +98,17 @@ for font_index, font in enumerate(font.data.fonts):
 				f.write(matrix.content)
 				f.close
 
-				i = Image.frombytes('P', (font.content.characters[matrix_index].width, font.content.height), matrix.content)
+				i = Image.frombytes('P', (font.content.characters[matrix_index].computed_width, font.content.height), matrix.content)
 				i.putpalette(font.content.colormap)
 				i.save('../data/objects/00/font/%02d/characters/%03d.gif' % (font_index, matrix_index))
+
+			else:
+				print "\t\tMatrix #%d: param_offset=%d, param_width=%d, param_height=%d, no content" % (matrix_index, matrix.param_offset, matrix.param_width, matrix.param_height)
 
 			data_font.content.matrices[str(matrix_index)] = data_matrix
 
 	else:
-		print "Font #%d: offset=%d, no content" % (font_index, font.offset)
+		print "Font #%d: param_offset=%d, no content" % (font_index, font.param_offset)
 
 	data.data.fonts[str(font_index)] = data_font
 

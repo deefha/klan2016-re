@@ -63,18 +63,26 @@ class KlanFont(KaitaiStruct):
 
             self.matrices = [None] * (256)
             for i in range(256):
-                self.matrices[i] = self._root.TMatrice((self._parent.offset + self.characters[i].offset), self.characters[i].width, self.height, self._io, self, self._root)
+                self.matrices[i] = self._root.TMatrice((self.computed_matrices_offset + self.characters[i].computed_offset), self.characters[i].computed_width, self.height, self._io, self, self._root)
 
+
+        @property
+        def computed_matrices_offset(self):
+            if hasattr(self, '_m_computed_matrices_offset'):
+                return self._m_computed_matrices_offset if hasattr(self, '_m_computed_matrices_offset') else None
+
+            self._m_computed_matrices_offset = ((((self._parent.param_offset + 4) + 4) + 768) + (256 * 4))
+            return self._m_computed_matrices_offset if hasattr(self, '_m_computed_matrices_offset') else None
 
 
     class TMatrice(KaitaiStruct):
-        def __init__(self, offset, width, height, _io, _parent=None, _root=None):
+        def __init__(self, param_offset, param_width, param_height, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.offset = offset
-            self.width = width
-            self.height = height
+            self.param_offset = param_offset
+            self.param_width = param_width
+            self.param_height = param_height
             self._read()
 
         def _read(self):
@@ -85,10 +93,10 @@ class KlanFont(KaitaiStruct):
             if hasattr(self, '_m_content'):
                 return self._m_content if hasattr(self, '_m_content') else None
 
-            if self.width != 0:
+            if self.param_width != 0:
                 _pos = self._io.pos()
-                self._io.seek(self.offset)
-                self._m_content = self._io.read_bytes((self.width * self.height))
+                self._io.seek(self.param_offset)
+                self._m_content = self._io.read_bytes((self.param_width * self.param_height))
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None
@@ -110,11 +118,11 @@ class KlanFont(KaitaiStruct):
 
 
     class TFont(KaitaiStruct):
-        def __init__(self, offset, _io, _parent=None, _root=None):
+        def __init__(self, param_offset, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.offset = offset
+            self.param_offset = param_offset
             self._read()
 
         def _read(self):
@@ -125,9 +133,9 @@ class KlanFont(KaitaiStruct):
             if hasattr(self, '_m_content'):
                 return self._m_content if hasattr(self, '_m_content') else None
 
-            if self.offset != 0:
+            if self.param_offset != 0:
                 _pos = self._io.pos()
-                self._io.seek(self.offset)
+                self._io.seek(self.param_offset)
                 self._m_content = self._root.TFontContent(self._io, self, self._root)
                 self._io.seek(_pos)
 
@@ -145,20 +153,20 @@ class KlanFont(KaitaiStruct):
             self.offset_and_width = self._io.read_u4le()
 
         @property
-        def offset(self):
-            if hasattr(self, '_m_offset'):
-                return self._m_offset if hasattr(self, '_m_offset') else None
+        def computed_offset(self):
+            if hasattr(self, '_m_computed_offset'):
+                return self._m_computed_offset if hasattr(self, '_m_computed_offset') else None
 
-            self._m_offset = (self.offset_and_width & 16777215)
-            return self._m_offset if hasattr(self, '_m_offset') else None
+            self._m_computed_offset = (self.offset_and_width & 16777215)
+            return self._m_computed_offset if hasattr(self, '_m_computed_offset') else None
 
         @property
-        def width(self):
-            if hasattr(self, '_m_width'):
-                return self._m_width if hasattr(self, '_m_width') else None
+        def computed_width(self):
+            if hasattr(self, '_m_computed_width'):
+                return self._m_computed_width if hasattr(self, '_m_computed_width') else None
 
-            self._m_width = (self.offset_and_width >> 24)
-            return self._m_width if hasattr(self, '_m_width') else None
+            self._m_computed_width = (self.offset_and_width >> 24)
+            return self._m_computed_width if hasattr(self, '_m_computed_width') else None
 
 
 

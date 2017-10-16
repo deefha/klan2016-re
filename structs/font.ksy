@@ -37,13 +37,13 @@ types:
       
   t_font:
     params:
-      - id: offset
+      - id: param_offset
         type: u4
     instances:
       content:
         type: t_font_content
-        pos: offset
-        if: offset != 0
+        pos: param_offset
+        if: param_offset != 0
 
   t_font_content:
     seq:
@@ -58,30 +58,33 @@ types:
         repeat: expr
         repeat-expr: 256
       - id: matrices
-        type: t_matrice(_parent.offset + characters[_index].offset, characters[_index].width, height)
+        type: t_matrice(computed_matrices_offset + characters[_index].computed_offset, characters[_index].computed_width, height)
         repeat: expr
         repeat-expr: 256
+    instances:
+      computed_matrices_offset:
+        value: _parent.param_offset + 4 + 4 + 768 + (256 * 4)
 
   t_character:
     seq:
       - id: offset_and_width
         type: u4
     instances:
-      offset:
+      computed_offset:
         value: offset_and_width & 0xffffff
-      width:
+      computed_width:
         value: offset_and_width >> 0x18
 
   t_matrice:
     params:
-      - id: offset
+      - id: param_offset
         type: u4
-      - id: width
+      - id: param_width
         type: u4
-      - id: height
+      - id: param_height
         type: u4
     instances:
       content:
-        pos: offset
-        size: width * height
-        if: width != 0
+        pos: param_offset
+        size: param_width * param_height
+        if: param_width != 0
