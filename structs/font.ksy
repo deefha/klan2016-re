@@ -37,15 +37,15 @@ types:
       
   t_font:
     params:
-      - id: font_offset
+      - id: offset
         type: u4
     instances:
-      body:
-        type: t_font_body
-        pos: font_offset
-        if: font_offset != 0
+      content:
+        type: t_font_content
+        pos: offset
+        if: offset != 0
 
-  t_font_body:
+  t_font_content:
     seq:
       - id: matrices_size
         type: u4
@@ -58,29 +58,9 @@ types:
         repeat: expr
         repeat-expr: 256
       - id: matrices
-        type: t_matrices
-        size: matrices_size
-
-  t_matrices:
-    seq:
-      - id: matrices
-        type: t_matrice(_parent.characters[_index].offset, _parent.characters[_index].width, _parent.height)
+        type: t_matrice(_parent.offset + characters[_index].offset, characters[_index].width, height)
         repeat: expr
         repeat-expr: 256
-
-  t_matrice:
-    params:
-      - id: matrice_offset
-        type: u4
-      - id: matrice_width
-        type: u4
-      - id: matrice_height
-        type: u4
-    instances:
-      body:
-        pos: matrice_offset
-        size: matrice_width * matrice_height
-        if: matrice_width != 0
 
   t_character:
     seq:
@@ -91,3 +71,17 @@ types:
         value: offset_and_width & 0xffffff
       width:
         value: offset_and_width >> 0x18
+
+  t_matrice:
+    params:
+      - id: offset
+        type: u4
+      - id: width
+        type: u4
+      - id: height
+        type: u4
+    instances:
+      content:
+        pos: offset
+        size: width * height
+        if: width != 0
