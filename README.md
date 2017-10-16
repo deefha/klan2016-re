@@ -9,7 +9,7 @@ https://www.python.org
 Instalace:
 
 ```bash
-sudo apt-get install python python-pip
+sudo apt-get install python python-pip python-pil
 pip install objdict
 ```
 
