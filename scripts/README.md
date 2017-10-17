@@ -16,7 +16,7 @@ Zkompiluje strukturu z adresáře `structs` do adresáře `libs` jako Python kni
 
 ## struct_view.sh
 
-Zobrazí data z adresáře `data/sources` pomocí struktury z adresáře `structs`. Využívá Kaitai Struct: visualizer (`ksv`, musí být nainstalován).
+Zobrazí data z adresáře `data/sources` pomocí struktury z adresáře `structs`. Využívá *Kaitai Struct: visualizer* (`ksv`, musí být nainstalován).
 
 **Parametry:**
 
