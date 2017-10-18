@@ -4,3 +4,4 @@ data/objects/**/
 data/sources/*
 data/sources/**/
 libs/*.pyc
+libs/**/*.pyc

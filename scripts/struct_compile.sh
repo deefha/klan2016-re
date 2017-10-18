@@ -2,7 +2,7 @@
 
 STRUCT=$1
 
-ksc --target python --outdir ../libs/ --import-path ../structs/ ../structs/$STRUCT.ksy
+ksc --target python --outdir ../libs/structs/ --import-path ../structs/ ../structs/$STRUCT.ksy
 
 # ksc -t graphviz ./font.ksy
 # dot ./klan_font.dot -Tpng -o ./klan_font.png
