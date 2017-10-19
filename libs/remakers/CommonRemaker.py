@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, pprint
 
 from objdict import ObjDict
 
@@ -23,5 +23,14 @@ class CommonRemaker(object):
 			os.makedirs(self.PATH_OBJECTS)
 
 		with open(self.FILE_META, "r") as f:
-			content = f.read()
-			self.meta = ObjDict(content)
+			lines = f.readlines()
+			#for line in f:
+				#print(line)
+        #content = f.read()
+
+		content = ''.join(lines)
+		#print len(content)
+		self.meta = ObjDict(content)
+		#pprint.pprint(self.meta.fat.offsets)
+		#print self.meta
+		#self.meta = json.load(f)

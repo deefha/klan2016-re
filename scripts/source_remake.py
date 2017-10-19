@@ -27,7 +27,4 @@ else:
 
 
 
-#remaker.fill_meta_header()
-#remaker.fill_meta_fat()
-#remaker.fill_meta_data()
-#remaker.export_meta()
+remaker.export_objects()
