@@ -1,6 +1,8 @@
 import os, sys, pprint
 
 from objdict import ObjDict
+from PIL import Image
+
 from CommonRemaker import CommonRemaker
 
 
@@ -24,4 +26,19 @@ class FontRemaker(CommonRemaker):
 
 		for font_index, font in self.meta.data.fonts.iteritems():
 			if font.content:
-				print font.content.colormap
+				path_characters = "%s%02d/characters/" % (self.PATH_OBJECTS, int(font_index))
+
+				if not os.path.exists(path_characters):
+					os.makedirs(path_characters)
+
+				with open(font.content.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+					font_colormap = f.read()
+
+				for matrix_index, matrix in font.content.matrices.iteritems():
+					if matrix.content:
+						with open(matrix.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+							matrix_content = f.read()
+
+						i = Image.frombytes("P", (font.content.characters[matrix_index].computed_width, font.content.height), matrix_content)
+						i.putpalette(font_colormap)
+						i.save("%s%03d.gif" % (path_characters, int(matrix_index)))

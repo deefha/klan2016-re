@@ -12,6 +12,8 @@ class CommonRemaker(object):
 		self.issue = issue
 		self.source = source
 
+		self.ROOT_BLOBS = "%sblobs/" % PATH_DATA
+
 		self.PATH_BLOBS = "%sblobs/%s/%s/" % (PATH_DATA, self.issue, self.source)
 		self.PATH_META = "%smeta/%s/%s/" % (PATH_DATA, self.issue, self.source)
 		self.PATH_OBJECTS = "%sobjects/%s/%s/" % (PATH_DATA, self.issue, self.source)
@@ -23,14 +25,8 @@ class CommonRemaker(object):
 			os.makedirs(self.PATH_OBJECTS)
 
 		with open(self.FILE_META, "r") as f:
+			#content = f.read()
 			lines = f.readlines()
-			#for line in f:
-				#print(line)
-        #content = f.read()
 
 		content = ''.join(lines)
-		#print len(content)
 		self.meta = ObjDict(content)
-		#pprint.pprint(self.meta.fat.offsets)
-		#print self.meta
-		#self.meta = json.load(f)
