@@ -7,7 +7,7 @@ PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
 
 
-class CommonDecompilator(object):
+class CommonDecompiler(object):
 
 	def __init__(self, issue, source):
 		self.issue = issue

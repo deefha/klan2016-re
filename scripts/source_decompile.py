@@ -3,7 +3,7 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
 
-from decompilators import *
+from decompilers import *
 
 
 
@@ -20,14 +20,14 @@ print "Issue: %s" % ARG_ISSUE
 print "Source: %s" % ARG_SOURCE
 
 if ARG_SOURCE == "font":
-	decompilator = FontDecompilator.FontDecompilator(ARG_ISSUE, ARG_SOURCE)
+	decompiler = FontDecompiler.FontDecompiler(ARG_ISSUE, ARG_SOURCE)
 
 else:
 	sys.exit()
 
 
 
-decompilator.fill_meta_header()
-decompilator.fill_meta_fat()
-decompilator.fill_meta_data()
-decompilator.export_meta()
+decompiler.fill_meta_header()
+decompiler.fill_meta_fat()
+decompiler.fill_meta_data()
+decompiler.export_meta()
