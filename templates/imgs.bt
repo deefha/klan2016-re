@@ -1,0 +1,95 @@
+#include "common_blank.bt"
+#include "common_header.bt"
+
+typedef struct {
+    UINT count <bgcolor=cRed, fgcolor=cWhite>;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 8195; lOffsetIndex++) {
+        if (lOffsetIndex % 2) {
+            UINT offsets <format=hex>;
+        }
+        else {
+            UINT offsets <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        }
+    }
+} tFAT <bgcolor=cLtPurple>;
+
+typedef struct {
+} mPadding;
+
+typedef struct {
+    UBYTE r <format=hex>;
+    UBYTE g <format=hex>;
+    UBYTE b <format=hex>;
+} mColor;
+
+typedef struct {
+    UINT datalength <bgcolor=cRed, fgcolor=cWhite>;
+    USHORT width;
+    USHORT height <bgcolor=cDkAqua, fgcolor=cLtGray>;
+    USHORT type <format=hex>;
+    UBYTE foo[6] <bgcolor=cDkAqua, fgcolor=cLtRed, format=hex, comment="vypln?">;
+    switch (type) {
+        // 256 colors, indexed, RLE compression, issue 0+
+        case 0x0001:
+            mColor colors[256];
+            UBYTE data[datalength - 768] <bgcolor=cDkAqua, fgcolor=cLtGray>;
+            break;
+        // ?, issue 6+
+        case 0x0004:
+            UINT foo <fgcolor=cRed>;
+            UINT headerlength <bgcolor=cDkAqua, fgcolor=cLtGray>;
+            UBYTE header[headerlength];
+            UBYTE data[datalength - headerlength - 8] <bgcolor=cDkAqua, fgcolor=cLtGray>;
+            break;
+        // RGB 5-6-5, issue 11+
+        case 0x0005:
+            UBYTE data[datalength];
+            break;
+        // 256 colors, indexed, issue 0+
+        case 0x0100:
+            mColor colors[256];
+            UBYTE data[datalength - 768] <bgcolor=cDkAqua, fgcolor=cLtGray>;
+            break;
+        // 256 colors, indexed, RLE compression, issue 9+
+        case 0x0101:
+            mColor colors[256];
+            UBYTE data[datalength - 768] <bgcolor=cDkAqua, fgcolor=cLtGray>;
+            break;
+        // ?, issue 11+
+        case 0x0102:
+            UBYTE data[datalength];
+            break;
+        // RGB 5-6-5, issue 11+
+        case 0x0105:
+            UBYTE data[datalength];
+            break;
+    }
+} mImage <bgcolor=cLtAqua, comment=GetImageInfo>;
+
+
+
+string GetImageInfo(mImage &image) {
+    string s;
+    SPrintf(s, "0x%04x, %dx%d", (int)image.type, (int)image.width, (int)image.height);
+    return s;
+}
+
+typedef struct {
+    for (lOffsetIndex = 0; lOffsetIndex < 8195; lOffsetIndex++) {
+        lOffset = fat.offsets[lOffsetIndex];
+        if (lOffset != 0x00000000) {
+            FSeek(lOffset);
+            mImage image;
+        }
+    }
+} tImages;
+
+
+
+local UINT lOffsetIndex;
+local UINT lOffset;
+
+tHeader header;
+tFAT fat;
+tImages images;

@@ -22,6 +22,9 @@ print "Source: %s" % ARG_SOURCE
 if ARG_SOURCE == "font":
 	remaker = FontRemaker.FontRemaker(ARG_ISSUE, ARG_SOURCE)
 
+elif ARG_SOURCE == "imgs":
+	remaker = ImgsRemaker.ImgsRemaker(ARG_ISSUE, ARG_SOURCE)
+
 else:
 	sys.exit()
 

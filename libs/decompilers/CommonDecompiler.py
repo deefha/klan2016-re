@@ -2,6 +2,7 @@ import os, sys
 
 from objdict import ObjDict
 from structs.klan_font import KlanFont
+from structs.klan_imgs import KlanImgs
 
 PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -29,6 +30,9 @@ class CommonDecompiler(object):
 
 		if self.source == "font":
 			self.library = KlanFont.from_file(self.FILE_SOURCE)
+
+		elif self.source == "imgs":
+			self.library = KlanImgs.from_file(self.FILE_SOURCE)
 
 
 

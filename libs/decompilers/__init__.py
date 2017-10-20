@@ -1,1 +1,1 @@
-__all__ = [ "CommonDecompiler", "FontDecompiler" ]
+__all__ = [ "CommonDecompiler", "FontDecompiler", "ImgsDecompiler" ]

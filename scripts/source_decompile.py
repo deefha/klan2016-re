@@ -22,6 +22,9 @@ print "Source: %s" % ARG_SOURCE
 if ARG_SOURCE == "font":
 	decompiler = FontDecompiler.FontDecompiler(ARG_ISSUE, ARG_SOURCE)
 
+elif ARG_SOURCE == "imgs":
+	decompiler = ImgsDecompiler.ImgsDecompiler(ARG_ISSUE, ARG_SOURCE)
+
 else:
 	sys.exit()
 
