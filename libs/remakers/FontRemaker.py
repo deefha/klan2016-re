@@ -50,7 +50,10 @@ class FontRemaker(CommonRemaker):
 
 		for font_index, font in self.meta.data.fonts.iteritems():
 			if font.content:
+				path_characters = "assets://%s/font/%02d/characters/" % (self.issue, int(font_index))
+
 				data_font = ObjDict()
+				data_font.asset = "assets://%s/font/%02d/font.gif" % (self.issue, int(font_index))
 				data_font.characters = ObjDict()
 				data_font.height = font.content.height
 
@@ -58,6 +61,7 @@ class FontRemaker(CommonRemaker):
 					if matrix.content:
 						data_matrix = ObjDict()
 						data_matrix.width = font.content.characters[matrix_index].computed_width
+						data_matrix.asset = "%s%03d.gif" % (path_characters, int(matrix_index))
 
 						data_font.characters[matrix_index] = data_matrix
 
