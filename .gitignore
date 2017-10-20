@@ -1,6 +1,7 @@
+data/assets/**/
 data/blobs/**/
 data/meta/**/
-data/objects/**/
+data/schemes/**/
 data/sources/*
 data/sources/**/
 libs/*.pyc
