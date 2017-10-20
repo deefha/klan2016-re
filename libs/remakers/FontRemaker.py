@@ -13,10 +13,10 @@ class FontRemaker(CommonRemaker):
 	PATTERN_FILE_COLORMAP = "%s%02d/colormap.bin"
 	PATTERN_FILE_MATRIX = "%s%03d.bin"
 
-	def export_objects(self):
+	def export_assets(self):
 		for font_index, font in self.meta.data.fonts.iteritems():
 			if font.content:
-				path_characters = "%s%02d/characters/" % (self.PATH_OBJECTS, int(font_index))
+				path_characters = "%s%02d/characters/" % (self.PATH_ASSETS, int(font_index))
 
 				if not os.path.exists(path_characters):
 					os.makedirs(path_characters)
@@ -38,5 +38,27 @@ class FontRemaker(CommonRemaker):
 
 						i_font.paste(i_character, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
 
-				i_font.save("%s%02d/font.gif" % (self.PATH_OBJECTS, int(font_index)), transparency = 0)
-				i_font.save("%s%02d/font.png" % (self.PATH_OBJECTS, int(font_index)))
+				i_font.save("%s%02d/font.gif" % (self.PATH_ASSETS, int(font_index)), transparency = 0)
+				i_font.save("%s%02d/font.png" % (self.PATH_ASSETS, int(font_index)))
+
+
+
+	def fill_scheme(self):
+		super(FontRemaker, self).fill_scheme()
+
+		self.scheme.fonts = ObjDict()
+
+		for font_index, font in self.meta.data.fonts.iteritems():
+			if font.content:
+				data_font = ObjDict()
+				data_font.characters = ObjDict()
+				data_font.height = font.content.height
+
+				for matrix_index, matrix in font.content.matrices.iteritems():
+					if matrix.content:
+						data_matrix = ObjDict()
+						data_matrix.width = font.content.characters[matrix_index].computed_width
+
+						data_font.characters[matrix_index] = data_matrix
+
+				self.scheme.fonts[font_index] = data_font

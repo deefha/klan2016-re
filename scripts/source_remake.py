@@ -27,4 +27,6 @@ else:
 
 
 
-remaker.export_objects()
+remaker.fill_scheme()
+remaker.export_scheme()
+remaker.export_assets()
