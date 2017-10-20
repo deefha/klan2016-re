@@ -63,6 +63,7 @@ types:
           cases:
             1: t_image_data_indexed(data_size)
             256: t_image_data_indexed(data_size)
+            257: t_image_data_indexed(data_size)
 #      - id: colormap
 #        size: 768
 #      - id: characters

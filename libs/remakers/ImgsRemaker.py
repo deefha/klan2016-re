@@ -15,7 +15,46 @@ class ImgsRemaker(CommonRemaker):
 	def export_assets(self):
 		for image_index, image in self.meta.data.images.iteritems():
 			if image.content:
-				if image.content.mode == 256:
+				if image.content.mode == 1 or image.content.mode == 257:
+					with open(image.content.data.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+						image_colormap = f.read()
+
+					with open(image.content.data.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+						image_content = f.read()
+
+					image_content_unpacked = []
+					content_byte_break = True
+					content_byte_break_length = None
+					content_byte_break_count = None
+
+					for content_byte in image_content:
+						if content_byte_break:
+							if ord(content_byte) > 127:
+								content_byte_break_length = ord(content_byte) - 127
+								content_byte_break_count = None
+							else:
+								content_byte_break_length = None
+								content_byte_break_count = ord(content_byte) + 1
+
+							content_byte_break = False
+						else:
+							if content_byte_break_count:
+								image_content_unpacked.extend([content_byte] * content_byte_break_count)
+								content_byte_break = True
+							else:
+								image_content_unpacked.append(content_byte)
+								content_byte_break_length -= 1
+								
+								if not content_byte_break_length:
+									content_byte_break = True
+
+					image_content_unpacked = "".join(image_content_unpacked)
+
+					i = Image.frombytes("P", (image.content.width, image.content.height), image_content_unpacked)
+					i.putpalette(image_colormap)
+					i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+
+				elif image.content.mode == 256:
 					with open(image.content.data.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
 						image_colormap = f.read()
 
