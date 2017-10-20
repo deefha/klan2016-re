@@ -89,6 +89,8 @@ class KlanImgs(KaitaiStruct):
                 self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
             elif _on == 256:
                 self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
+            elif _on == 257:
+                self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
 
 
     class TImageDataIndexed(KaitaiStruct):
