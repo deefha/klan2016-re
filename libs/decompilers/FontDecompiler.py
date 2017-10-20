@@ -34,7 +34,7 @@ class FontDecompiler(CommonDecompiler):
 				data_font.content.matrices_size = font.content.matrices_size
 				data_font.content.height = font.content.height
 				data_font.content.computed_matrices_offset = font.content.computed_matrices_offset
-				data_font.content.colormap = "blobs://00/font/%02d/colormap.bin" % font_index
+				data_font.content.colormap = "blobs://%s/font/%02d/colormap.bin" % (self.issue, font_index)
 				data_font.content.characters = ObjDict()
 				data_font.content.matrices = ObjDict()
 
@@ -64,7 +64,7 @@ class FontDecompiler(CommonDecompiler):
 					if matrix.content:
 						print "\t\tMatrix #%d: param_offset=%d, param_width=%d, param_height=%d" % (matrix_index, matrix.param_offset, matrix.param_width, matrix.param_height)
 
-						data_matrix.content = "blobs://00/font/%02d/matrices/%03d.bin" % (font_index, matrix_index)
+						data_matrix.content = "blobs://%s/font/%02d/matrices/%03d.bin" % (self.issue, font_index, matrix_index)
 
 						file_matrix = self.PATTERN_FILE_MATRIX % (path_matrices, matrix_index)
 
