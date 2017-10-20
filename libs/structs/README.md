@@ -1,3 +1,3 @@
-# Structs
+# structs
 
 TODO

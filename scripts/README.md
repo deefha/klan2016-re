@@ -1,4 +1,4 @@
-# Scripts
+# scripts
 
 ## struct_compile.sh
 

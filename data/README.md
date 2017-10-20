@@ -1,10 +1,18 @@
-# Data
+# data
 
-## Blobs
+## assets
 
 TODO
 
-## Meta
+## blobs
+
+TODO
+
+## meta
+
+TODO
+
+## schemes
 
 TODO
 

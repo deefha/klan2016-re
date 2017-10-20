@@ -1,4 +1,4 @@
-# Sources
+# sources
 
 Adresář obsahuje zdrojová data z CD-ROM jednotlivých čísel KLANu. Vzhledem k celkové velikosti cca 25 GiB (resp. 17 GiB bez demoverzí her a software) není možné, aby tato data byla součástí repozitáře.
 
