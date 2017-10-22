@@ -87,6 +87,8 @@ class KlanImgs(KaitaiStruct):
             _on = self.mode
             if _on == 1:
                 self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
+            elif _on == 4:
+                self.data = self._root.TImageDataLossy(self.data_size, self._io, self, self._root)
             elif _on == 256:
                 self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
             elif _on == 257:
@@ -106,31 +108,19 @@ class KlanImgs(KaitaiStruct):
             self.content = self._io.read_bytes((self.param_data_size - 768))
 
 
-    class TMatrice(KaitaiStruct):
-        def __init__(self, param_offset, param_width, param_height, _io, _parent=None, _root=None):
+    class TImageDataLossy(KaitaiStruct):
+        def __init__(self, param_data_size, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.param_offset = param_offset
-            self.param_width = param_width
-            self.param_height = param_height
+            self.param_data_size = param_data_size
             self._read()
 
         def _read(self):
-            pass
-
-        @property
-        def content(self):
-            if hasattr(self, '_m_content'):
-                return self._m_content if hasattr(self, '_m_content') else None
-
-            if self.param_width != 0:
-                _pos = self._io.pos()
-                self._io.seek(self.param_offset)
-                self._m_content = self._io.read_bytes((self.param_width * self.param_height))
-                self._io.seek(_pos)
-
-            return self._m_content if hasattr(self, '_m_content') else None
+            self.foo = self._io.read_u4le()
+            self.header_size = self._io.read_u4le()
+            self.header = self._io.read_bytes(self.header_size)
+            self.content = self._io.read_bytes((((self.param_data_size - 4) - 4) - self.header_size))
 
 
     class TFat(KaitaiStruct):
@@ -146,33 +136,6 @@ class KlanImgs(KaitaiStruct):
             for i in range(8195):
                 self.offsets[i] = self._io.read_u4le()
 
-
-
-    class TCharacter(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.offset_and_width = self._io.read_u4le()
-
-        @property
-        def computed_offset(self):
-            if hasattr(self, '_m_computed_offset'):
-                return self._m_computed_offset if hasattr(self, '_m_computed_offset') else None
-
-            self._m_computed_offset = (self.offset_and_width & 16777215)
-            return self._m_computed_offset if hasattr(self, '_m_computed_offset') else None
-
-        @property
-        def computed_width(self):
-            if hasattr(self, '_m_computed_width'):
-                return self._m_computed_width if hasattr(self, '_m_computed_width') else None
-
-            self._m_computed_width = (self.offset_and_width >> 24)
-            return self._m_computed_width if hasattr(self, '_m_computed_width') else None
 
 
 

@@ -10,6 +10,7 @@ class ImgsDecompiler(CommonDecompiler):
 	PATTERN_PATH_IMAGE = "%s%04d/"
 	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
+	PATTERN_FILE_HEADER = "%s%04d/header.bin"
 
 	def fill_meta_data(self):
 		super(ImgsDecompiler, self).fill_meta_data()
@@ -26,6 +27,7 @@ class ImgsDecompiler(CommonDecompiler):
 
 				file_colormap = self.PATTERN_FILE_COLORMAP % (self.PATH_BLOBS, image_index)
 				file_content = self.PATTERN_FILE_CONTENT % (self.PATH_BLOBS, image_index)
+				file_header = self.PATTERN_FILE_HEADER % (self.PATH_BLOBS, image_index)
 
 				path_image = self.PATTERN_PATH_IMAGE % (self.PATH_BLOBS, image_index)
 
@@ -37,8 +39,10 @@ class ImgsDecompiler(CommonDecompiler):
 				data_image.content.height = image.content.height
 				data_image.content.mode = image.content.mode
 				data_image.content.data = ObjDict()
+				data_image.content.data.colormap = ""
+				data_image.content.data.header = ""
 
-				if image.content.data.colormap:
+				if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257:
 					data_image.content.data.colormap = "blobs://%s/imgs/%04d/colormap.bin" % (self.issue, image_index)
 
 					print "\tColormap"
@@ -46,13 +50,20 @@ class ImgsDecompiler(CommonDecompiler):
 					f.write(image.content.data.colormap)
 					f.close
 
-				if image.content.data.content:
-					data_image.content.data.content = "blobs://%s/imgs/%04d/content.bin" % (self.issue, image_index)
+				elif image.content.mode == 4:
+					data_image.content.data.header = "blobs://%s/imgs/%04d/header.bin" % (self.issue, image_index)
 
-					print "\tContent"
-					f = open(file_content, "wb")
-					f.write(image.content.data.content)
+					print "\tHeader"
+					f = open(file_header, "wb")
+					f.write(image.content.data.header)
 					f.close
+
+				data_image.content.data.content = "blobs://%s/imgs/%04d/content.bin" % (self.issue, image_index)
+
+				print "\tContent"
+				f = open(file_content, "wb")
+				f.write(image.content.data.content)
+				f.close
 
 			else:
 				print "Image #%d: param_offset=%d, no content" % (image_index, image.param_offset)
