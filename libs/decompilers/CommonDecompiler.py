@@ -53,6 +53,9 @@ class CommonDecompiler(object):
 	def fill_meta_fat(self):
 		self.meta.fat = ObjDict()
 		self.meta.fat.count = self.library.fat.count
+		self.meta.fat.foo_1 = self.library.fat.foo_1
+		self.meta.fat.foo_2 = self.library.fat.foo_2
+		self.meta.fat.foo_3 = self.library.fat.foo_3
 		self.meta.fat.offsets = ObjDict()
 
 		print "Count: %d" % self.library.fat.count
