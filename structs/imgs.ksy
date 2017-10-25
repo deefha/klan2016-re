@@ -23,17 +23,23 @@ types:
     seq:
       - id: count
         type: u4
+      - id: foo_1
+        type: u4
+      - id: foo_2
+        type: u4
+      - id: foo_3
+        type: u4
       - id: offsets
         type: u4
         repeat: expr
-        repeat-expr: 8195
+        repeat-expr: 8192
 
   t_data:
     instances:
       images:
         type: t_image(_parent.fat.offsets[_index])
         repeat: expr
-        repeat-expr: 8195
+        repeat-expr: 8192
       
   t_image:
     params:

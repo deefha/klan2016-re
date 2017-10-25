@@ -39,8 +39,8 @@ class KlanImgs(KaitaiStruct):
             if hasattr(self, '_m_images'):
                 return self._m_images if hasattr(self, '_m_images') else None
 
-            self._m_images = [None] * (8195)
-            for i in range(8195):
+            self._m_images = [None] * (8192)
+            for i in range(8192):
                 self._m_images[i] = self._root.TImage(self._parent.fat.offsets[i], self._io, self, self._root)
 
             return self._m_images if hasattr(self, '_m_images') else None
@@ -132,8 +132,11 @@ class KlanImgs(KaitaiStruct):
 
         def _read(self):
             self.count = self._io.read_u4le()
-            self.offsets = [None] * (8195)
-            for i in range(8195):
+            self.foo_1 = self._io.read_u4le()
+            self.foo_2 = self._io.read_u4le()
+            self.foo_3 = self._io.read_u4le()
+            self.offsets = [None] * (8192)
+            for i in range(8192):
                 self.offsets[i] = self._io.read_u4le()
 
 

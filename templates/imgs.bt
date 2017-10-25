@@ -4,8 +4,11 @@
 
 typedef struct {
     UINT count <bgcolor=cRed, fgcolor=cWhite>;
+    UINT foo_1;
+    UINT foo_2;
+    UINT foo_3;
 
-    for (lOffsetIndex = 0; lOffsetIndex < 8195; lOffsetIndex++) {
+    for (lOffsetIndex = 0; lOffsetIndex < 8192; lOffsetIndex++) {
         if (lOffsetIndex % 2) {
             UINT offsets <format=hex>;
         }
@@ -76,7 +79,7 @@ string GetImageInfo(mImage &image) {
 typedef struct {
     tPadding image;
 
-    for (lOffsetIndex = 0; lOffsetIndex < 8195; lOffsetIndex++) {
+    for (lOffsetIndex = 0; lOffsetIndex < 8192; lOffsetIndex++) {
         lOffset = fat.offsets[lOffsetIndex];
         if (lOffset != 0x00000000) {
             FSeek(lOffset);
