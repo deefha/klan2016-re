@@ -65,6 +65,10 @@ class ImgsRemaker(CommonRemaker):
 						i.putpalette(image_colormap)
 						i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
 
+				elif image.content.mode == 4:
+					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
+					i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+
 
 
 	def fill_scheme(self):

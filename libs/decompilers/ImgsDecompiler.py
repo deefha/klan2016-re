@@ -39,8 +39,7 @@ class ImgsDecompiler(CommonDecompiler):
 				data_image.content.height = image.content.height
 				data_image.content.mode = image.content.mode
 				data_image.content.data = ObjDict()
-				data_image.content.data.colormap = ""
-				data_image.content.data.header = ""
+				data_image.content.data.param_data_size = image.content.data.param_data_size
 
 				if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257:
 					data_image.content.data.colormap = "blobs://%s/imgs/%04d/colormap.bin" % (self.issue, image_index)
@@ -51,6 +50,8 @@ class ImgsDecompiler(CommonDecompiler):
 					f.close
 
 				elif image.content.mode == 4:
+					data_image.content.data.foo = image.content.data.foo
+					data_image.content.data.header_size = image.content.data.header_size
 					data_image.content.data.header = "blobs://%s/imgs/%04d/header.bin" % (self.issue, image_index)
 
 					print "\tHeader"
