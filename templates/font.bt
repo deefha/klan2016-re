@@ -3,8 +3,11 @@
 
 typedef struct {
     UINT count <bgcolor=cRed, fgcolor=cWhite>;
+    UINT foo_1;
+    UINT foo_2;
+    UINT foo_3;
 
-    for (lOffsetIndex = 0; lOffsetIndex < 63; lOffsetIndex++) {
+    for (lOffsetIndex = 0; lOffsetIndex < 60; lOffsetIndex++) {
         if (lOffsetIndex % 2) {
             UINT offsets <format=hex>;
         }
@@ -77,11 +80,14 @@ typedef struct {
 } tFont <bgcolor=cLtAqua>;
 
 typedef struct {
-    for (lOffsetIndex = 0; lOffsetIndex < 63; lOffsetIndex++) {
+    for (lOffsetIndex = 0; lOffsetIndex < 60; lOffsetIndex++) {
         lOffset = fat.offsets[lOffsetIndex];
         if (lOffset != 0x00000000) {
             FSeek(lOffset);
             tFont font;
+        }
+        else {
+            tBlank font;
         }
     }
 } tFonts;

@@ -23,17 +23,23 @@ types:
     seq:
       - id: count
         type: u4
+      - id: foo_1
+        type: u4
+      - id: foo_2
+        type: u4
+      - id: foo_3
+        type: u4
       - id: offsets
         type: u4
         repeat: expr
-        repeat-expr: 63
+        repeat-expr: 60
 
   t_data:
     instances:
       fonts:
         type: t_font(_parent.fat.offsets[_index])
         repeat: expr
-        repeat-expr: 63
+        repeat-expr: 60
       
   t_font:
     params:

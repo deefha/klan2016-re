@@ -39,8 +39,8 @@ class KlanFont(KaitaiStruct):
             if hasattr(self, '_m_fonts'):
                 return self._m_fonts if hasattr(self, '_m_fonts') else None
 
-            self._m_fonts = [None] * (63)
-            for i in range(63):
+            self._m_fonts = [None] * (60)
+            for i in range(60):
                 self._m_fonts[i] = self._root.TFont(self._parent.fat.offsets[i], self._io, self, self._root)
 
             return self._m_fonts if hasattr(self, '_m_fonts') else None
@@ -111,8 +111,11 @@ class KlanFont(KaitaiStruct):
 
         def _read(self):
             self.count = self._io.read_u4le()
-            self.offsets = [None] * (63)
-            for i in range(63):
+            self.foo_1 = self._io.read_u4le()
+            self.foo_2 = self._io.read_u4le()
+            self.foo_3 = self._io.read_u4le()
+            self.offsets = [None] * (60)
+            for i in range(60):
                 self.offsets[i] = self._io.read_u4le()
 
 
