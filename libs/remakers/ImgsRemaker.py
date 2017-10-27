@@ -81,6 +81,6 @@ class ImgsRemaker(CommonRemaker):
 				data_image = ObjDict()
 				data_image.width = image.content.width
 				data_image.height = image.content.height
-				data_image.asset = "assets://%s/imgs/%04d.png" % (self.issue, int(image_index))
+				data_image.asset = "assets://%s/%s/%04d.png" % (self.issue, self.source, int(image_index))
 
 				self.scheme.images[image_index] = data_image

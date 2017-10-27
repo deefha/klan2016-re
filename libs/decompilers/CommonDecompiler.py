@@ -31,7 +31,7 @@ class CommonDecompiler(object):
 		if self.source == "font":
 			self.library = KlanFont.from_file(self.FILE_SOURCE)
 
-		elif self.source == "imgs":
+		elif self.source == "imgs" or self.source == "image1":
 			self.library = KlanImgs.from_file(self.FILE_SOURCE)
 
 
