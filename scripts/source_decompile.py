@@ -19,7 +19,7 @@ ARG_SOURCE = sys.argv[2]
 print "Issue: %s" % ARG_ISSUE
 print "Source: %s" % ARG_SOURCE
 
-if ARG_SOURCE == "font":
+if ARG_SOURCE == "font" or ARG_SOURCE == "font2":
 	decompiler = FontDecompiler.FontDecompiler(ARG_ISSUE, ARG_SOURCE)
 
 elif ARG_SOURCE == "imgs" or ARG_SOURCE == "image1":

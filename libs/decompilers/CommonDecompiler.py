@@ -28,7 +28,7 @@ class CommonDecompiler(object):
 		if not os.path.exists(self.PATH_META):
 			os.makedirs(self.PATH_META)
 
-		if self.source == "font":
+		if self.source == "font" or self.source == "font2":
 			self.library = KlanFont.from_file(self.FILE_SOURCE)
 
 		elif self.source == "imgs" or self.source == "image1":

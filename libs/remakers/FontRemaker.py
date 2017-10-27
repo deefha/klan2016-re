@@ -38,8 +38,8 @@ class FontRemaker(CommonRemaker):
 
 						i_font.paste(i_character, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
 
-				i_font.save("%s%02d/font.gif" % (self.PATH_ASSETS, int(font_index)), transparency = 0)
-				i_font.save("%s%02d/font.png" % (self.PATH_ASSETS, int(font_index)))
+				i_font.save("%s%02d/%s.gif" % (self.PATH_ASSETS, int(font_index), self.source), transparency = 0)
+				i_font.save("%s%02d/%s.png" % (self.PATH_ASSETS, int(font_index), self.source))
 
 
 
@@ -50,11 +50,11 @@ class FontRemaker(CommonRemaker):
 
 		for font_index, font in self.meta.data.fonts.iteritems():
 			if font.content:
-				path_characters = "assets://%s/font/%02d/characters/" % (self.issue, int(font_index))
+				path_characters = "assets://%s/%s/%02d/characters/" % (self.issue, self.source, int(font_index))
 
 				data_font = ObjDict()
 				data_font.height = font.content.height
-				data_font.asset = "assets://%s/font/%02d/font.gif" % (self.issue, int(font_index))
+				data_font.asset = "assets://%s/%s/%02d/font.gif" % (self.issue, self.source, int(font_index))
 				data_font.characters = ObjDict()
 
 				for matrix_index, matrix in font.content.matrices.iteritems():
