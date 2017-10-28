@@ -1,0 +1,108 @@
+#include "common_blank.bt"
+#include "common_padding.bt"
+#include "common_header.bt"
+
+typedef struct {
+    UINT modsCount;
+    UINT samplesCount;
+    UBYTE foo_2[24] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
+} tHeader2 <bgcolor=cLtGreen>;
+
+typedef struct {
+    CHAR name[32];
+} mName;
+
+typedef struct {
+    mName name <bgcolor=cRed, fgcolor=cWhite>;
+    USHORT positionsCount;
+    USHORT patternsCount;
+    USHORT samplesCount;
+    UBYTE foo[74] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
+    UBYTE positions[128];
+    UBYTE patterns[patternsCount * 2048];
+} mMod <bgcolor=cLtAqua>;
+
+typedef struct {
+    UINT dataLength <bgcolor=cRed, fgcolor=cWhite>;
+    UBYTE foo[12] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
+    UBYTE data[dataLength];
+} mSample <bgcolor=cLtAqua>;
+
+typedef struct {
+    for (offsetIndex = 0; offsetIndex < 256; offsetIndex++) {
+        if (offsetIndex == 0) {
+            UINT modOffset <bgcolor=cRed, fgcolor=cWhite, format=hex>;
+        }
+        else {
+            if (offsetIndex % 2) {
+                UINT modOffset <bgcolor=cLtPurple, format=hex>;
+            }
+            else {
+                UINT modOffset <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+            }
+        }
+    }
+} mModsFAT;
+
+typedef struct {
+    for (offsetIndex = 0; offsetIndex < 1024; offsetIndex++) {
+        if (offsetIndex == 0) {
+            UINT sampleOffset <bgcolor=cRed, fgcolor=cWhite, format=hex>;
+        }
+        else {
+            if (offsetIndex % 2) {
+                UINT sampleOffset <bgcolor=cLtPurple, format=hex>;
+            }
+            else {
+                UINT sampleOffset <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+            }
+        }
+    }
+} mSamplesFAT;
+
+typedef struct {
+    for (offsetIndex = 0; offsetIndex < 256; offsetIndex++) {
+        if (offsetIndex == 0) {
+            mName name <bgcolor=cRed, fgcolor=cWhite, format=hex>;
+        }
+        else {
+            if (offsetIndex % 2) {
+                mName name <bgcolor=cLtPurple, format=hex>;
+            }
+            else {
+                mName name <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+            }
+        }
+    }
+} mNames;
+
+typedef struct {
+    for (offsetIndex = 0; offsetIndex < 256; offsetIndex++) {
+        offset = modsFAT.modOffset[offsetIndex];
+        if (offset != 0x00000000) {
+            FSeek(offset);
+            mMod mod;
+        }
+    }
+} mMods;
+
+typedef struct {
+    for (offsetIndex = 0; offsetIndex < 1024; offsetIndex++) {
+        offset = samplesFAT.sampleOffset[offsetIndex];
+        if (offset != 0x00000000) {
+            FSeek(offset);
+            mSample sample;
+        }
+    }
+} mSamples;
+
+local UINT offsetIndex;
+local UINT offset;
+
+tHeader header;
+tHeader2 header2;
+mModsFAT modsFAT;
+mSamplesFAT samplesFAT;
+mNames names;
+mMods mods;
+mSamples samples;

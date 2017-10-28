@@ -1,0 +1,26 @@
+#include "common_blank.bt"
+#include "common_padding.bt"
+#include "common_header.bt"
+
+typedef struct {
+    UINT count <bgcolor=cRed, fgcolor=cWhite>;
+    UINT foo_1;
+    UINT foo_2;
+    UINT foo_3;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 201; lOffsetIndex++) {
+        if (lOffsetIndex % 2) {
+            UINT offsets <format=hex>;
+        }
+        else {
+            UINT offsets <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        }
+    }
+} tFAT <bgcolor=cLtPurple>;
+
+local UINT lOffsetIndex;
+local UINT lOffset;
+
+tHeader header;
+tFAT fat;
+//tFonts fonts;

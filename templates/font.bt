@@ -1,4 +1,5 @@
 #include "common_blank.bt"
+#include "common_padding.bt"
 #include "common_header.bt"
 
 typedef struct {

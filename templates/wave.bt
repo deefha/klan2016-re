@@ -1,0 +1,46 @@
+#include "common_blank.bt"
+#include "common_padding.bt"
+#include "common_header.bt"
+
+typedef struct {
+    UINT count <bgcolor=cRed, fgcolor=cWhite>;
+    UINT foo_1;
+    UINT foo_2;
+    UINT foo_3;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 8192; lOffsetIndex++) {
+        if (lOffsetIndex % 2) {
+            UINT offsets <format=hex>;
+        }
+        else {
+            UINT offsets <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        }
+    }
+} tFAT <bgcolor=cLtPurple>;
+
+typedef struct {
+    struct wHeader {
+        UINT datalength;
+        UINT wavelength;
+        USHORT type;
+        USHORT foo_1 <format=hex, bgcolor=cLtRed, comment="vypln?">;
+        UBYTE foo_2[4] <format=hex, bgcolor=cLtRed, comment="vypln?">;
+    } header <bgcolor=cGreen>;
+
+//    issue 00 nema popisky
+
+//    issue 01-07
+//    UBYTE foo_2[32] <format=hex, bgcolor=cLtRed, comment="popisek?">;
+
+//    issue 08+
+    UBYTE foo_2[64] <format=hex, bgcolor=cLtRed, comment="popisek?">;
+
+    UBYTE data[header.datalength];
+} mWave <bgcolor=cLtGreen>;
+
+local UINT lOffsetIndex;
+local UINT lOffset;
+
+tHeader header;
+tFAT fat;
+//tImages images;
