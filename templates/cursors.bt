@@ -3,17 +3,17 @@
 #include "common_header.bt"
 
 typedef struct {
-    UINT offset_matrices <bgcolor=cRed, fgcolor=cWhite>;
-    UINT count_matrices;
-    UINT offset_foo_1 <bgcolor=cDkPurple, fgcolor=cLtGray>;
-    UINT count_foo_1;
-    UINT offset_colortables <bgcolor=cDkPurple, fgcolor=cLtGray>;
-    UINT foo_1;
-    UINT foo_2 <bgcolor=cDkPurple, fgcolor=cLtGray>;
+    UINT cursors_offset <bgcolor=cRed, fgcolor=cWhite>;
+    UINT cursors_count;
+    UINT foo_1_offset <bgcolor=cDkPurple, fgcolor=cLtGray>;
+    UINT foo_2_count;
+    UINT colortables_offset <bgcolor=cDkPurple, fgcolor=cLtGray>;
+    UINT foo;
+    UINT bar <bgcolor=cDkPurple, fgcolor=cLtGray>;
 
     for (lOffsetIndex = 0; lOffsetIndex < 99; lOffsetIndex++) {
-        UINT offset_foo_2 <format=hex>;
-        UINT count_foo_2 <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        UINT foo_2_offset;
+        UINT foo_2_foo <bgcolor=cDkPurple, fgcolor=cLtGray>;
     }
 } tFAT <bgcolor=cLtPurple>;
 
@@ -22,18 +22,18 @@ typedef struct {
     UBYTE y;
     USHORT id;
     UBYTE data[1024];
-} tMatrix;
+} tCursor;
 
 typedef struct {
-    FSeek(fat.offset_matrices);
-    for (lOffsetIndex = 0; lOffsetIndex < fat.count_matrices; lOffsetIndex++) {
-        tMatrix matrix;
+    FSeek(fat.cursors_offset);
+    for (lOffsetIndex = 0; lOffsetIndex < fat.cursors_count; lOffsetIndex++) {
+        tCursor cursor;
     }
-} tMatrices;
+} tCursors;
 
 typedef struct {
-    FSeek(fat.offset_foo_1);
-    UBYTE data[512];
+    FSeek(fat.foo_1_offset);
+    UBYTE matrix[512];
 } tFoo1;
 
 typedef struct {
@@ -41,8 +41,8 @@ typedef struct {
 } tFoo2data;
 
 typedef struct {
-    for (lOffsetIndex = 0; lOffsetIndex < fat.count_foo_1; lOffsetIndex++) {
-        FSeek(fat.offset_foo_2[lOffsetIndex]);
+    for (lOffsetIndex = 0; lOffsetIndex < fat.foo_2_count; lOffsetIndex++) {
+        FSeek(fat.foo_2_offset[lOffsetIndex]);
         tFoo2data data;
     }
 } tFoo2;
@@ -52,7 +52,7 @@ typedef struct {
 } tColortable;
 
 typedef struct {
-    FSeek(fat.offset_colortables);
+    FSeek(fat.colortables_offset);
     for (lOffsetIndex = 0; lOffsetIndex < 5; lOffsetIndex++) {
         tColortable colortable;
     }
@@ -63,7 +63,7 @@ local UINT lOffset;
 
 tHeader header;
 tFAT fat;
-tMatrices matrices;
+tCursors cursors;
 tFoo1 foo_1;
 tFoo2 foo_2;
 tColortables colortables;
