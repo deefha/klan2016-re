@@ -1,6 +1,7 @@
 import os, sys
 
 from objdict import ObjDict
+from structs.klan_cursors import KlanCursors
 from structs.klan_font import KlanFont
 from structs.klan_imgs import KlanImgs
 
@@ -28,7 +29,10 @@ class CommonDecompiler(object):
 		if not os.path.exists(self.PATH_META):
 			os.makedirs(self.PATH_META)
 
-		if self.source == "font" or self.source == "font2":
+		if self.source == "cursors":
+			self.library = KlanCursors.from_file(self.FILE_SOURCE)
+
+		elif self.source == "font" or self.source == "font2":
 			self.library = KlanFont.from_file(self.FILE_SOURCE)
 
 		elif self.source == "imgs" or self.source == "image1":
