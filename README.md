@@ -69,3 +69,11 @@ pip install kaitaistruct
 ## 010 Editor
 
 https://www.sweetscape.com/010editor/
+
+## IDA / DOSBox debugger
+
+https://github.com/wjp/idados  
+https://github.com/wjp/dosbox  
+https://github.com/wjp/idados/issues/7  
+https://github.com/wjp/idados/issues/10  
+http://www.dosbox.com/wiki/Building_DOSBox_with_MinGW
