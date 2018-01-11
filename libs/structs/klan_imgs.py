@@ -85,14 +85,20 @@ class KlanImgs(KaitaiStruct):
             self.mode = self._io.read_u2le()
             self.foo = self._io.read_bytes(6)
             _on = self.mode
-            if _on == 1:
+            if _on == 257:
                 self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
             elif _on == 4:
                 self.data = self._root.TImageDataLossy(self.data_size, self._io, self, self._root)
+            elif _on == 1:
+                self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
+            elif _on == 5:
+                self.data = self._root.TImageDataRgb565(self.data_size, self._io, self, self._root)
+            elif _on == 258:
+                self.data = self._root.TImageDataCommon(self.data_size, self._io, self, self._root)
             elif _on == 256:
                 self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
-            elif _on == 257:
-                self.data = self._root.TImageDataIndexed(self.data_size, self._io, self, self._root)
+            elif _on == 261:
+                self.data = self._root.TImageDataRgb565(self.data_size, self._io, self, self._root)
 
 
     class TImageDataIndexed(KaitaiStruct):
@@ -106,6 +112,30 @@ class KlanImgs(KaitaiStruct):
         def _read(self):
             self.colormap = self._io.read_bytes(768)
             self.content = self._io.read_bytes((self.param_data_size - 768))
+
+
+    class TImageDataRgb565(KaitaiStruct):
+        def __init__(self, param_data_size, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_data_size = param_data_size
+            self._read()
+
+        def _read(self):
+            self.content = self._io.read_bytes(self.param_data_size)
+
+
+    class TImageDataCommon(KaitaiStruct):
+        def __init__(self, param_data_size, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_data_size = param_data_size
+            self._read()
+
+        def _read(self):
+            self.content = self._io.read_bytes(self.param_data_size)
 
 
     class TImageDataLossy(KaitaiStruct):

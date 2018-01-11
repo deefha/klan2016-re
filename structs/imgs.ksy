@@ -69,8 +69,19 @@ types:
           cases:
             1: t_image_data_indexed(data_size)
             4: t_image_data_lossy(data_size)
+            5: t_image_data_rgb565(data_size)
             256: t_image_data_indexed(data_size)
             257: t_image_data_indexed(data_size)
+            258: t_image_data_common(data_size)
+            261: t_image_data_rgb565(data_size)
+
+  t_image_data_common:
+    params:
+      - id: param_data_size
+        type: u4
+    seq:
+      - id: content
+        size: param_data_size
 
   t_image_data_indexed:
     params:
@@ -95,3 +106,11 @@ types:
         size: header_size
       - id: content
         size: param_data_size - 4 - 4 - header_size
+
+  t_image_data_rgb565:
+    params:
+      - id: param_data_size
+        type: u4
+    seq:
+      - id: content
+        size: param_data_size

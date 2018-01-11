@@ -15,6 +15,7 @@ class ImgsRemaker(CommonRemaker):
 	def export_assets(self):
 		for image_index, image in self.meta.data.images.iteritems():
 			if image.content:
+				# colormap, indexed, RLE compression
 				if image.content.mode == 1 or image.content.mode == 257:
 					with open(image.content.data.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
 						image_colormap = f.read()
@@ -54,6 +55,7 @@ class ImgsRemaker(CommonRemaker):
 					i.putpalette(image_colormap)
 					i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
 
+				# colormap, indexed, no compression
 				elif image.content.mode == 256:
 					with open(image.content.data.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
 						image_colormap = f.read()
@@ -65,9 +67,18 @@ class ImgsRemaker(CommonRemaker):
 						i.putpalette(image_colormap)
 						i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
 
-				elif image.content.mode == 4:
+				# TODO, red placeholder
+				elif image.content.mode == 4 or image.content.mode == 258:
 					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
 					i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+
+				# RGB565
+				elif image.content.mode == 5 or image.content.mode == 261:
+					with open(image.content.data.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+						image_content = f.read()
+
+						i = Image.frombytes("RGB", (image.content.width, image.content.height), image_content, "raw", "BGR;16")
+						i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
 
 
 
