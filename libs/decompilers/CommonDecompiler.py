@@ -18,7 +18,11 @@ class CommonDecompiler(object):
 		self.PATH_BLOBS = "%sblobs/%s/%s/" % (PATH_DATA, self.issue, self.source)
 		self.PATH_META = "%smeta/%s/%s/" % (PATH_DATA, self.issue, self.source)
 
-		self.FILE_SOURCE = "%ssources/%s/%s.lib" % (PATH_DATA, self.issue, self.source) # TODO test if exists
+		if self.issue >= "28":
+			self.FILE_SOURCE = "%ssources/%s/klan/%s.lib" % (PATH_DATA, self.issue, self.source) # TODO test if exists
+		else:
+			self.FILE_SOURCE = "%ssources/%s/%s.lib" % (PATH_DATA, self.issue, self.source) # TODO test if exists
+
 		self.FILE_META = "%smeta/%s/%s.json" % (PATH_DATA, self.issue, self.source)
 
 		self.meta = ObjDict()
@@ -32,10 +36,10 @@ class CommonDecompiler(object):
 		if self.source == "cursors":
 			self.library = KlanCursors.from_file(self.FILE_SOURCE)
 
-		elif self.source == "font" or self.source == "font2":
+		elif self.source == "font" or self.source == "font2" or self.source == "font_lt" or self.source == "font2_lt":
 			self.library = KlanFont.from_file(self.FILE_SOURCE)
 
-		elif self.source == "imgs" or self.source == "image1":
+		elif self.source == "imgs" or self.source == "image1" or self.source == "cache":
 			self.library = KlanImgs.from_file(self.FILE_SOURCE)
 
 

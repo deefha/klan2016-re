@@ -43,15 +43,19 @@ class CommonRemaker(object):
 		self.scheme.header.issue = self.issue
 		self.scheme.header.source = self.source
 
-		year = ((self.meta.header.filedate & 0b1111111000000000) >> 9) + 1980
-		month = (self.meta.header.filedate & 0b0000000111100000) >> 5
-		day = self.meta.header.filedate & 0b0000000000011111
-		hour = (self.meta.header.filetime & 0b1111100000000000) >> 11
-		minute = (self.meta.header.filetime & 0b0000011111100000) >> 5
-		sec = (self.meta.header.filetime & 0b0000000000011111) * 2
+		if self.meta.header.filedate and self.meta.header.filetime:
+			year = ((self.meta.header.filedate & 0b1111111000000000) >> 9) + 1980
+			month = (self.meta.header.filedate & 0b0000000111100000) >> 5
+			day = self.meta.header.filedate & 0b0000000000011111
+			hour = (self.meta.header.filetime & 0b1111100000000000) >> 11
+			minute = (self.meta.header.filetime & 0b0000011111100000) >> 5
+			sec = (self.meta.header.filetime & 0b0000000000011111) * 2
 
-		self.scheme.header.created = datetime.datetime(year, month, day, hour, minute, sec).isoformat()
-		self.scheme.header.remaked = datetime.datetime.now().isoformat()
+			self.scheme.header.created = datetime.datetime(year, month, day, hour, minute, sec).isoformat()
+			self.scheme.header.remaked = datetime.datetime.now().isoformat()
+		else:
+			self.scheme.header.created = ""
+			self.scheme.header.remaked = ""
 
 
 

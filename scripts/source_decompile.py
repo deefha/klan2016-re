@@ -22,10 +22,10 @@ print "Source: %s" % ARG_SOURCE
 if ARG_SOURCE == "cursors":
 	decompiler = CursorsDecompiler.CursorsDecompiler(ARG_ISSUE, ARG_SOURCE)
 
-elif ARG_SOURCE == "font" or ARG_SOURCE == "font2":
+elif ARG_SOURCE == "font" or ARG_SOURCE == "font2" or ARG_SOURCE == "font_lt" or ARG_SOURCE == "font2_lt":
 	decompiler = FontDecompiler.FontDecompiler(ARG_ISSUE, ARG_SOURCE)
 
-elif ARG_SOURCE == "imgs" or ARG_SOURCE == "image1":
+elif ARG_SOURCE == "imgs" or ARG_SOURCE == "image1" or ARG_SOURCE == "cache":
 	decompiler = ImgsDecompiler.ImgsDecompiler(ARG_ISSUE, ARG_SOURCE)
 
 else:
