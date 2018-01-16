@@ -57,15 +57,15 @@ class KlanCursors(KaitaiStruct):
             pass
 
         @property
-        def cursors(self):
-            if hasattr(self, '_m_cursors'):
-                return self._m_cursors if hasattr(self, '_m_cursors') else None
+        def frames(self):
+            if hasattr(self, '_m_frames'):
+                return self._m_frames if hasattr(self, '_m_frames') else None
 
-            self._m_cursors = [None] * (self._parent.fat.cursors_count)
-            for i in range(self._parent.fat.cursors_count):
-                self._m_cursors[i] = self._root.TCursor(self._parent.fat.cursors_offset, i, self._io, self, self._root)
+            self._m_frames = [None] * (self._parent.fat.frames_count)
+            for i in range(self._parent.fat.frames_count):
+                self._m_frames[i] = self._root.TFrame(self._parent.fat.frames_offset, i, self._io, self, self._root)
 
-            return self._m_cursors if hasattr(self, '_m_cursors') else None
+            return self._m_frames if hasattr(self, '_m_frames') else None
 
         @property
         def foo_1(self):
@@ -156,20 +156,6 @@ class KlanCursors(KaitaiStruct):
             return self._m_content if hasattr(self, '_m_content') else None
 
 
-    class TCursorContent(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.x = self._io.read_u1()
-            self.y = self._io.read_u1()
-            self.id = self._io.read_u2le()
-            self.data = self._io.read_bytes(1024)
-
-
     class TFoo1(KaitaiStruct):
         def __init__(self, param_offset, _io, _parent=None, _root=None):
             self._io = _io
@@ -193,7 +179,53 @@ class KlanCursors(KaitaiStruct):
             return self._m_content if hasattr(self, '_m_content') else None
 
 
-    class TCursor(KaitaiStruct):
+    class TFatFoo2(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.offset = self._io.read_u4le()
+            self.foo = self._io.read_u4le()
+
+
+    class TFrameContent(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.x = self._io.read_u1()
+            self.y = self._io.read_u1()
+            self.id = self._io.read_u2le()
+            self.data = self._io.read_bytes(1024)
+
+
+    class TFat(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.frames_offset = self._io.read_u4le()
+            self.frames_count = self._io.read_u4le()
+            self.foo_1_offset = self._io.read_u4le()
+            self.foo_2_count = self._io.read_u4le()
+            self.colortables_ofset = self._io.read_u4le()
+            self.foo = self._io.read_bytes(8)
+            self.foo_2 = [None] * (99)
+            for i in range(99):
+                self.foo_2[i] = self._root.TFatFoo2(self._io, self, self._root)
+
+
+
+    class TFrame(KaitaiStruct):
         def __init__(self, param_offset, param_index, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
@@ -212,41 +244,9 @@ class KlanCursors(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek((self.param_offset + (self.param_index * (((1 + 1) + 2) + 1024))))
-            self._m_content = self._root.TCursorContent(self._io, self, self._root)
+            self._m_content = self._root.TFrameContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
-
-
-    class TFatFoo2(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.offset = self._io.read_u4le()
-            self.foo = self._io.read_u4le()
-
-
-    class TFat(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.cursors_offset = self._io.read_u4le()
-            self.cursors_count = self._io.read_u4le()
-            self.foo_1_offset = self._io.read_u4le()
-            self.foo_2_count = self._io.read_u4le()
-            self.colortables_ofset = self._io.read_u4le()
-            self.foo = self._io.read_bytes(8)
-            self.foo_2 = [None] * (99)
-            for i in range(99):
-                self.foo_2[i] = self._root.TFatFoo2(self._io, self, self._root)
-
 
 
 

@@ -45,7 +45,10 @@ def remake_source(issue, source):
 	print "Issue: %s" % issue
 	print "Source: %s" % source
 
-	if source == "font" or source == "font2" or source == "font_lt" or source == "font2_lt":
+	if source == "cursors":
+		remaker = CursorsRemaker.CursorsRemaker(issue, source)
+
+	elif source == "font" or source == "font2" or source == "font_lt" or source == "font2_lt":
 		remaker = FontRemaker.FontRemaker(issue, source)
 
 	elif source == "imgs" or source == "image1" or source == "cache":

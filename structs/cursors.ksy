@@ -21,9 +21,9 @@ seq:
 types:
   t_fat:
     seq:
-      - id: cursors_offset
+      - id: frames_offset
         type: u4
-      - id: cursors_count
+      - id: frames_count
         type: u4
       - id: foo_1_offset
         type: u4
@@ -47,10 +47,10 @@ types:
 
   t_data:
     instances:
-      cursors:
-        type: t_cursor(_parent.fat.cursors_offset, _index)
+      frames:
+        type: t_frame(_parent.fat.frames_offset, _index)
         repeat: expr
-        repeat-expr: _parent.fat.cursors_count
+        repeat-expr: _parent.fat.frames_count
       foo_1:
         type: t_foo_1(_parent.fat.foo_1_offset)
       foo_2:
@@ -62,7 +62,7 @@ types:
         repeat: expr
         repeat-expr: 5
 
-  t_cursor:
+  t_frame:
     params:
       - id: param_offset
         type: u4
@@ -70,10 +70,10 @@ types:
         type: u4
     instances:
       content:
-        type: t_cursor_content
+        type: t_frame_content
         pos: param_offset + (param_index * (1 + 1 + 2 + 1024))
 
-  t_cursor_content:
+  t_frame_content:
     seq:
       - id: x
         type: u1
