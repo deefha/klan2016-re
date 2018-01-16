@@ -4,6 +4,9 @@ from objdict import ObjDict
 from structs.klan_cursors import KlanCursors
 from structs.klan_font import KlanFont
 from structs.klan_imgs import KlanImgs
+from structs.klan_wave_v1 import KlanWaveV1
+from structs.klan_wave_v2 import KlanWaveV2
+from structs.klan_wave_v3 import KlanWaveV3
 
 PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -41,6 +44,14 @@ class CommonDecompiler(object):
 
 		elif self.source == "imgs" or self.source == "image1" or self.source == "cache":
 			self.library = KlanImgs.from_file(self.FILE_SOURCE)
+
+		elif self.source == "wave":
+			if self.issue < "01":
+				self.library = KlanWaveV1.from_file(self.FILE_SOURCE)
+			elif self.issue < "08":
+				self.library = KlanWaveV2.from_file(self.FILE_SOURCE)
+			else:
+				self.library = KlanWaveV3.from_file(self.FILE_SOURCE)
 
 
 

@@ -33,14 +33,31 @@ typedef struct {
 //    UBYTE foo_2[32] <format=hex, bgcolor=cLtRed, comment="popisek?">;
 
 //    issue 08+
-    UBYTE foo_2[64] <format=hex, bgcolor=cLtRed, comment="popisek?">;
+//    UBYTE foo_2[64] <format=hex, bgcolor=cLtRed, comment="popisek?">;
 
-    UBYTE data[header.datalength];
-} mWave <bgcolor=cLtGreen>;
+//    UBYTE data[header.datalength];
+} tWave <bgcolor=cLtGreen>;
+
+typedef struct {
+    tPadding wave;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 1024; lOffsetIndex++) {
+        lOffset = fat.offsets[lOffsetIndex];
+        if (lOffset != 0x00000000) {
+            FSeek(lOffset);
+            tWave wave;
+        }
+        else {
+            tBlank wave;
+        }
+    }
+} tWaves;
+
+
 
 local UINT lOffsetIndex;
 local UINT lOffset;
 
 tHeader header;
 tFAT fat;
-//tImages images;
+//tWaves waves;
