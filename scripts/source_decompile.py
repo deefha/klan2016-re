@@ -5,6 +5,8 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
 
 from decompilers import *
 
+ISSUES = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32-33", "34", "35", "36", "37", "38", "39", "40", "41", "42"]
+SOURCES = ["font", "font2", "font_lt", "font2_lt", "imgs", "image1", "cache"]
 
 
 if len(sys.argv) != 3:
@@ -16,24 +18,62 @@ ARG_SOURCE = sys.argv[2]
 
 
 
-print "Issue: %s" % ARG_ISSUE
-print "Source: %s" % ARG_SOURCE
+def decompile_issue(issue, source):
+	if (source == "all"):
+		for source in SOURCES:
+			decompile_source(issue, source)
+	else:
+		decompile_source(issue, source)
 
-if ARG_SOURCE == "cursors":
-	decompiler = CursorsDecompiler.CursorsDecompiler(ARG_ISSUE, ARG_SOURCE)
-
-elif ARG_SOURCE == "font" or ARG_SOURCE == "font2" or ARG_SOURCE == "font_lt" or ARG_SOURCE == "font2_lt":
-	decompiler = FontDecompiler.FontDecompiler(ARG_ISSUE, ARG_SOURCE)
-
-elif ARG_SOURCE == "imgs" or ARG_SOURCE == "image1" or ARG_SOURCE == "cache":
-	decompiler = ImgsDecompiler.ImgsDecompiler(ARG_ISSUE, ARG_SOURCE)
-
-else:
-	sys.exit()
+	return True
 
 
 
-decompiler.fill_meta_header()
-decompiler.fill_meta_fat()
-decompiler.fill_meta_data()
-decompiler.export_meta()
+def decompile_source(issue, source):
+	if issue < "01" and source == "font2":
+		return False
+	if issue < "01" and source == "image1":
+		return False
+	if issue < "28" and source == "font_lt":
+		return False
+	if issue < "28" and source == "font2_lt":
+		return False
+	if issue < "28" and source == "cache":
+		return False
+	if issue >= "28" and source == "image1":
+		return False
+
+	print "Issue: %s" % issue
+	print "Source: %s" % source
+
+	if source == "cursors":
+		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source)
+
+	elif source == "font" or source == "font2" or source == "font_lt" or source == "font2_lt":
+		decompiler = FontDecompiler.FontDecompiler(issue, source)
+
+	elif source == "imgs" or source == "image1" or source == "cache":
+		decompiler = ImgsDecompiler.ImgsDecompiler(issue, source)
+
+	else:
+		return False
+
+	decompiler.fill_meta_header()
+	decompiler.fill_meta_fat()
+	decompiler.fill_meta_data()
+	decompiler.export_meta()
+
+	return True
+
+
+
+def main():
+	if ARG_ISSUE == "all":
+		for issue in ISSUES:
+			decompile_issue(issue, ARG_SOURCE)
+	else:
+		decompile_issue(ARG_ISSUE, ARG_SOURCE)
+
+
+
+main()
