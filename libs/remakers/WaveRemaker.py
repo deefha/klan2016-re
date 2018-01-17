@@ -2,6 +2,7 @@ import os, sys, pprint
 
 from objdict import ObjDict
 import wave as wavelib
+import audioop
 
 from CommonRemaker import CommonRemaker
 
@@ -37,6 +38,14 @@ class WaveRemaker(CommonRemaker):
 
 				# ADPCM? (#04+)
 				elif wave.content.mode == 3:
+					#state = None 
+					#pcm, state = audioop.adpcm2lin(wave_content, 1, state)
+					##pcm = audioop.alaw2lin(wave_content, 2)
+
+					#f = wavelib.open("%s%04d.wav" % (self.PATH_ASSETS, int(wave_index)), "wb")
+					#f.setparams((1, 2, 11025, len(wave_content), "NONE", "Uncompressed"))
+					#f.writeframes(pcm)
+					#f.close()
 					continue
 
 				# ?? (#35+)
