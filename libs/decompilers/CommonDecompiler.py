@@ -7,6 +7,7 @@ from structs.klan_imgs import KlanImgs
 from structs.klan_wave_v1 import KlanWaveV1
 from structs.klan_wave_v2 import KlanWaveV2
 from structs.klan_wave_v3 import KlanWaveV3
+from structs.klan_mods_v1 import KlanModsV1
 
 PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -53,6 +54,8 @@ class CommonDecompiler(object):
 			else:
 				self.library = KlanWaveV3.from_file(self.FILE_SOURCE)
 
+		elif self.source == "mods":
+			self.library = KlanModsV1.from_file(self.FILE_SOURCE)
 
 
 	def fill_meta_header(self):
