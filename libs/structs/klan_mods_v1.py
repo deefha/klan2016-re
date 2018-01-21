@@ -44,8 +44,8 @@ class KlanModsV1(KaitaiStruct):
             if hasattr(self, '_m_mods'):
                 return self._m_mods if hasattr(self, '_m_mods') else None
 
-            self._m_mods = [None] * (129)
-            for i in range(129):
+            self._m_mods = [None] * (130)
+            for i in range(130):
                 self._m_mods[i] = self._root.TMod(self._parent.fat_mods.offsets[i], self._io, self, self._root)
 
             return self._m_mods if hasattr(self, '_m_mods') else None
@@ -55,8 +55,8 @@ class KlanModsV1(KaitaiStruct):
             if hasattr(self, '_m_samples'):
                 return self._m_samples if hasattr(self, '_m_samples') else None
 
-            self._m_samples = [None] * (521)
-            for i in range(521):
+            self._m_samples = [None] * (520)
+            for i in range(520):
                 self._m_samples[i] = self._root.TSample(self._parent.fat_samples.offsets[i], self._io, self, self._root)
 
             return self._m_samples if hasattr(self, '_m_samples') else None
@@ -71,9 +71,13 @@ class KlanModsV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.positions = [None] * (128)
+            self.samples = [None] * (32)
+            for i in range(32):
+                self.samples[i] = self._io.read_u2le()
+
+            self.sequences = [None] * (128)
             for i in range(128):
-                self.positions[i] = self._io.read_u1()
+                self.sequences[i] = self._io.read_u1()
 
             self.patterns = [None] * (self.param_count_patterns)
             for i in range(self.param_count_patterns):
@@ -89,8 +93,8 @@ class KlanModsV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.offsets = [None] * (521)
-            for i in range(521):
+            self.offsets = [None] * (520)
+            for i in range(520):
                 self.offsets[i] = self._io.read_u4le()
 
 
@@ -140,8 +144,8 @@ class KlanModsV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.offsets = [None] * (129)
-            for i in range(129):
+            self.offsets = [None] * (130)
+            for i in range(130):
                 self.offsets[i] = self._io.read_u4le()
 
 
@@ -206,10 +210,12 @@ class KlanModsV1(KaitaiStruct):
 
         def _read(self):
             self.name = self._io.read_bytes(32)
-            self.count_positions = self._io.read_u2le()
+            self.count_sequences = self._io.read_u2le()
             self.count_patterns = self._io.read_u2le()
             self.count_samples = self._io.read_u2le()
-            self.foo = self._io.read_bytes(74)
+            self.foo_1 = self._io.read_u2le()
+            self.size_patterns = self._io.read_u4le()
+            self.foo_2 = self._io.read_u4le()
             self.data = self._root.TModData(self.count_patterns, self._io, self, self._root)
 
 

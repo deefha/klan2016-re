@@ -31,7 +31,7 @@ class ModsDecompiler(CommonDecompiler):
 			data_mod.content = ObjDict()
 
 			if mod.content:
-				print "Mod #%d: param_offset=%d, name='%s', count_positions=%d, count_patterns=%d, count_samples=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_positions, mod.content.count_patterns, mod.content.count_samples)
+				print "Mod #%d: param_offset=%d, name='%s', count_sequences=%d, count_patterns=%d, count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_sequences, mod.content.count_patterns, mod.content.count_samples, mod.content.size_patterns)
 
 				path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
 				path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
@@ -44,15 +44,17 @@ class ModsDecompiler(CommonDecompiler):
 
 				#data_mod.content.name = mod.content.name
 				data_mod.content.name = ""
-				data_mod.content.count_positions = mod.content.count_positions
+				data_mod.content.count_sequences = mod.content.count_sequences
 				data_mod.content.count_patterns = mod.content.count_patterns
 				data_mod.content.count_samples = mod.content.count_samples
-				#data_mod.content.foo = mod.content.foo
-				data_mod.content.foo = ""
+				data_mod.content.foo_1 = mod.content.foo_1
+				data_mod.content.size_patterns = mod.content.size_patterns
+				data_mod.content.foo_2 = mod.content.foo_2
 
 				data_mod.content.data = ObjDict()
 				data_mod.content.data.param_count_patterns = mod.content.data.param_count_patterns
-				data_mod.content.data.positions = mod.content.data.positions
+				data_mod.content.data.samples = mod.content.data.samples
+				data_mod.content.data.sequences = mod.content.data.sequences
 				data_mod.content.data.patterns = ObjDict()
 
 				for pattern_index, pattern in enumerate(mod.content.data.patterns):
