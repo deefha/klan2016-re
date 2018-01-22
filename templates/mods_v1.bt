@@ -14,11 +14,14 @@ typedef struct {
 
 typedef struct {
     mName name <bgcolor=cRed, fgcolor=cWhite>;
-    USHORT positionsCount;
+    USHORT sequencesCount;
     USHORT patternsCount;
     USHORT samplesCount;
-    UBYTE foo[74] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
-    UBYTE positions[128];
+    USHORT foo_1;
+    UINT patternsSize;
+    UINT foo_2;
+    USHORT samples[32];
+    UBYTE sequences[128];
     UBYTE patterns[patternsCount * 2048];
 } mMod <bgcolor=cLtAqua>;
 
@@ -29,7 +32,7 @@ typedef struct {
 } mSample <bgcolor=cLtAqua>;
 
 typedef struct {
-    for (offsetIndex = 0; offsetIndex < 129; offsetIndex++) {
+    for (offsetIndex = 0; offsetIndex < 130; offsetIndex++) {
         if (offsetIndex == 0) {
             UINT modOffset <bgcolor=cRed, fgcolor=cWhite, format=hex>;
         }
@@ -45,7 +48,7 @@ typedef struct {
 } mModsFAT;
 
 typedef struct {
-    for (offsetIndex = 0; offsetIndex < 521; offsetIndex++) {
+    for (offsetIndex = 0; offsetIndex < 520; offsetIndex++) {
         if (offsetIndex == 0) {
             UINT sampleOffset <bgcolor=cRed, fgcolor=cWhite, format=hex>;
         }
@@ -77,7 +80,7 @@ typedef struct {
 } mNames;
 
 typedef struct {
-    for (offsetIndex = 0; offsetIndex < 129; offsetIndex++) {
+    for (offsetIndex = 0; offsetIndex < 130; offsetIndex++) {
         offset = modsFAT.modOffset[offsetIndex];
         if (offset != 0x00000000) {
             FSeek(offset);
@@ -87,7 +90,7 @@ typedef struct {
 } mMods;
 
 typedef struct {
-    for (offsetIndex = 0; offsetIndex < 521; offsetIndex++) {
+    for (offsetIndex = 0; offsetIndex < 520; offsetIndex++) {
         offset = samplesFAT.sampleOffset[offsetIndex];
         if (offset != 0x00000000) {
             FSeek(offset);

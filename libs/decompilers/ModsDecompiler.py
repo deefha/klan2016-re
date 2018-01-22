@@ -12,6 +12,7 @@ class ModsDecompiler(CommonDecompiler):
 	PATTERN_PATH_SAMPLE = "%s/samples/"
 
 	PATTERN_FILE_MOD_PATTERN = "%s/mods/%04d/patterns/%04d.bin"
+	PATTERN_FILE_MOD_PATTERNS = "%s/mods/%04d/patterns/content.bin"
 	PATTERN_FILE_SAMPLE = "%s/samples/%04d.bin"
 
 	def fill_meta_data(self):
@@ -31,40 +32,73 @@ class ModsDecompiler(CommonDecompiler):
 			data_mod.content = ObjDict()
 
 			if mod.content:
-				print "Mod #%d: param_offset=%d, name='%s', count_sequences=%d, count_patterns=%d, count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_sequences, mod.content.count_patterns, mod.content.count_samples, mod.content.size_patterns)
+				if self.issue < "02":
+					print "Mod #%d: param_offset=%d, name='%s', count_sequences=%d, count_patterns=%d, count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_sequences, mod.content.count_patterns, mod.content.count_samples, mod.content.size_patterns)
 
-				path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
-				path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
+					path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
+					path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
 
-				if not os.path.exists(path_mod):
-					os.makedirs(path_mod)
+					if not os.path.exists(path_mod):
+						os.makedirs(path_mod)
 
-				if not os.path.exists(path_mod_patterns):
-					os.makedirs(path_mod_patterns)
+					if not os.path.exists(path_mod_patterns):
+						os.makedirs(path_mod_patterns)
 
-				#data_mod.content.name = mod.content.name
-				data_mod.content.name = ""
-				data_mod.content.count_sequences = mod.content.count_sequences
-				data_mod.content.count_patterns = mod.content.count_patterns
-				data_mod.content.count_samples = mod.content.count_samples
-				data_mod.content.foo_1 = mod.content.foo_1
-				data_mod.content.size_patterns = mod.content.size_patterns
-				data_mod.content.foo_2 = mod.content.foo_2
+					#data_mod.content.name = mod.content.name
+					data_mod.content.name = ""
+					data_mod.content.count_sequences = mod.content.count_sequences
+					data_mod.content.count_patterns = mod.content.count_patterns
+					data_mod.content.count_samples = mod.content.count_samples
+					data_mod.content.foo_1 = mod.content.foo_1
+					data_mod.content.size_patterns = mod.content.size_patterns
+					data_mod.content.foo_2 = mod.content.foo_2
 
-				data_mod.content.data = ObjDict()
-				data_mod.content.data.param_count_patterns = mod.content.data.param_count_patterns
-				data_mod.content.data.samples = mod.content.data.samples
-				data_mod.content.data.sequences = mod.content.data.sequences
-				data_mod.content.data.patterns = ObjDict()
+					data_mod.content.data = ObjDict()
+					data_mod.content.data.param_count_patterns = mod.content.data.param_count_patterns
+					data_mod.content.data.samples = mod.content.data.samples
+					data_mod.content.data.sequences = mod.content.data.sequences
+					data_mod.content.data.patterns = ObjDict()
 
-				for pattern_index, pattern in enumerate(mod.content.data.patterns):
-					file_pattern = self.PATTERN_FILE_MOD_PATTERN % (self.PATH_BLOBS, mod_index, pattern_index)
+					for pattern_index, pattern in enumerate(mod.content.data.patterns):
+						file_pattern = self.PATTERN_FILE_MOD_PATTERN % (self.PATH_BLOBS, mod_index, pattern_index)
 
-					data_mod.content.data.patterns[str(pattern_index)] = "blobs://%s/%s/mods/%04d/patterns/%04d.bin" % (self.issue, self.source, mod_index, pattern_index)
+						data_mod.content.data.patterns[str(pattern_index)] = "blobs://%s/%s/mods/%04d/patterns/%04d.bin" % (self.issue, self.source, mod_index, pattern_index)
 
-					print "\tPattern #%d" % pattern_index
-					f = open(file_pattern, "wb")
-					f.write(pattern)
+						print "\tPattern #%d" % pattern_index
+						f = open(file_pattern, "wb")
+						f.write(pattern)
+						f.close
+
+				else:
+					print "Mod #%d: param_offset=%d, name='%s', count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_samples, mod.content.size_patterns)
+
+					path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
+					path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
+
+					if not os.path.exists(path_mod):
+						os.makedirs(path_mod)
+
+					if not os.path.exists(path_mod_patterns):
+						os.makedirs(path_mod_patterns)
+
+					#data_mod.content.name = mod.content.name
+					data_mod.content.name = ""
+					data_mod.content.count_samples = mod.content.count_samples
+					data_mod.content.size_patterns = mod.content.size_patterns
+					data_mod.content.foo_1 = mod.content.foo_1
+					data_mod.content.foo_2 = mod.content.foo_2
+
+					data_mod.content.data = ObjDict()
+					data_mod.content.data.param_size_patterns = mod.content.data.param_size_patterns
+					data_mod.content.data.samples = mod.content.data.samples
+
+					file_patterns = self.PATTERN_FILE_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
+
+					data_mod.content.data.patterns = "blobs://%s/%s/mods/%04d/patterns/content.bin" % (self.issue, self.source, mod_index)
+
+					print "\tPatterns"
+					f = open(file_patterns, "wb")
+					f.write(mod.content.data.patterns)
 					f.close
 
 			else:

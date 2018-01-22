@@ -14,17 +14,18 @@ typedef struct {
 
 typedef struct {
     mName name <bgcolor=cRed, fgcolor=cWhite>;
-    USHORT positionsCount;
-    USHORT patternsCount;
-    USHORT samplesCount;
-    UBYTE foo[74] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
-    UBYTE positions[128];
-    UBYTE patterns[patternsCount * 2048];
+    UINT samplesCount;
+    UINT patternsSize;
+    UINT foo_1;
+    UINT foo_2;
+    USHORT samples[256];
+    UBYTE foo_3[80];
+    UBYTE patterns[patternsSize];
 } mMod <bgcolor=cLtAqua>;
 
 typedef struct {
     UINT dataLength <bgcolor=cRed, fgcolor=cWhite>;
-    UBYTE foo[12] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
+    UBYTE foo[28] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
     UBYTE data[dataLength];
 } mSample <bgcolor=cLtAqua>;
 
