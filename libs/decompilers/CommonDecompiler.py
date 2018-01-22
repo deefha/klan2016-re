@@ -55,7 +55,7 @@ class CommonDecompiler(object):
 			else:
 				self.library = KlanWaveV3.from_file(self.FILE_SOURCE)
 
-		elif self.source == "mods":
+		elif self.source == "mods" or self.source == "bgm":
 			if self.issue < "02":
 				self.library = KlanModsV1.from_file(self.FILE_SOURCE)
 			else:
