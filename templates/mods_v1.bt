@@ -27,7 +27,9 @@ typedef struct {
 
 typedef struct {
     UINT dataLength <bgcolor=cRed, fgcolor=cWhite>;
-    UBYTE foo[12] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
+    UINT loopStart;
+    UINT loopEnd;
+    UBYTE foo[4] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex, comment="???">;
     UBYTE data[dataLength];
 } mSample <bgcolor=cLtAqua>;
 

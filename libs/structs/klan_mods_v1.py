@@ -197,7 +197,9 @@ class KlanModsV1(KaitaiStruct):
 
         def _read(self):
             self.data_size = self._io.read_u4le()
-            self.foo = self._io.read_bytes(12)
+            self.loop_start = self._io.read_u4le()
+            self.loop_end = self._io.read_u4le()
+            self.foo = self._io.read_bytes(4)
             self.data = self._root.TSampleData(self.data_size, self._io, self, self._root)
 
 

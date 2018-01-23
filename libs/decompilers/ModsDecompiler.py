@@ -122,6 +122,8 @@ class ModsDecompiler(CommonDecompiler):
 					os.makedirs(path_sample)
 
 				data_sample.content.data_size = sample.content.data_size
+				data_sample.content.loop_start = sample.content.loop_start
+				data_sample.content.loop_end = sample.content.loop_end
 				#data_sample.content.foo = sample.content.foo
 				data_sample.content.foo = ""
 

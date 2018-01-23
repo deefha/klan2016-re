@@ -123,8 +123,12 @@ types:
     seq:
       - id: data_size
         type: u4
+      - id: loop_start
+        type: u4
+      - id: loop_end
+        type: u4
       - id: foo
-        size: 12
+        size: 4
       - id: data
         type: t_sample_data(data_size)
 

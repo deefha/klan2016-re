@@ -37,22 +37,24 @@ class ModsRemaker(CommonRemaker):
 							# sample volume - 1 B
 							struct_sources.append(("B", 0))
 							# sample repeatstart in words - 2 B
-							struct_sources.append(("H", 0))
+							struct_sources.append((">H", 0))
 							# sample repeatlength in words - 2 B
-							struct_sources.append(("H", 0))
+							struct_sources.append((">H", 0))
 						else:
+							sample = self.meta.data.samples[str(sample_id)]
+
 							# sample name - 22 B
 							struct_sources.append(("22s", "SampleNameSampleNameSa"))
 							# sample length in words - 2 B
-							struct_sources.append((">H", self.meta.data.samples[str(sample_id)].content.data_size / 2))
+							struct_sources.append((">H", sample.content.data_size / 2))
 							# sample finetune - 1 B
 							struct_sources.append(("B", 0))
 							# sample volume - 1 B
 							struct_sources.append(("B", 64)) # TODO
 							# sample repeatstart in words - 2 B
-							struct_sources.append(("H", 0))
+							struct_sources.append((">H", sample.content.loop_start / 2))
 							# sample repeatlength in words - 2 B
-							struct_sources.append(("H", 0))
+							struct_sources.append((">H", (sample.content.loop_end - sample.content.loop_start) / 2))
 
 				# number of song positions !played! - 1 B
 				struct_sources.append(("B", mod.content.count_sequences))
@@ -78,7 +80,7 @@ class ModsRemaker(CommonRemaker):
 								channel_data_instrument_ub = channel_data_instrument >> 4
 								channel_data_instrument_lb = channel_data_instrument << 4
 								if channel_data_period != 255:
-									channel_data_period_tr = self.PERIODS[channel_data_period - 12]
+									channel_data_period_tr = self.PERIODS[channel_data_period - 12] # TODO
 								else:
 									channel_data_period_tr = 0
 
