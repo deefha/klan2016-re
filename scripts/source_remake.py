@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
 from remakers import *
 
 ISSUES = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32-33", "34", "35", "36", "37", "38", "39", "40", "41", "42"]
-SOURCES = ["font", "font2", "font_lt", "font2_lt", "imgs", "image1", "cache", "wave"]
+SOURCES = ["font", "font2", "font_lt", "font2_lt", "imgs", "image1", "cache", "wave", "mods", "bgm"]
 
 if len(sys.argv) != 3:
 	# TODO message
@@ -39,7 +39,11 @@ def remake_source(issue, source):
 		return False
 	if issue < "28" and source == "cache":
 		return False
+	if issue < "28" and source == "bgm":
+		return False
 	if issue >= "28" and source == "image1":
+		return False
+	if issue >= "28" and source == "mods":
 		return False
 
 	print "Issue: %s" % issue
@@ -56,6 +60,9 @@ def remake_source(issue, source):
 
 	elif source == "wave":
 		remaker = WaveRemaker.WaveRemaker(issue, source)
+
+	elif source == "mods" or source == "bgm":
+		remaker = ModsRemaker.ModsRemaker(issue, source)
 
 	else:
 		return False

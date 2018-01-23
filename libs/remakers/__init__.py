@@ -1,1 +1,1 @@
-__all__ = [ "CommonRemaker", "CursorsRemaker", "FontRemaker", "ImgsRemaker", "WaveRemaker" ]
+__all__ = [ "CommonRemaker", "CursorsRemaker", "FontRemaker", "ImgsRemaker", "ModsRemaker", "WaveRemaker" ]
