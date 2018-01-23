@@ -13,12 +13,12 @@ class ModsRemaker(CommonRemaker):
 
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
-	PERIODS = [ 856, 808, 762, 720, 678, 640, 604, 570, 538, 508, 480, 453, 428, 404, 381, 360, 339, 320, 302, 285, 269, 254, 240, 226, 214, 202, 190, 180, 170, 160, 151, 143, 135, 127, 120, 113, 107, 101, 95, 90, 85, 80, 76, 71, 67, 64, 60, 57 ]
+	PERIODS = [ 1712, 1616, 1525, 1440, 1357, 1281, 1209, 1141, 1077, 1017, 961, 907, 856, 808, 762, 720, 678, 640, 604, 570, 538, 508, 480, 453, 428, 404, 381, 360, 339, 320, 302, 285, 269, 254, 240, 226, 214, 202, 190, 180, 170, 160, 151, 143, 135, 127, 120, 113, 107, 101, 95, 90, 85, 80, 76, 71, 67, 64, 60, 57 ]
 
 	def export_assets(self):
 		for mod_index, mod in self.meta.data.mods.iteritems():
 			#if mod.content:
-			if mod_index == "1":
+			if mod_index == "0" or mod_index == "1" or mod_index == "2":
 				struct_sources = []
 
 				# song title - 20 B
@@ -79,10 +79,10 @@ class ModsRemaker(CommonRemaker):
 
 								channel_data_instrument_ub = channel_data_instrument >> 4
 								channel_data_instrument_lb = channel_data_instrument << 4
-								if channel_data_period != 255:
-									channel_data_period_tr = self.PERIODS[channel_data_period - 12] # TODO
-								else:
+								if channel_data_period == 255:
 									channel_data_period_tr = 0
+								else:
+									channel_data_period_tr = self.PERIODS[channel_data_period]
 
 								struct_sources.append((">H", channel_data_instrument_ub | channel_data_period_tr))
 								struct_sources.append(("B", channel_data_instrument_lb | channel_data_effect_1))
@@ -97,9 +97,6 @@ class ModsRemaker(CommonRemaker):
 					for struct_source in struct_sources:
 						struct_source_format = struct_source[0]
 						struct_source_value = struct_source[1]
-
-						print struct_source_format
-						print struct_source_value
 
 						f.write(struct.pack(struct_source_format, struct_source_value))
 
