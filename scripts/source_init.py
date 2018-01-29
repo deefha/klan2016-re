@@ -7,6 +7,7 @@ from pprint import pprint
 import pycdlib
 import requests
 from io import BytesIO
+from tqdm import tqdm
 
 from structs.klan_mods_v1 import KlanModsV1
 
@@ -32,7 +33,12 @@ for key, value in response.cookies.items():
 	if key.startswith("download_warning"):
 		response = session.get("https://docs.google.com/uc?export=download", params = { "id": "0Bw1iZK6iA4_xT1hUTjJ3Zkwwa0k", "confirm": value }, stream = True)
 
+response_size = 575526912
+chunk_size = 32 * 1024
+
 with open("./download.iso", "wb") as f:
-	for chunk in response.iter_content(32768):
-		if chunk:
-			f.write(chunk)
+	with tqdm(total=response_size, unit='B', unit_scale=True, unit_divisor=1024, ascii=True) as pbar: 
+		for chunk in response.iter_content(chunk_size):
+			if chunk:
+				f.write(chunk)
+				pbar.update(len(chunk))
