@@ -3,6 +3,5 @@ data/blobs/**/
 data/meta/**/
 data/schemes/**/
 data/sources/*
-data/sources/**/
 libs/*.pyc
 libs/**/*.pyc
