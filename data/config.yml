@@ -1,171 +1,215 @@
-origin: https://docs.google.com/uc?export=download
+origin:
+  main: https://docs.google.com/uc?export=download&id=%s
+  confirm: https://docs.google.com/uc?export=download&id=%s&confirm=%s
+  confirm_key: download_warning
 issues:
-    00:
-        origin:
-            id: 0Bw1iZK6iA4_xT1hUTjJ3Zkwwa0k
-            size: 575526912
-            checksum: ea99f38cffbf4e7ae5469706c5aa2dce
-    01:
-        origin:
-            id: 0Bw1iZK6iA4_xd1ZHbjlhT1ZraXM
-            checksum: d8f32b7293a85df7cec737b74d78e9fe
-    02:
-        origin:
-            id: 0Bw1iZK6iA4_xc2NEeFRFckd4VFU
-            checksum: 46524e277a4e208b2fbc28bc8e3e922f
-    03:
-        origin:
-            id: 0Bw1iZK6iA4_xT2NNR2cwTTNvMTg
-            checksum: 607c42710b3b7e08b612e6e65462ff31
-    04:
-        origin:
-            id: 0Bw1iZK6iA4_xQ1hrV2VtYkRGU28
-            checksum: 9f8170706e4f49ca30901a454b5bb599
-    05:
-        origin:
-            id: 0Bw1iZK6iA4_xMlBFeDV3VlNrbUk
-            checksum: 60b42073892db15529ce19b527c8d17b
-    06:
-        origin:
-            id: 0Bw1iZK6iA4_xLWJoY0pwdzBJNk0
-            checksum: e922e5f78382cf2030cfd8d3f90c1fc0
-    07:
-        origin:
-            id: 0Bw1iZK6iA4_xSWR4djY5ckhQUWc
-            checksum: 96edfc1bfdbffcd902067e25cf571b9c
-    08:
-        origin:
-            id: 0Bw1iZK6iA4_xMkpxSHJ5N1ZpT1E
-            checksum: e8bb2618b956d76e4c17b7e4eefd54ff
-    09:
-        origin:
-            id: 0Bw1iZK6iA4_xSzdVSlNWeHlTWFU
-            checksum: ac96aa0132e81a49f82e698b027fa525
-    10:
-        origin:
-            id: 0Bw1iZK6iA4_xX09sUExBdS02OUk
-            checksum: 424226ac01ee6418d18e8ba0aa863cfd
-    11:
-        origin:
-            id: 0Bw1iZK6iA4_xazIzbDZueXZLdHM
-            checksum: 091e2e019cce4f6e5171a7ef9e4b0a81
-    12:
-        origin:
-            id: 0Bw1iZK6iA4_xd1JNSFdEZHJ1Q1k
-            checksum: e32a4f2afab7f12af6bf961f0ee8851c
-    13:
-        origin:
-            id: 0Bw1iZK6iA4_xcXIwWE1Pd1F3NU0
-            checksum: ad18621d85b26d5cd505dab43d4289ab
-    14:
-        origin:
-            id: 0Bw1iZK6iA4_xMmtPSHVZb2s0NTQ
-            checksum: 5b4d6b7e8ce901dc4a9f64440c3ccbfb
-    15:
-        origin:
-            id: 0Bw1iZK6iA4_xR195RV9MWTk0NHc
-            checksum: efaae5823218f16d44e2300fc3e5ca59
-    16:
-        origin:
-            id: 0Bw1iZK6iA4_xVHNvT2JjcUFYOWs
-            checksum: 329ea42ffba7775dfe93bc570a4549d1
-    17:
-        origin:
-            id: 0Bw1iZK6iA4_xTjd4TWdLT3JKUVE
-            checksum: 6ed65cb0da976ee4f7a82149b27561f9
-    18:
-        origin:
-            id: 0Bw1iZK6iA4_xNEFQTkpjV3RkV3M
-            checksum: 6f91daac6f65a200ca6294bf6c0b93c9
-    19:
-        origin:
-            id: 0Bw1iZK6iA4_xQUhMMFJEeGNkQ1E
-            checksum: 84fd9b6197980f4aa61d3b53692ebbf0
-    20:
-        origin:
-            id: 0Bw1iZK6iA4_xRnlmbVM2X1J3Wlk
-            checksum: f89200a5ebf91f9a738e68b99a9b3f42
-    21:
-        origin:
-            id: 0Bw1iZK6iA4_xMHhLWHFVd3c5UHM
-            checksum: 100c2511b12a366f1a1e4e32ca43c7fa
-    22:
-        origin:
-            id: 0Bw1iZK6iA4_xRDJmOWsxNGZISUE
-            checksum: 9cc3589c8d6d03f2616c0577cef6a8e8
-    23:
-        origin:
-            id: 0Bw1iZK6iA4_xMVZZVmpEcjdwc2c
-            checksum: fca1ec1b7eae289e1eee5d1328cf60eb
-    24:
-        origin:
-            id: 0Bw1iZK6iA4_xWFBSS0xScXRfVTA
-            checksum: 5874aca657e662da6b27f3d73ac82f6f
-    25:
-        origin:
-            id: 0Bw1iZK6iA4_xdEh6X3JhV0d3b1U
-            checksum: 76406da409381036fced1f049bfea33f
-    26:
-        origin:
-            id: 0Bw1iZK6iA4_xZUpHSm9WU3FJV3c
-            checksum: f45d43fd12c3572e3d35ad0d1b9049ef
-    27:
-        origin:
-            id: 0Bw1iZK6iA4_xTnM3dTFNUGk1Qjg
-            checksum: 269fd8eae0ddccb646816a25e02604b4
-    28:
-        origin:
-            id: 0Bw1iZK6iA4_xMTdQX292MHkzZzg
-            checksum: 522fe95a1f3f3601c4f6ec0dc80a2aea
-    29:
-        origin:
-            id: 0Bw1iZK6iA4_xOExiUEZ5S1dGNUE
-            checksum: a8e17741ffc4ff455a8e9391c0dea762
-    30:
-        origin:
-            id: 0Bw1iZK6iA4_xS0VOOVp1WDk3MVk
-            checksum: 6e6debf5d04d37cbe492f9d601e0c6ce
-    31:
-        origin:
-            id: 0Bw1iZK6iA4_xUG1zSXdTTnh1ZWc
-            checksum: 261115183561c7353eec17eb039ce5d2
-    32-33:
-        origin:
-            id: 0Bw1iZK6iA4_xdTRVbmlIaWdTelU
-            checksum: 87589b466e41bc8875524ef88053e9a2
-    34:
-        origin:
-            id: 0Bw1iZK6iA4_xYTh2Q183c2ZSZzQ
-            checksum: ab4148e759febfcd3ec8dbf4b02f2c18
-    35:
-        origin:
-            id: 0Bw1iZK6iA4_xNnBQc1hhVzZFdzQ
-            checksum: 11b729df0e3deacd24cfb78c66786ba9
-    36:
-        origin:
-            id: 0Bw1iZK6iA4_xZ0l6N1V2RVdHSEE
-            checksum: d8c9d1a49dc2acca60e98b0ccc5ef3b9
-    37:
-        origin:
-            id: 0Bw1iZK6iA4_xUWdUTDJiZHdNaGs
-            checksum: 36f0d2c684aca73450f88e2786b1e0d0
-    38:
-        origin:
-            id: 0Bw1iZK6iA4_xbzdnZ3Q4R29EcEk
-            checksum: 417660aa7feb815741c0c688e265acda
-    39:
-        origin:
-            id: 0Bw1iZK6iA4_xR1JyUmFaZFNhNXc
-            checksum: 5107fb14608cd86c90176372be7372f0
-    40:
-        origin:
-            id: 0Bw1iZK6iA4_xY0ozTnVRQWJkdFk
-            checksum: 0356d4e0c6ee61212482b7c5227ab7ef
-    41:
-        origin:
-            id: 0Bw1iZK6iA4_xTEpzWUpDM0VNeTQ
-            checksum: e30af2e98e8663532d9f82c9f9e8724b
-    42:
-        origin:
-            id: 0Bw1iZK6iA4_xZHVTTUgwcVRaQTg
-            checksum: 9e4fcfef531520de214a37eb8a28d564
+  - id: "00"
+    origin:
+      id: 0Bw1iZK6iA4_xT1hUTjJ3Zkwwa0k
+      size: 575526912
+      md5: ea99f38cffbf4e7ae5469706c5aa2dce
+  - id: "01"
+    origin:
+      id: 0Bw1iZK6iA4_xd1ZHbjlhT1ZraXM
+      size: 658802688
+      md5: d8f32b7293a85df7cec737b74d78e9fe
+  - id: "02"
+    origin:
+      id: 0Bw1iZK6iA4_xc2NEeFRFckd4VFU
+      size: 665669632
+      md5: 46524e277a4e208b2fbc28bc8e3e922f
+  - id: "03"
+    origin:
+      id: 0Bw1iZK6iA4_xT2NNR2cwTTNvMTg
+      size: 673789952
+      md5: 607c42710b3b7e08b612e6e65462ff31
+  - id: "04"
+    origin:
+      id: 0Bw1iZK6iA4_xQ1hrV2VtYkRGU28
+      size: 677103616
+      md5: 9f8170706e4f49ca30901a454b5bb599
+  - id: "05"
+    origin:
+      id: 0Bw1iZK6iA4_xMlBFeDV3VlNrbUk
+      size: 664686592
+      md5: 60b42073892db15529ce19b527c8d17b
+  - id: "06"
+    origin:
+      id: 0Bw1iZK6iA4_xLWJoY0pwdzBJNk0
+      size: 656099328
+      md5: e922e5f78382cf2030cfd8d3f90c1fc0
+  - id: "07"
+    origin:
+      id: 0Bw1iZK6iA4_xSWR4djY5ckhQUWc
+      size: 672739328
+      md5: 96edfc1bfdbffcd902067e25cf571b9c
+  - id: "08"
+    origin:
+      id: 0Bw1iZK6iA4_xMkpxSHJ5N1ZpT1E
+      size: 647061504
+      md5: e8bb2618b956d76e4c17b7e4eefd54ff
+  - id: "09"
+    origin:
+      id: 0Bw1iZK6iA4_xSzdVSlNWeHlTWFU
+      size: 636033024
+      md5: ac96aa0132e81a49f82e698b027fa525
+  - id: "10"
+    origin:
+      id: 0Bw1iZK6iA4_xX09sUExBdS02OUk
+      size: 641710080
+      md5: 424226ac01ee6418d18e8ba0aa863cfd
+  - id: "11"
+    origin:
+      id: 0Bw1iZK6iA4_xazIzbDZueXZLdHM
+      size: 667492352
+      md5: 091e2e019cce4f6e5171a7ef9e4b0a81
+  - id: "12"
+    origin:
+      id: 0Bw1iZK6iA4_xd1JNSFdEZHJ1Q1k
+      size: 654784512
+      md5: e32a4f2afab7f12af6bf961f0ee8851c
+  - id: "13"
+    origin:
+      id: 0Bw1iZK6iA4_xcXIwWE1Pd1F3NU0
+      size: 639965184
+      md5: ad18621d85b26d5cd505dab43d4289ab
+  - id: "14"
+    origin:
+      id: 0Bw1iZK6iA4_xMmtPSHVZb2s0NTQ
+      size: 635389952
+      md5: 5b4d6b7e8ce901dc4a9f64440c3ccbfb
+  - id: "15"
+    origin:
+      id: 0Bw1iZK6iA4_xR195RV9MWTk0NHc
+      size: 650412032
+      md5: efaae5823218f16d44e2300fc3e5ca59
+  - id: "16"
+    origin:
+      id: 0Bw1iZK6iA4_xVHNvT2JjcUFYOWs
+      size: 654952448
+      md5: 329ea42ffba7775dfe93bc570a4549d1
+  - id: "17"
+    origin:
+      id: 0Bw1iZK6iA4_xTjd4TWdLT3JKUVE
+      size: 644608000
+      md5: 6ed65cb0da976ee4f7a82149b27561f9
+  - id: "18"
+    origin:
+      id: 0Bw1iZK6iA4_xNEFQTkpjV3RkV3M
+      size: 664107008
+      md5: 6f91daac6f65a200ca6294bf6c0b93c9
+  - id: "19"
+    origin:
+      id: 0Bw1iZK6iA4_xQUhMMFJEeGNkQ1E
+      size: 654551040
+      md5: 84fd9b6197980f4aa61d3b53692ebbf0
+  - id: "20"
+    origin:
+      id: 0Bw1iZK6iA4_xRnlmbVM2X1J3Wlk
+      size: 667740160
+      md5: f89200a5ebf91f9a738e68b99a9b3f42
+  - id: "21"
+    origin:
+      id: 0Bw1iZK6iA4_xMHhLWHFVd3c5UHM
+      size: 653701120
+      md5: 100c2511b12a366f1a1e4e32ca43c7fa
+  - id: "22"
+    origin:
+      id: 0Bw1iZK6iA4_xRDJmOWsxNGZISUE
+      size: 639778816
+      md5: 9cc3589c8d6d03f2616c0577cef6a8e8
+  - id: "23"
+    origin:
+      id: 0Bw1iZK6iA4_xMVZZVmpEcjdwc2c
+      size: 665989120
+      md5: fca1ec1b7eae289e1eee5d1328cf60eb
+  - id: "24"
+    origin:
+      id: 0Bw1iZK6iA4_xWFBSS0xScXRfVTA
+      size: 652564480
+      md5: 5874aca657e662da6b27f3d73ac82f6f
+  - id: "25"
+    origin:
+      id: 0Bw1iZK6iA4_xdEh6X3JhV0d3b1U
+      size: 659922944
+      md5: 76406da409381036fced1f049bfea33f
+  - id: "26"
+    origin:
+      id: 0Bw1iZK6iA4_xZUpHSm9WU3FJV3c
+      size: 655960064
+      md5: f45d43fd12c3572e3d35ad0d1b9049ef
+  - id: "27"
+    origin:
+      id: 0Bw1iZK6iA4_xTnM3dTFNUGk1Qjg
+      size: 651939840
+      md5: 269fd8eae0ddccb646816a25e02604b4
+  - id: "28"
+    origin:
+      id: 0Bw1iZK6iA4_xMTdQX292MHkzZzg
+      size: 651694080
+      md5: 522fe95a1f3f3601c4f6ec0dc80a2aea
+  - id: "29"
+    origin:
+      id: 0Bw1iZK6iA4_xOExiUEZ5S1dGNUE
+      size: 613548032
+      md5: a8e17741ffc4ff455a8e9391c0dea762
+  - id: "30"
+    origin:
+      id: 0Bw1iZK6iA4_xS0VOOVp1WDk3MVk
+      size: 625541120
+      md5: 6e6debf5d04d37cbe492f9d601e0c6ce
+  - id: "31"
+    origin:
+      id: 0Bw1iZK6iA4_xUG1zSXdTTnh1ZWc
+      size: 620314624
+      md5: 261115183561c7353eec17eb039ce5d2
+  - id: "32-33"
+    origin:
+      id: 0Bw1iZK6iA4_xdTRVbmlIaWdTelU
+      size: 602898432
+      md5: 87589b466e41bc8875524ef88053e9a2
+  - id: "34"
+    origin:
+      id: 0Bw1iZK6iA4_xYTh2Q183c2ZSZzQ
+      size: 600809472
+      md5: ab4148e759febfcd3ec8dbf4b02f2c18
+  - id: "35"
+    origin:
+      id: 0Bw1iZK6iA4_xNnBQc1hhVzZFdzQ
+      size: 575606784
+      md5: 11b729df0e3deacd24cfb78c66786ba9
+  - id: "36"
+    origin:
+      id: 0Bw1iZK6iA4_xZ0l6N1V2RVdHSEE
+      size: 604469248
+      md5: d8c9d1a49dc2acca60e98b0ccc5ef3b9
+  - id: "37"
+    origin:
+      id: 0Bw1iZK6iA4_xUWdUTDJiZHdNaGs
+      size: 614096896
+      md5: 36f0d2c684aca73450f88e2786b1e0d0
+  - id: "38"
+    origin:
+      id: 0Bw1iZK6iA4_xbzdnZ3Q4R29EcEk
+      size: 670945280
+      md5: 417660aa7feb815741c0c688e265acda
+  - id: "39"
+    origin:
+      id: 0Bw1iZK6iA4_xR1JyUmFaZFNhNXc
+      size: 574251008
+      md5: 5107fb14608cd86c90176372be7372f0
+  - id: "40"
+    origin:
+      id: 0Bw1iZK6iA4_xY0ozTnVRQWJkdFk
+      size: 670590976
+      md5: 0356d4e0c6ee61212482b7c5227ab7ef
+  - id: "41"
+    origin:
+      id: 0Bw1iZK6iA4_xTEpzWUpDM0VNeTQ
+      size: 619767808
+      md5: e30af2e98e8663532d9f82c9f9e8724b
+  - id: "42"
+    origin:
+      id: 0Bw1iZK6iA4_xZHVTTUgwcVRaQTg
+      size: 646797312
+      md5: 9e4fcfef531520de214a37eb8a28d564
