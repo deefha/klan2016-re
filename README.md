@@ -1,6 +1,6 @@
 # KLAN 2016
 
-Nástroje pro reverzní inženýring. Cílem je získat pro každou instanci všech binárních knihoven strukturovaná JSON metadata a zdrojové bloby. Na základě těchto podkladů bude následně možné vytvářet pro jednotlivé knihovny (texty, fonty, obrázky, hudba, audia, videa...) zjednodušená JSON schémata a multimediální soubory v obecně standardizovaných formátech (HTML, GIF, PNG, MOD, WAV, AVI...).
+Nástroje pro reverzní inženýring původních CD-ROM časopisu KLAN. Cílem je získat pro každou instanci všech binárních knihoven strukturovaná JSON metadata a zdrojové bloby. Na základě těchto podkladů je následně možné vytvářet pro jednotlivé knihovny (texty, fonty, obrázky, hudba, audia, videa atd.) zjednodušená JSON schémata a multimediální soubory v obecně standardizovaných formátech (HTML, GIF, PNG, MOD, WAV, AVI atd.).
 
 ## Python
 
@@ -10,7 +10,20 @@ Instalace:
 
 ```bash
 sudo apt-get install python python-pip python-pil
-pip install objdict
+pip install colorama hashlib pyyaml objdict requests tqdm
+```
+
+### PyCdlib
+
+https://github.com/clalancette/pycdlib
+
+Instalace aktuální verze ze zdrojových kódů (jako Python modul):
+
+```bash
+sudo apt-get install git python
+git clone https://github.com/clalancette/pycdlib.git
+cd pycdlib
+sudo python setup.py install
 ```
 
 ## Kaitai Struct
@@ -25,13 +38,13 @@ http://doc.kaitai.io/ksy_reference.html
 https://github.com/kaitai-io/kaitai_struct_compiler  
 http://doc.kaitai.io/developers.html
 
-Kompilace aktuální verze ze zdrojových kódů (jako DEB balíček pro Debian/*buntu):
+Instalace aktuální verze ze zdrojových kódů (jako DEB balíček pro Debian/*buntu):
 
 ```bash
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt.list
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
 sudo apt-get update
-sudo apt-get install sbt git dpkg-dev dpkg-sig lintian fakeroot
+sudo apt-get install git dpkg-dev dpkg-sig fakeroot lintian sbt
 git clone https://github.com/kaitai-io/kaitai_struct_compiler
 cd kaitai_struct_compiler
 sbt compilerJVM/debian:packageBin
@@ -43,10 +56,10 @@ sudo dpkg -i *.deb
 
 https://github.com/kaitai-io/kaitai_struct_visualizer
 
-Kompilace aktuální verze ze zdrojových kódů (jako Ruby gem):
+Instalace aktuální verze ze zdrojových kódů (jako Ruby gem):
 
 ```bash
-sudo apt-get install ruby
+sudo apt-get install git ruby
 git clone https://github.com/kaitai-io/kaitai_struct_visualizer
 cd kaitai_struct_visualizer
 gem build kaitai-struct-visualizer.gemspec
@@ -59,21 +72,37 @@ https://github.com/kaitai-io/kaitai_struct_python_runtime
 https://pypi.python.org/pypi/kaitaistruct  
 http://doc.kaitai.io/lang_python.html
 
-Instalace z PyPI:
+Instalace aktuální verze ze zdrojových kódů (jako Python modul):
 
 ```bash
-sudo apt-get install python python-pip python-enum34
-pip install kaitaistruct
+sudo apt-get install git python python-enum34
+git clone https://github.com/kaitai-io/kaitai_struct_python_runtime.git
+cd kaitai_struct_python_runtime
+sudo python setup.py install
 ```
 
-## 010 Editor
+## Pomocné nástroje
+
+### 010 Editor
 
 https://www.sweetscape.com/010editor/
 
-## IDA / DOSBox debugger
+### DOSBox
+
+https://www.dosbox.com
+
+### IDA
+
+https://www.hex-rays.com/products/ida/
+
+### IDA / DOSBox debugger
 
 https://github.com/wjp/idados  
 https://github.com/wjp/dosbox  
 https://github.com/wjp/idados/issues/7  
 https://github.com/wjp/idados/issues/10  
-http://www.dosbox.com/wiki/Building_DOSBox_with_MinGW
+https://www.dosbox.com/wiki/Building_DOSBox_with_MinGW
+
+### Retargetable Decompiler (RetDec)
+
+https://retdec.com
