@@ -1,21 +1,21 @@
 #!/usr/bin/python
 
-import os, sys
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
-
+# common imports
+import os, sys, datetime
 from pprint import pprint
-import pycdlib
-import requests
-import hashlib
-import datetime
-from io import BytesIO
 from tqdm import tqdm
-from yaml import load
 from objdict import ObjDict
 from colorama import init, Fore, Back, Style
 init(autoreset=True)
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
 
-from structs.klan_mods_v1 import KlanModsV1
+# specific imports
+#import pycdlib
+#from io import BytesIO
+#from structs.klan_mods_v1 import KlanModsV1
+import requests, hashlib
+from yaml import load
+
 
 #iso = pycdlib.PyCdlib()
 #extracted = BytesIO()
@@ -32,11 +32,46 @@ from structs.klan_mods_v1 import KlanModsV1
 
 #library = KlanModsV1.from_io(extracted)
 
+
+
+def issue_download(config, issue, issue_path):
+	session = requests.Session()
+	response = session.get(config.origin.main % issue.origin.id, stream = True)
+
+	for key, value in response.cookies.items():
+		if key.startswith(config.origin.confirm_key):
+			response = session.get(config.origin.confirm % (issue.origin.id, value), stream = True)
+
+	with open(issue_path, "wb") as f:
+		with tqdm(total=issue.origin.size, unit="B", unit_scale=True, ascii=True, leave=False) as pbar: 
+			for chunk in response.iter_content(32 * 1024):
+				if chunk:
+					f.write(chunk)
+					pbar.update(len(chunk))
+
+
+
+def issue_get_md5(config, issue, issue_path):
+	hash_md5 = hashlib.md5()
+
+	with tqdm(total=issue.origin.size, unit="B", unit_scale=True, ascii=True, leave=False) as pbar:
+		with open(issue_path, "rb") as f:
+			for chunk in iter(lambda: f.read(4 * 1024), b""):
+				hash_md5.update(chunk)
+				pbar.update(len(chunk))
+
+		pbar.update(abs(issue.origin.size - pbar.n))
+
+	return hash_md5.hexdigest()
+
+
+
 # load YML data config
 with open("../data/config.yml") as f:
 	config_yaml = load(f)
 
 # convert dict to ObjDict
+# TODO load from JSON?
 config = ObjDict()
 config.origin = ObjDict()
 config.origin.main = config_yaml["origin"]["main"]
@@ -54,6 +89,8 @@ for issue_yaml in config_yaml["issues"]:
 
 	config.issues[str(issue.id)] = issue
 
+
+
 # iterate over issues in config
 for issue_id, issue in config.issues.iteritems():
 	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.id
@@ -66,20 +103,7 @@ for issue_id, issue in config.issues.iteritems():
 		print "\tSource exists"
 	else:
 		print "\tDownloading source..."
-
-		session = requests.Session()
-		response = session.get(config.origin.main % issue.origin.id, stream = True)
-
-		for key, value in response.cookies.items():
-			if key.startswith(config.origin.confirm_key):
-				response = session.get(config.origin.confirm % (issue.origin.id, value), stream = True)
-
-		with open(issue_path, "wb") as f:
-			with tqdm(total=issue.origin.size, unit="B", unit_scale=True, unit_divisor=1024, ascii=True) as pbar: 
-				for chunk in response.iter_content(32 * 1024):
-					if chunk:
-						f.write(chunk)
-						pbar.update(len(chunk))
+		issue_download(config, issue, issue_path)
 
 	# skip checking if checked
 	if os.path.isfile(check_path):
@@ -95,13 +119,17 @@ for issue_id, issue in config.issues.iteritems():
 		continue
 	else:
 		print "\tChecking size..."
-		issue_size = os.path.getsize(issue_path)
 
-		if issue_size == issue.origin.size:
-			print "\tSize OK (%s)" % issue_size
-		else:
-			print "\tSize error (%s != %s)" % (issue_size, issue.origin.size)
-			continue
+		while True:
+			issue_size = os.path.getsize(issue_path)
+
+			if issue_size == issue.origin.size:
+				print "\tSize OK (%s)" % issue_size
+				break
+			else:
+				print "\tSize error (%s != %s)" % (issue_size, issue.origin.size)
+				print "\tDownloading source..."
+				issue_download(config, issue, issue_path)
 
 	# check md5 by config
 	if not os.path.isfile(issue_path):
@@ -110,20 +138,7 @@ for issue_id, issue in config.issues.iteritems():
 	else:
 		print "\tChecking MD5 signature..."
 
-		hash_md5 = hashlib.md5()
-
-		with tqdm(total=issue_size, unit="B", unit_scale=True, ascii=True, leave=False) as t:
-			chunk_size = 4096
-
-			with open(issue_path, "rb") as f:
-				for chunk in iter(lambda: f.read(chunk_size), b""):
-					hash_md5.update(chunk)
-					t.update(len(chunk))
-
-			t.update(abs(issue_size - t.n))
-			t.close()
-
-		issue_md5 = hash_md5.hexdigest()
+		issue_md5 = issue_get_md5(config, issue, issue_path)
 
 		if issue_md5 == issue.origin.md5:
 			print "\tMD5 signature OK (%s)" % issue_md5
