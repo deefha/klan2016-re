@@ -7,10 +7,6 @@ from colorama import init as colorama_init, Fore, Back, Style
 
 # specific imports
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
-#import pycdlib
-#from io import BytesIO
-#from structs.klan_mods_v1 import KlanModsV1
-
 import tools.KlanTools as KlanTools
 
 
@@ -21,7 +17,7 @@ if len(sys.argv) != 2:
 	# TODO message
 	sys.exit()
 
-ARG_ISSUE = sys.argv[1]
+ARG_ISSUE_NUMBER = sys.argv[1]
 
 CONFIG_PATH = "../data/config.yml"
 CHECK_PATH = "../data/sources/%s.check"
@@ -47,10 +43,10 @@ ISSUE_PATH = "../data/sources/%s.iso"
 
 
 def init(config, issue):
-	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.id
+	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number
 
-	check_path = CHECK_PATH % issue.id
-	issue_path = ISSUE_PATH % issue.id
+	check_path = CHECK_PATH % issue.number
+	issue_path = ISSUE_PATH % issue.number
 
 	# download missing issues
 	if os.path.isfile(issue_path):
@@ -120,11 +116,14 @@ def init(config, issue):
 def main():
 	config = KlanTools.config_load(CONFIG_PATH)
 
-	if ARG_ISSUE == "all":
-		for issue_id, issue in config.issues.iteritems():
+	if ARG_ISSUE_NUMBER == "all":
+		for issue_id, issue in sorted(config.issues.iteritems()):
 			init(config, issue)
 	else:
-		init(config, config.issues[ARG_ISSUE])
+		try:
+			init(config, config.issues[ARG_ISSUE_NUMBER])
+		except KeyError, e:
+			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
 
 
 
