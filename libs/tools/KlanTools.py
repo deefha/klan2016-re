@@ -6,28 +6,10 @@ from yaml import load as yaml_load
 
 
 def config_load(config_path):
-	# load YML data config
 	with open(config_path) as f:
 		config_yaml = yaml_load(f)
 
-	# convert dict to ObjDict
-	# TODO load from JSON?
-	config = ObjDict()
-	config.origin = ObjDict()
-	config.origin.main = config_yaml["origin"]["main"]
-	config.origin.confirm = config_yaml["origin"]["confirm"]
-	config.origin.confirm_key = config_yaml["origin"]["confirm_key"]
-	config.issues = ObjDict()
-
-	for issue_yaml in config_yaml["issues"]:
-		issue = ObjDict()
-		issue.id = issue_yaml["id"]
-		issue.origin = ObjDict()
-		issue.origin.id = issue_yaml["origin"]["id"]
-		issue.origin.size = issue_yaml["origin"]["size"]
-		issue.origin.md5 = issue_yaml["origin"]["md5"]
-
-		config.issues[str(issue.id)] = issue
+	config = ObjDict(ObjDict(config_yaml).dumps())
 
 	return config
 
@@ -35,11 +17,11 @@ def config_load(config_path):
 
 def issue_download(config, issue, issue_path):
 	session = requests.Session()
-	response = session.get(config.origin.main % issue.origin.id, stream = True)
+	response = session.get(config.origin.main % issue.origin.key, stream = True)
 
 	for key, value in response.cookies.items():
 		if key.startswith(config.origin.confirm_key):
-			response = session.get(config.origin.confirm % (issue.origin.id, value), stream = True)
+			response = session.get(config.origin.confirm % (issue.origin.key, value), stream = True)
 
 	with open(issue_path, "wb") as f:
 		with tqdm(total=issue.origin.size, unit="B", unit_scale=True, ascii=True, leave=False) as pbar: 
