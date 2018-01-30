@@ -1,6 +1,8 @@
-import os, sys
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
+
+# specific imports
 from CommonDecompiler import CommonDecompiler
 
 
@@ -34,7 +36,7 @@ class FontDecompiler(CommonDecompiler):
 				data_font.content.matrices_size = font.content.matrices_size
 				data_font.content.height = font.content.height
 				data_font.content.computed_matrices_offset = font.content.computed_matrices_offset
-				data_font.content.colormap = "blobs://%s/%s/%02d/colormap.bin" % (self.issue, self.source, font_index)
+				data_font.content.colormap = "blobs://%s/%s/%s/%02d/colormap.bin" % (self.issue.number, self.source.library, self.source_index, font_index)
 				data_font.content.characters = ObjDict()
 				data_font.content.matrices = ObjDict()
 
@@ -64,7 +66,7 @@ class FontDecompiler(CommonDecompiler):
 					if matrix.content:
 						print "\t\tMatrix #%d: param_offset=%d, param_width=%d, param_height=%d" % (matrix_index, matrix.param_offset, matrix.param_width, matrix.param_height)
 
-						data_matrix.content = "blobs://%s/%s/%02d/matrices/%03d.bin" % (self.issue, self.source, font_index, matrix_index)
+						data_matrix.content = "blobs://%s/%s/%s/%02d/matrices/%03d.bin" % (self.issue.number, self.source.library, self.source_index, font_index, matrix_index)
 
 						file_matrix = self.PATTERN_FILE_MATRIX % (path_matrices, matrix_index)
 

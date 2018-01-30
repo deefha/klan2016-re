@@ -1,6 +1,8 @@
-import os, sys
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
+
+# specific imports
 from CommonDecompiler import CommonDecompiler
 
 
@@ -32,7 +34,7 @@ class ModsDecompiler(CommonDecompiler):
 			data_mod.content = ObjDict()
 
 			if mod.content:
-				if self.issue < "02":
+				if self.source.version == 1:
 					print "Mod #%d: param_offset=%d, name='%s', count_sequences=%d, count_patterns=%d, count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_sequences, mod.content.count_patterns, mod.content.count_samples, mod.content.size_patterns)
 
 					path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
@@ -62,14 +64,14 @@ class ModsDecompiler(CommonDecompiler):
 					for pattern_index, pattern in enumerate(mod.content.data.patterns):
 						file_pattern = self.PATTERN_FILE_MOD_PATTERN % (self.PATH_BLOBS, mod_index, pattern_index)
 
-						data_mod.content.data.patterns[str(pattern_index)] = "blobs://%s/%s/mods/%04d/patterns/%04d.bin" % (self.issue, self.source, mod_index, pattern_index)
+						data_mod.content.data.patterns[str(pattern_index)] = "blobs://%s/%s/%s/mods/%04d/patterns/%04d.bin" % (self.issue, self.source, self.source_index, mod_index, pattern_index)
 
 						print "\tPattern #%d" % pattern_index
 						f = open(file_pattern, "wb")
 						f.write(pattern)
 						f.close
 
-				else:
+				elif self.source.version == 2:
 					print "Mod #%d: param_offset=%d, name='%s', count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_samples, mod.content.size_patterns)
 
 					path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
@@ -94,7 +96,7 @@ class ModsDecompiler(CommonDecompiler):
 
 					file_patterns = self.PATTERN_FILE_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
 
-					data_mod.content.data.patterns = "blobs://%s/%s/mods/%04d/patterns/content.bin" % (self.issue, self.source, mod_index)
+					data_mod.content.data.patterns = "blobs://%s/%s/%s/mods/%04d/patterns/content.bin" % (self.issue, self.source, self.source_index, mod_index)
 
 					print "\tPatterns"
 					f = open(file_patterns, "wb")
@@ -132,7 +134,7 @@ class ModsDecompiler(CommonDecompiler):
 
 				file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_BLOBS, sample_index)
 
-				data_sample.content.data.content = "blobs://%s/%s/samples/%04d.bin" % (self.issue, self.source, sample_index)
+				data_sample.content.data.content = "blobs://%s/%s/%s/samples/%04d.bin" % (self.issue, self.source, self.source_index, sample_index)
 
 				print "\tContent"
 				f = open(file_sample, "wb")

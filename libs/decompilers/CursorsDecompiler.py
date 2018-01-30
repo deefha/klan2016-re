@@ -1,6 +1,8 @@
-import os, sys
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
+
+# specific imports
 from CommonDecompiler import CommonDecompiler
 
 
@@ -62,7 +64,7 @@ class CursorsDecompiler(CommonDecompiler):
 			data_frame.content.x = frame.content.x
 			data_frame.content.y = frame.content.y
 			data_frame.content.id = frame.content.id
-			data_frame.content.data = "blobs://%s/%s/frames/%02d/content.bin" % (self.issue, self.source, frame_index)
+			data_frame.content.data = "blobs://%s/%s/%s/frames/%02d/content.bin" % (self.issue.number, self.source.library, self.source_index, frame_index)
 
 			print "\tData"
 			f = open(file_frame, "wb")
@@ -73,7 +75,7 @@ class CursorsDecompiler(CommonDecompiler):
 
 		self.meta.data.foo_1.param_offset = self.library.data.foo_1.param_offset
 		self.meta.data.foo_1.content = ObjDict()
-		self.meta.data.foo_1.content.data =  "blobs://%s/%s/foo_1/content.bin" % (self.issue, self.source)
+		self.meta.data.foo_1.content.data =  "blobs://%s/%s/%s/foo_1/content.bin" % (self.issue.number, self.source.library, self.source_index)
 
 		for foo_2_index, foo_2 in enumerate(self.library.data.foo_2):
 			data_foo_2 = ObjDict()
@@ -89,7 +91,7 @@ class CursorsDecompiler(CommonDecompiler):
 			if not os.path.exists(path_foo_2):
 				os.makedirs(path_foo_2)
 
-			data_foo_2.content.data = "blobs://%s/%s/foo_2/%02d/content.bin" % (self.issue, self.source, foo_2_index)
+			data_foo_2.content.data = "blobs://%s/%s/%s/foo_2/%02d/content.bin" % (self.issue.number, self.source.library, self.source_index, foo_2_index)
 
 			print "\tData"
 			f = open(file_foo_2, "wb")
@@ -113,7 +115,7 @@ class CursorsDecompiler(CommonDecompiler):
 			if not os.path.exists(path_colortables):
 				os.makedirs(path_colortables)
 
-			data_colortable.content.data = "blobs://%s/%s/colortables/%02d/content.bin" % (self.issue, self.source, colortable_index)
+			data_colortable.content.data = "blobs://%s/%s/%s/colortables/%02d/content.bin" % (self.issue.number, self.source.library, self.source_index, colortable_index)
 
 			print "\tData"
 			f = open(file_colortable, "wb")

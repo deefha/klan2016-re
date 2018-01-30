@@ -1,70 +1,68 @@
 #!/usr/bin/python
 
-import os, sys
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
+# common imports
+import os, sys, datetime
+from pprint import pprint
+from colorama import init as colorama_init, Fore, Back, Style
 
+# specific imports
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
+import tools.KlanTools as KlanTools
 from decompilers import *
 
-ISSUES = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32-33", "34", "35", "36", "37", "38", "39", "40", "41", "42"]
-SOURCES = ["font", "font2", "font_lt", "font2_lt", "imgs", "image1", "cache", "wave", "mods", "bgm"]
 
 
+colorama_init(autoreset=True)
 
 if len(sys.argv) != 3:
 	# TODO message
 	sys.exit()
 
-ARG_ISSUE = sys.argv[1]
-ARG_SOURCE = sys.argv[2]
+ARG_ISSUE_NUMBER = sys.argv[1]
+ARG_LIBRARY = sys.argv[2]
+
+CONFIG_PATH = "../data/config.yml"
+CHECK_PATH = "../data/sources/%s.check"
+ISSUE_PATH = "../data/sources/%s.iso"
 
 
 
-def decompile_issue(issue, source):
-	if (source == "all"):
-		for source in SOURCES:
-			decompile_source(issue, source)
+def decompile_loop(config, issue, library):
+	if library == "all":
+		for sources_library, sources in issue.sources.iteritems():
+			if sources:
+				for source_index, source in enumerate(sources):
+					decompile(config, issue, source, source_index)
 	else:
-		decompile_source(issue, source)
+		if issue.sources[library]:
+			for source_index, source in enumerate(issue.sources[library]):
+				decompile(config, issue, source, source_index)
 
 	return True
 
 
 
-def decompile_source(issue, source):
-	if issue < "01" and source == "font2":
-		return False
-	if issue < "01" and source == "image1":
-		return False
-	if issue < "28" and source == "font_lt":
-		return False
-	if issue < "28" and source == "font2_lt":
-		return False
-	if issue < "28" and source == "cache":
-		return False
-	if issue < "28" and source == "bgm":
-		return False
-	if issue >= "28" and source == "image1":
-		return False
-	if issue >= "28" and source == "mods":
-		return False
+def decompile(config, issue, source, source_index):
+	print "Issue: %s" % issue.number
+	print "Path: %s" % source.path
+	print "Library: %s" % source.library
+	print "Version: %s" % source.version
+	print "Index: %s" % source_index
 
-	print "Issue: %s" % issue
-	print "Source: %s" % source
+	if source.library == "cursors":
+		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source, source_index)
 
-	if source == "cursors":
-		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source)
+	elif source.library == "fonts":
+		decompiler = FontDecompiler.FontDecompiler(issue, source, source_index)
 
-	elif source == "font" or source == "font2" or source == "font_lt" or source == "font2_lt":
-		decompiler = FontDecompiler.FontDecompiler(issue, source)
+	elif source.library == "images":
+		decompiler = ImgsDecompiler.ImgsDecompiler(issue, source, source_index)
 
-	elif source == "imgs" or source == "image1" or source == "cache":
-		decompiler = ImgsDecompiler.ImgsDecompiler(issue, source)
+	elif source.library == "audios":
+		decompiler = WaveDecompiler.WaveDecompiler(issue, source, source_index)
 
-	elif source == "wave":
-		decompiler = WaveDecompiler.WaveDecompiler(issue, source)
-
-	elif source == "mods" or source == "bgm":
-		decompiler = ModsDecompiler.ModsDecompiler(issue, source)
+	elif source.library == "music":
+		decompiler = ModsDecompiler.ModsDecompiler(issue, source, source_index)
 
 	else:
 		return False
@@ -79,11 +77,16 @@ def decompile_source(issue, source):
 
 
 def main():
-	if ARG_ISSUE == "all":
-		for issue in ISSUES:
-			decompile_issue(issue, ARG_SOURCE)
+	config = KlanTools.config_load(CONFIG_PATH)
+
+	if ARG_ISSUE_NUMBER == "all":
+		for issue_id, issue in sorted(config.issues.iteritems()):
+			decompile_loop(config, issue, ARG_LIBRARY)
 	else:
-		decompile_issue(ARG_ISSUE, ARG_SOURCE)
+		try:
+			decompile_loop(config, config.issues[ARG_ISSUE_NUMBER], ARG_LIBRARY)
+		except KeyError, e:
+			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
 
 
 

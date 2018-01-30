@@ -1,6 +1,11 @@
-import os, sys
-
+# common imports
+import os, sys, datetime
+from io import BytesIO
 from objdict import ObjDict
+from pycdlib import PyCdlib
+from pprint import pprint
+
+# specific imports
 from structs.klan_cursors import KlanCursors
 from structs.klan_font import KlanFont
 from structs.klan_imgs import KlanImgs
@@ -16,19 +21,15 @@ PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
 class CommonDecompiler(object):
 
-	def __init__(self, issue, source):
+	def __init__(self, issue, source, source_index):
 		self.issue = issue
 		self.source = source
+		self.source_index = source_index
 
-		self.PATH_BLOBS = "%sblobs/%s/%s/" % (PATH_DATA, self.issue, self.source)
-		self.PATH_META = "%smeta/%s/%s/" % (PATH_DATA, self.issue, self.source)
+		self.PATH_BLOBS = "%sblobs/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.PATH_META = "%smeta/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
 
-		if self.issue >= "28":
-			self.FILE_SOURCE = "%ssources/%s/klan/%s.lib" % (PATH_DATA, self.issue, self.source) # TODO test if exists
-		else:
-			self.FILE_SOURCE = "%ssources/%s/%s.lib" % (PATH_DATA, self.issue, self.source) # TODO test if exists
-
-		self.FILE_META = "%smeta/%s/%s.json" % (PATH_DATA, self.issue, self.source)
+		self.FILE_META = "%smeta/%s/%s/%s.json" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
 
 		self.meta = ObjDict()
 
@@ -38,28 +39,42 @@ class CommonDecompiler(object):
 		if not os.path.exists(self.PATH_META):
 			os.makedirs(self.PATH_META)
 
-		if self.source == "cursors":
-			self.library = KlanCursors.from_file(self.FILE_SOURCE)
+		iso = PyCdlib()
+		self.iso_content = BytesIO()
 
-		elif self.source == "font" or self.source == "font2" or self.source == "font_lt" or self.source == "font2_lt":
-			self.library = KlanFont.from_file(self.FILE_SOURCE)
+		iso.open("%ssources/%s.iso" % (PATH_DATA, self.issue.number))
 
-		elif self.source == "imgs" or self.source == "image1" or self.source == "cache":
-			self.library = KlanImgs.from_file(self.FILE_SOURCE)
+		#for child in iso.list_dir(iso_path='/'):
+			#print(child.file_identifier())
 
-		elif self.source == "wave":
-			if self.issue < "01":
-				self.library = KlanWaveV1.from_file(self.FILE_SOURCE)
-			elif self.issue < "08":
-				self.library = KlanWaveV2.from_file(self.FILE_SOURCE)
-			else:
-				self.library = KlanWaveV3.from_file(self.FILE_SOURCE)
+		iso.get_file_from_iso_fp(self.iso_content, iso_path="/%s;1" % self.source.path)
+		iso.close()
 
-		elif self.source == "mods" or self.source == "bgm":
-			if self.issue < "02":
-				self.library = KlanModsV1.from_file(self.FILE_SOURCE)
-			else:
-				self.library = KlanModsV2.from_file(self.FILE_SOURCE)
+		self.iso_content.seek(0)
+
+		if self.source.library == "cursors":
+			self.library = KlanCursors.from_io(self.iso_content)
+
+		elif self.source.library == "fonts":
+			self.library = KlanFont.from_io(self.iso_content)
+
+		elif self.source.library == "images":
+			self.library = KlanImgs.from_io(self.iso_content)
+
+		elif self.source.library == "audios":
+			if self.source.version == 1:
+				self.library = KlanWaveV1.from_io(self.iso_content)
+			elif self.source.version == 2:
+				self.library = KlanWaveV2.from_io(self.iso_content)
+			elif self.source.version == 3:
+				self.library = KlanWaveV3.from_io(self.iso_content)
+
+		elif self.source.library == "music":
+			if self.source.version == 1:
+				self.library = KlanModsV1.from_io(self.iso_content)
+			elif self.source.version == 2:
+				self.library = KlanModsV2.from_io(self.iso_content)
+
 
 
 	def fill_meta_header(self):

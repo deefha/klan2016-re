@@ -1,6 +1,8 @@
-import os, sys
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
+
+# specific imports
 from CommonDecompiler import CommonDecompiler
 
 
@@ -38,13 +40,13 @@ class WaveDecompiler(CommonDecompiler):
 				data_wave.content.data = ObjDict()
 				data_wave.content.data.param_data_size = wave.content.data.param_data_size
 
-				if self.issue > "00":
+				if self.source.version == 1:
 					data_wave.content.data.title = ""
-					#data_wave.content.data.title = wave.content.data.title
 				else:
 					data_wave.content.data.title = ""
+					#data_wave.content.data.title = wave.content.data.title
 
-				data_wave.content.data.content = "blobs://%s/%s/%04d/content.bin" % (self.issue, self.source, wave_index)
+				data_wave.content.data.content = "blobs://%s/%s/%s/%04d/content.bin" % (self.issue, self.source, self.source_index, wave_index)
 
 				print "\tContent"
 				f = open(file_content, "wb")
