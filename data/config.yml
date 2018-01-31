@@ -128,7 +128,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 2 # TODO
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -179,7 +179,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -230,7 +230,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -281,7 +281,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -335,7 +335,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -392,7 +392,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -449,7 +449,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -506,7 +506,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -563,7 +563,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -620,7 +620,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -677,7 +677,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -734,7 +734,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -791,7 +791,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -848,7 +848,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -905,7 +905,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -962,7 +962,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1019,7 +1019,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1076,7 +1076,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1133,7 +1133,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1190,7 +1190,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1247,7 +1247,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1304,7 +1304,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1361,7 +1361,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1418,7 +1418,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1475,7 +1475,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1532,7 +1532,7 @@ issues:
       music:
         - path: MODS.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1599,7 +1599,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1663,7 +1663,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1727,7 +1727,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1788,7 +1788,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1849,7 +1849,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1910,7 +1910,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1971,7 +1971,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2032,7 +2032,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2093,7 +2093,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2154,7 +2154,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2215,7 +2215,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2276,7 +2276,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2337,7 +2337,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2398,7 +2398,7 @@ issues:
       music:
         - path: KLAN/BGM.LIB
           library: music
-          version: 1
+          version: 2
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB

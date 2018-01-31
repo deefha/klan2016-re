@@ -116,30 +116,55 @@ class ModsDecompiler(CommonDecompiler):
 			data_sample.content = ObjDict()
 
 			if sample.content:
-				print "Sample #%d: param_offset=%d" % (sample_index, sample.param_offset)
+				if self.source.version == 1:
+					print "Sample #%d: param_offset=%d" % (sample_index, sample.param_offset)
 
-				path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_BLOBS)
+					path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_BLOBS)
 
-				if not os.path.exists(path_sample):
-					os.makedirs(path_sample)
+					if not os.path.exists(path_sample):
+						os.makedirs(path_sample)
 
-				data_sample.content.data_size = sample.content.data_size
-				data_sample.content.loop_start = sample.content.loop_start
-				data_sample.content.loop_end = sample.content.loop_end
-				#data_sample.content.foo = sample.content.foo
-				data_sample.content.foo = ""
+					data_sample.content.data_size = sample.content.data_size
+					data_sample.content.loop_start = sample.content.loop_start
+					data_sample.content.loop_end = sample.content.loop_end
+					#data_sample.content.foo = sample.content.foo
+					data_sample.content.foo = ""
 
-				data_sample.content.data = ObjDict()
-				data_sample.content.data.param_data_size = sample.content.data.param_data_size
+					data_sample.content.data = ObjDict()
+					data_sample.content.data.param_data_size = sample.content.data.param_data_size
 
-				file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_BLOBS, sample_index)
+					file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_BLOBS, sample_index)
 
-				data_sample.content.data.content = "blobs://%s/%s/%s/samples/%04d.bin" % (self.issue, self.source, self.source_index, sample_index)
+					data_sample.content.data.content = "blobs://%s/%s/%s/samples/%04d.bin" % (self.issue, self.source, self.source_index, sample_index)
 
-				print "\tContent"
-				f = open(file_sample, "wb")
-				f.write(sample.content.data.content)
-				f.close
+					print "\tContent"
+					f = open(file_sample, "wb")
+					f.write(sample.content.data.content)
+					f.close
+
+				elif self.source.version == 2:
+					print "Sample #%d: param_offset=%d" % (sample_index, sample.param_offset)
+
+					path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_BLOBS)
+
+					if not os.path.exists(path_sample):
+						os.makedirs(path_sample)
+
+					data_sample.content.data_size = sample.content.data_size
+					#data_sample.content.foo = sample.content.foo
+					data_sample.content.foo = ""
+
+					data_sample.content.data = ObjDict()
+					data_sample.content.data.param_data_size = sample.content.data.param_data_size
+
+					file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_BLOBS, sample_index)
+
+					data_sample.content.data.content = "blobs://%s/%s/%s/samples/%04d.bin" % (self.issue, self.source, self.source_index, sample_index)
+
+					print "\tContent"
+					f = open(file_sample, "wb")
+					f.write(sample.content.data.content)
+					f.close
 
 			else:
 				print "Sample #%d: param_offset=%d, no content" % (sample_index, sample.param_offset)
