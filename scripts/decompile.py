@@ -22,20 +22,32 @@ ARG_ISSUE_NUMBER = sys.argv[1]
 ARG_LIBRARY = sys.argv[2]
 
 CONFIG_PATH = "../data/config.yml"
-CHECK_PATH = "../data/sources/%s.check"
-ISSUE_PATH = "../data/sources/%s.iso"
+CHECK_PATH = "../data/origins/%s.check"
+ISSUE_PATH = "../data/origins/%s.iso"
 
 
 
-def decompile_loop(config, issue, library):
+def decompile_loop_issues(config, issue_number, library):
+	if issue_number == "all":
+		for issue_id, issue in sorted(config.issues.iteritems()):
+			decompile_loop_libraries(config, issue, library)
+	else:
+		try:
+			decompile_loop_libraries(config, config.issues[issue_number], library)
+		except KeyError, e:
+			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+
+
+
+def decompile_loop_libraries(config, issue, library):
 	if library == "all":
-		for sources_library, sources in issue.sources.iteritems():
+		for library, sources in issue.libraries.iteritems():
 			if sources:
 				for source_index, source in enumerate(sources):
 					decompile(config, issue, source, source_index)
 	else:
-		if issue.sources[library]:
-			for source_index, source in enumerate(issue.sources[library]):
+		if issue.libraries[library]:
+			for source_index, source in enumerate(issue.libraries[library]):
 				decompile(config, issue, source, source_index)
 
 	return True
@@ -79,14 +91,7 @@ def decompile(config, issue, source, source_index):
 def main():
 	config = KlanTools.config_load(CONFIG_PATH)
 
-	if ARG_ISSUE_NUMBER == "all":
-		for issue_id, issue in sorted(config.issues.iteritems()):
-			decompile_loop(config, issue, ARG_LIBRARY)
-	else:
-		try:
-			decompile_loop(config, config.issues[ARG_ISSUE_NUMBER], ARG_LIBRARY)
-		except KeyError, e:
-			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+	decompile_loop_issues(config, ARG_ISSUE_NUMBER, ARG_LIBRARY)
 
 
 

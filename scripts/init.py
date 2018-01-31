@@ -20,8 +20,8 @@ if len(sys.argv) != 2:
 ARG_ISSUE_NUMBER = sys.argv[1]
 
 CONFIG_PATH = "../data/config.yml"
-CHECK_PATH = "../data/sources/%s.check"
-ISSUE_PATH = "../data/sources/%s.iso"
+CHECK_PATH = "../data/origins/%s.check"
+ISSUE_PATH = "../data/origins/%s.iso"
 
 
 
@@ -50,9 +50,9 @@ def init(config, issue):
 
 	# download missing issues
 	if os.path.isfile(issue_path):
-		print "\tSource exists"
+		print "\tOrigin exists"
 	else:
-		print "\tDownloading source..."
+		print "\tDownloading origin..."
 
 		if os.path.isfile(check_path):
 			os.remove(check_path)
@@ -82,7 +82,7 @@ def init(config, issue):
 				break
 			else:
 				print "\tSize error (%s != %s)" % (issue_size, issue.origin.size)
-				print "\tDownloading source..."
+				print "\tDownloading origin..."
 				KlanTools.issue_download(config, issue, issue_path)
 
 	# check md5 by config
