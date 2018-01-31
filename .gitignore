@@ -1,6 +1,7 @@
 data/assets/**/
 data/blobs/**/
 data/meta/**/
+data/origins/*.iso
+data/origins/*.check
 data/schemes/**/
-data/sources/*
 libs/**/*.pyc
