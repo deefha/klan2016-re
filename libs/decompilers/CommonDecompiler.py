@@ -42,7 +42,7 @@ class CommonDecompiler(object):
 		iso = PyCdlib()
 		self.iso_content = BytesIO()
 
-		iso.open("%ssources/%s.iso" % (PATH_DATA, self.issue.number))
+		iso.open("%sorigins/%s.iso" % (PATH_DATA, self.issue.number))
 
 		#for child in iso.list_dir(iso_path='/'):
 			#print(child.file_identifier())
