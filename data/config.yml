@@ -11,9 +11,9 @@ issues:
       md5: ea99f38cffbf4e7ae5469706c5aa2dce
     libraries:
       arklanoid:
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 1
       cursors:
         - path: CURSORS.LIB
@@ -50,9 +50,9 @@ issues:
       md5: d8f32b7293a85df7cec737b74d78e9fe
     libraries:
       arklanoid:
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -98,9 +98,9 @@ issues:
       md5: 46524e277a4e208b2fbc28bc8e3e922f
     libraries:
       arklanoid:
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -149,9 +149,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -200,9 +200,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -251,9 +251,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -302,9 +302,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -359,9 +359,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 2
       cursors:
         - path: CURSORS.LIB
@@ -416,9 +416,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -473,9 +473,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -530,9 +530,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -587,9 +587,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -644,9 +644,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -701,9 +701,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -758,9 +758,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -815,9 +815,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -872,9 +872,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -929,9 +929,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -986,9 +986,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1043,9 +1043,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1100,9 +1100,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1157,9 +1157,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1214,9 +1214,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1271,9 +1271,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1328,9 +1328,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1385,9 +1385,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1442,9 +1442,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1499,9 +1499,9 @@ issues:
         - path: A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: CURSORS.LIB
@@ -1556,9 +1556,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1620,9 +1620,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1684,9 +1684,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1748,9 +1748,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1809,9 +1809,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1870,9 +1870,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1931,9 +1931,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -1992,9 +1992,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -2053,9 +2053,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -2114,9 +2114,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -2175,9 +2175,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -2236,9 +2236,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -2297,9 +2297,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB
@@ -2358,9 +2358,9 @@ issues:
         - path: KLAN/A.LIB
           library: arklanoid
           version: 1
-      audios:
+      audio:
         - path: KLAN/WAVE.LIB
-          library: audios
+          library: audio
           version: 3
       cursors:
         - path: KLAN/CURSORS.LIB

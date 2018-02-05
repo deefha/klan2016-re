@@ -8,7 +8,7 @@ from CommonRemaker import CommonRemaker
 
 
 
-class WaveRemaker(CommonRemaker):
+class AudioRemaker(CommonRemaker):
 
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
@@ -63,7 +63,7 @@ class WaveRemaker(CommonRemaker):
 
 
 	def fill_scheme(self):
-		super(WaveRemaker, self).fill_scheme()
+		super(AudioRemaker, self).fill_scheme()
 
 		self.scheme.waves = ObjDict()
 

@@ -8,7 +8,7 @@ if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
 from t_header import THeader
-class KlanWaveV3(KaitaiStruct):
+class KlanAudioV2(KaitaiStruct):
     """
     .. seealso::
        Source - https://wiki.klan2016.cz/knihovny/zvuky.html
@@ -96,7 +96,7 @@ class KlanWaveV3(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.title = self._io.read_bytes(64)
+            self.title = self._io.read_bytes(32)
             self.content = self._io.read_bytes(self.param_data_size)
 
 

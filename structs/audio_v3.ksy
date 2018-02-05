@@ -1,7 +1,7 @@
 meta:
-  id: klan_wave_v3
+  id: klan_audio_v3
   file-extension: lib
-  title: KLAN wave library v3
+  title: KLAN audio library v3
   application: KLAN discmag engine
   endian: le
   encoding: ASCII

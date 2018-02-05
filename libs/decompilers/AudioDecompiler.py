@@ -7,13 +7,13 @@ from CommonDecompiler import CommonDecompiler
 
 
 
-class WaveDecompiler(CommonDecompiler):
+class AudioDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_WAVE = "%s%04d/"
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
 	def fill_meta_data(self):
-		super(WaveDecompiler, self).fill_meta_data()
+		super(AudioDecompiler, self).fill_meta_data()
 
 		self.meta.data.waves = ObjDict()
 

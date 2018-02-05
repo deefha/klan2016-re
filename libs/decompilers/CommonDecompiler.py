@@ -6,12 +6,12 @@ from pycdlib import PyCdlib
 from pprint import pprint
 
 # specific imports
+from structs.klan_audio_v1 import KlanAudioV1
+from structs.klan_audio_v2 import KlanAudioV2
+from structs.klan_audio_v3 import KlanAudioV3
 from structs.klan_cursors import KlanCursors
 from structs.klan_fonts import KlanFonts
 from structs.klan_images import KlanImages
-from structs.klan_wave_v1 import KlanWaveV1
-from structs.klan_wave_v2 import KlanWaveV2
-from structs.klan_wave_v3 import KlanWaveV3
 from structs.klan_music_v1 import KlanMusicV1
 from structs.klan_music_v2 import KlanMusicV2
 
@@ -52,7 +52,15 @@ class CommonDecompiler(object):
 
 		self.iso_content.seek(0)
 
-		if self.source.library == "cursors":
+		if self.source.library == "audio":
+			if self.source.version == 1:
+				self.library = KlanAudioV1.from_io(self.iso_content)
+			elif self.source.version == 2:
+				self.library = KlanAudioV2.from_io(self.iso_content)
+			elif self.source.version == 3:
+				self.library = KlanAudioV3.from_io(self.iso_content)
+
+		elif self.source.library == "cursors":
 			self.library = KlanCursors.from_io(self.iso_content)
 
 		elif self.source.library == "fonts":
@@ -60,14 +68,6 @@ class CommonDecompiler(object):
 
 		elif self.source.library == "images":
 			self.library = KlanImages.from_io(self.iso_content)
-
-		elif self.source.library == "audios":
-			if self.source.version == 1:
-				self.library = KlanWaveV1.from_io(self.iso_content)
-			elif self.source.version == 2:
-				self.library = KlanWaveV2.from_io(self.iso_content)
-			elif self.source.version == 3:
-				self.library = KlanWaveV3.from_io(self.iso_content)
 
 		elif self.source.library == "music":
 			if self.source.version == 1:
