@@ -7,7 +7,7 @@ from CommonDecompiler import CommonDecompiler
 
 
 
-class ModsDecompiler(CommonDecompiler):
+class MusicDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_MOD = "%s/mods/%04d/"
 	PATTERN_PATH_MOD_PATTERNS = "%s/mods/%04d/patterns/"
@@ -18,7 +18,7 @@ class ModsDecompiler(CommonDecompiler):
 	PATTERN_FILE_SAMPLE = "%s/samples/%04d.bin"
 
 	def fill_meta_data(self):
-		super(ModsDecompiler, self).fill_meta_data()
+		super(MusicDecompiler, self).fill_meta_data()
 
 		self.meta.data.names = ObjDict()
 
@@ -174,7 +174,7 @@ class ModsDecompiler(CommonDecompiler):
 
 
 	def fill_meta_header(self):
-		super(ModsDecompiler, self).fill_meta_header()
+		super(MusicDecompiler, self).fill_meta_header()
 
 		self.meta.header2 = ObjDict()
 		self.meta.header2.count_mods = self.library.header2.count_mods

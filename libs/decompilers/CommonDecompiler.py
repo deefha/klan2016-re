@@ -12,8 +12,8 @@ from structs.klan_images import KlanImages
 from structs.klan_wave_v1 import KlanWaveV1
 from structs.klan_wave_v2 import KlanWaveV2
 from structs.klan_wave_v3 import KlanWaveV3
-from structs.klan_mods_v1 import KlanModsV1
-from structs.klan_mods_v2 import KlanModsV2
+from structs.klan_music_v1 import KlanMusicV1
+from structs.klan_music_v2 import KlanMusicV2
 
 PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -71,9 +71,9 @@ class CommonDecompiler(object):
 
 		elif self.source.library == "music":
 			if self.source.version == 1:
-				self.library = KlanModsV1.from_io(self.iso_content)
+				self.library = KlanMusicV1.from_io(self.iso_content)
 			elif self.source.version == 2:
-				self.library = KlanModsV2.from_io(self.iso_content)
+				self.library = KlanMusicV2.from_io(self.iso_content)
 
 
 

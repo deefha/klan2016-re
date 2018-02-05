@@ -8,7 +8,7 @@ if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
 from t_header import THeader
-class KlanModsV2(KaitaiStruct):
+class KlanMusicV1(KaitaiStruct):
     """
     .. seealso::
        Source - https://wiki.klan2016.cz/knihovny/hudba.html
@@ -44,8 +44,8 @@ class KlanModsV2(KaitaiStruct):
             if hasattr(self, '_m_mods'):
                 return self._m_mods if hasattr(self, '_m_mods') else None
 
-            self._m_mods = [None] * (256)
-            for i in range(256):
+            self._m_mods = [None] * (130)
+            for i in range(130):
                 self._m_mods[i] = self._root.TMod(self._parent.fat_mods.offsets[i], self._io, self, self._root)
 
             return self._m_mods if hasattr(self, '_m_mods') else None
@@ -55,28 +55,34 @@ class KlanModsV2(KaitaiStruct):
             if hasattr(self, '_m_samples'):
                 return self._m_samples if hasattr(self, '_m_samples') else None
 
-            self._m_samples = [None] * (1024)
-            for i in range(1024):
+            self._m_samples = [None] * (520)
+            for i in range(520):
                 self._m_samples[i] = self._root.TSample(self._parent.fat_samples.offsets[i], self._io, self, self._root)
 
             return self._m_samples if hasattr(self, '_m_samples') else None
 
 
     class TModData(KaitaiStruct):
-        def __init__(self, param_size_patterns, _io, _parent=None, _root=None):
+        def __init__(self, param_count_patterns, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.param_size_patterns = param_size_patterns
+            self.param_count_patterns = param_count_patterns
             self._read()
 
         def _read(self):
-            self.samples = [None] * (256)
-            for i in range(256):
+            self.samples = [None] * (32)
+            for i in range(32):
                 self.samples[i] = self._io.read_u2le()
 
-            self.foo = self._io.read_bytes(80)
-            self.patterns = self._io.read_bytes(self.param_size_patterns)
+            self.sequences = [None] * (128)
+            for i in range(128):
+                self.sequences[i] = self._io.read_u1()
+
+            self.patterns = [None] * (self.param_count_patterns)
+            for i in range(self.param_count_patterns):
+                self.patterns[i] = self._io.read_bytes(2048)
+
 
 
     class TFatSamples(KaitaiStruct):
@@ -87,8 +93,8 @@ class KlanModsV2(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.offsets = [None] * (1024)
-            for i in range(1024):
+            self.offsets = [None] * (520)
+            for i in range(520):
                 self.offsets[i] = self._io.read_u4le()
 
 
@@ -138,8 +144,8 @@ class KlanModsV2(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.offsets = [None] * (256)
-            for i in range(256):
+            self.offsets = [None] * (130)
+            for i in range(130):
                 self.offsets[i] = self._io.read_u4le()
 
 
@@ -191,7 +197,9 @@ class KlanModsV2(KaitaiStruct):
 
         def _read(self):
             self.data_size = self._io.read_u4le()
-            self.foo = self._io.read_bytes(28)
+            self.loop_start = self._io.read_u4le()
+            self.loop_end = self._io.read_u4le()
+            self.foo = self._io.read_bytes(4)
             self.data = self._root.TSampleData(self.data_size, self._io, self, self._root)
 
 
@@ -204,11 +212,13 @@ class KlanModsV2(KaitaiStruct):
 
         def _read(self):
             self.name = self._io.read_bytes(32)
-            self.count_samples = self._io.read_u4le()
+            self.count_sequences = self._io.read_u2le()
+            self.count_patterns = self._io.read_u2le()
+            self.count_samples = self._io.read_u2le()
+            self.foo_1 = self._io.read_u2le()
             self.size_patterns = self._io.read_u4le()
-            self.foo_1 = self._io.read_u4le()
             self.foo_2 = self._io.read_u4le()
-            self.data = self._root.TModData(self.size_patterns, self._io, self, self._root)
+            self.data = self._root.TModData(self.count_patterns, self._io, self, self._root)
 
 
 

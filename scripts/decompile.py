@@ -74,7 +74,7 @@ def decompile(config, issue, source, source_index):
 		decompiler = WaveDecompiler.WaveDecompiler(issue, source, source_index)
 
 	elif source.library == "music":
-		decompiler = ModsDecompiler.ModsDecompiler(issue, source, source_index)
+		decompiler = MusicDecompiler.MusicDecompiler(issue, source, source_index)
 
 	else:
 		return False

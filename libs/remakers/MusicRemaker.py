@@ -9,7 +9,7 @@ from CommonRemaker import CommonRemaker
 
 
 
-class ModsRemaker(CommonRemaker):
+class MusicRemaker(CommonRemaker):
 
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
@@ -113,7 +113,7 @@ class ModsRemaker(CommonRemaker):
 
 
 	def fill_scheme(self):
-		super(ModsRemaker, self).fill_scheme()
+		super(MusicRemaker, self).fill_scheme()
 
 		self.scheme.mods = ObjDict()
 

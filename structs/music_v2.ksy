@@ -1,7 +1,7 @@
 meta:
-  id: klan_mods_v1
+  id: klan_music_v2
   file-extension: lib
-  title: KLAN mods library v1
+  title: KLAN music library v2
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
@@ -37,14 +37,14 @@ types:
       - id: offsets
         type: u4
         repeat: expr
-        repeat-expr: 130
+        repeat-expr: 256
 
   t_fat_samples:
     seq:
       - id: offsets
         type: u4
         repeat: expr
-        repeat-expr: 520
+        repeat-expr: 1024
 
   t_data:
     seq:
@@ -56,11 +56,11 @@ types:
       mods:
         type: t_mod(_parent.fat_mods.offsets[_index])
         repeat: expr
-        repeat-expr: 130
+        repeat-expr: 256
       samples:
         type: t_sample(_parent.fat_samples.offsets[_index])
         repeat: expr
-        repeat-expr: 520
+        repeat-expr: 1024
       
   t_mod:
     params:
@@ -76,38 +76,30 @@ types:
     seq:
       - id: name
         size: 32
-      - id: count_sequences
-        type: u2
-      - id: count_patterns
-        type: u2
       - id: count_samples
-        type: u2
-      - id: foo_1
-        type: u2
+        type: u4
       - id: size_patterns
+        type: u4
+      - id: foo_1
         type: u4
       - id: foo_2
         type: u4
       - id: data
-        type: t_mod_data(count_patterns)
+        type: t_mod_data(size_patterns)
 
   t_mod_data:
     params:
-      - id: param_count_patterns
+      - id: param_size_patterns
         type: u4
     seq:
       - id: samples
         type: u2
         repeat: expr
-        repeat-expr: 32
-      - id: sequences
-        type: u1
-        repeat: expr
-        repeat-expr: 128
+        repeat-expr: 256
+      - id: foo
+        size: 80
       - id: patterns
-        size: 2048
-        repeat: expr
-        repeat-expr: param_count_patterns
+        size: param_size_patterns
 
   t_sample:
     params:
@@ -123,12 +115,8 @@ types:
     seq:
       - id: data_size
         type: u4
-      - id: loop_start
-        type: u4
-      - id: loop_end
-        type: u4
       - id: foo
-        size: 4
+        size: 28
       - id: data
         type: t_sample_data(data_size)
 
