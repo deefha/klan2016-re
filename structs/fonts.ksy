@@ -1,7 +1,7 @@
 meta:
-  id: klan_font
+  id: klan_fonts
   file-extension: lib
-  title: KLAN font library
+  title: KLAN fonts library
   application: KLAN discmag engine
   endian: le
   encoding: ASCII

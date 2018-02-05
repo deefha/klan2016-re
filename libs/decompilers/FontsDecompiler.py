@@ -7,14 +7,14 @@ from CommonDecompiler import CommonDecompiler
 
 
 
-class FontDecompiler(CommonDecompiler):
+class FontsDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_MATRICES = "%s%02d/matrices/"
 	PATTERN_FILE_COLORMAP = "%s%02d/colormap.bin"
 	PATTERN_FILE_MATRIX = "%s%03d.bin"
 
 	def fill_meta_data(self):
-		super(FontDecompiler, self).fill_meta_data()
+		super(FontsDecompiler, self).fill_meta_data()
 
 		self.meta.data.fonts = ObjDict()
 

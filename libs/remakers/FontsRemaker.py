@@ -7,7 +7,7 @@ from CommonRemaker import CommonRemaker
 
 
 
-class FontRemaker(CommonRemaker):
+class FontsRemaker(CommonRemaker):
 
 	PATTERN_PATH_MATRICES = "%s%02d/matrices/"
 	PATTERN_FILE_COLORMAP = "%s%02d/colormap.bin"
@@ -44,7 +44,7 @@ class FontRemaker(CommonRemaker):
 
 
 	def fill_scheme(self):
-		super(FontRemaker, self).fill_scheme()
+		super(FontsRemaker, self).fill_scheme()
 
 		self.scheme.fonts = ObjDict()
 
