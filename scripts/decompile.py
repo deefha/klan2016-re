@@ -68,7 +68,7 @@ def decompile(config, issue, source, source_index):
 		decompiler = FontsDecompiler.FontsDecompiler(issue, source, source_index)
 
 	elif source.library == "images":
-		decompiler = ImgsDecompiler.ImgsDecompiler(issue, source, source_index)
+		decompiler = ImagesDecompiler.ImagesDecompiler(issue, source, source_index)
 
 	elif source.library == "audios":
 		decompiler = WaveDecompiler.WaveDecompiler(issue, source, source_index)

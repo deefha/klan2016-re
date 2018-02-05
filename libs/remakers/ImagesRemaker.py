@@ -7,7 +7,7 @@ from CommonRemaker import CommonRemaker
 
 
 
-class ImgsRemaker(CommonRemaker):
+class ImagesRemaker(CommonRemaker):
 
 	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
@@ -83,7 +83,7 @@ class ImgsRemaker(CommonRemaker):
 
 
 	def fill_scheme(self):
-		super(ImgsRemaker, self).fill_scheme()
+		super(ImagesRemaker, self).fill_scheme()
 
 		self.scheme.images = ObjDict()
 

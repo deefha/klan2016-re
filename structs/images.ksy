@@ -1,7 +1,7 @@
 meta:
-  id: klan_imgs
+  id: klan_images
   file-extension: lib
-  title: KLAN imgs library
+  title: KLAN images library
   application: KLAN discmag engine
   endian: le
   encoding: ASCII

@@ -8,7 +8,7 @@ from pprint import pprint
 # specific imports
 from structs.klan_cursors import KlanCursors
 from structs.klan_fonts import KlanFonts
-from structs.klan_imgs import KlanImgs
+from structs.klan_images import KlanImages
 from structs.klan_wave_v1 import KlanWaveV1
 from structs.klan_wave_v2 import KlanWaveV2
 from structs.klan_wave_v3 import KlanWaveV3
@@ -59,7 +59,7 @@ class CommonDecompiler(object):
 			self.library = KlanFonts.from_io(self.iso_content)
 
 		elif self.source.library == "images":
-			self.library = KlanImgs.from_io(self.iso_content)
+			self.library = KlanImages.from_io(self.iso_content)
 
 		elif self.source.library == "audios":
 			if self.source.version == 1:

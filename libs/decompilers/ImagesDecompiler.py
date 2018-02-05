@@ -7,7 +7,7 @@ from CommonDecompiler import CommonDecompiler
 
 
 
-class ImgsDecompiler(CommonDecompiler):
+class ImagesDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_IMAGE = "%s%04d/"
 	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
@@ -15,7 +15,7 @@ class ImgsDecompiler(CommonDecompiler):
 	PATTERN_FILE_HEADER = "%s%04d/header.bin"
 
 	def fill_meta_data(self):
-		super(ImgsDecompiler, self).fill_meta_data()
+		super(ImagesDecompiler, self).fill_meta_data()
 
 		self.meta.data.images = ObjDict()
 
