@@ -10,26 +10,22 @@ from CommonRemaker import CommonRemaker
 
 class FontsRemaker(CommonRemaker):
 
-	PATTERN_PATH_MATRICES = "%s%02d/matrices/"
-	PATTERN_FILE_COLORMAP = "%s%02d/colormap.bin"
-	PATTERN_FILE_MATRIX = "%s%03d.bin"
-
 	def export_assets(self):
-		for font_index, font in self.meta.data.fonts.iteritems():
+		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
 			if font.content:
-				path_characters = "%s%02d/characters/" % (self.PATH_ASSETS, int(font_index))
+				path_characters = "%s%02d/characters/" % (self.PATH_DATA_REMAKED, int(font_index))
 
 				if not os.path.exists(path_characters):
 					os.makedirs(path_characters)
 
-				with open(font.content.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+				with open(font.content.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					font_colormap = f.read()
 
 				i_font = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
 
 				for matrix_index, matrix in font.content.matrices.iteritems():
 					if matrix.content:
-						with open(matrix.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+						with open(matrix.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 							matrix_content = f.read()
 
 						i_character = Image.frombytes("P", (font.content.characters[matrix_index].computed_width, font.content.height), matrix_content)
@@ -39,23 +35,23 @@ class FontsRemaker(CommonRemaker):
 
 						i_font.paste(i_character, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
 
-				i_font.save("%s%02d/%s.gif" % (self.PATH_ASSETS, int(font_index), self.source.library), transparency = 0) # TODO path
-				i_font.save("%s%02d/%s.png" % (self.PATH_ASSETS, int(font_index), self.source.library)) # TODO path
+				i_font.save("%s%02d/%s.gif" % (self.PATH_DATA_REMAKED, int(font_index), self.source.library), transparency = 0) # TODO path
+				i_font.save("%s%02d/%s.png" % (self.PATH_DATA_REMAKED, int(font_index), self.source.library)) # TODO path
 
 
 
-	def fill_scheme(self):
-		super(FontsRemaker, self).fill_scheme()
+	def fill_meta(self):
+		super(FontsRemaker, self).fill_meta()
 
-		self.scheme.fonts = ObjDict()
+		self.meta_remaked.fonts = ObjDict()
 
-		for font_index, font in self.meta.data.fonts.iteritems():
+		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
 			if font.content:
-				path_characters = "assets://%s/%s/%s/%02d/characters/" % (self.issue.number, self.source.library, self.source_index, int(font_index))
+				path_characters = "remaked://%s/%s/%s/%02d/characters/" % (self.issue.number, self.source.library, self.source_index, int(font_index))
 
 				data_font = ObjDict()
 				data_font.height = font.content.height
-				data_font.asset = "assets://%s/%s/%s/%02d/font.gif" % (self.issue.number, self.source.library, self.source_index, int(font_index))
+				data_font.asset = "remaked://%s/%s/%s/%02d/font.gif" % (self.issue.number, self.source.library, self.source_index, int(font_index))
 				data_font.characters = ObjDict()
 
 				for matrix_index, matrix in font.content.matrices.iteritems():
@@ -66,4 +62,4 @@ class FontsRemaker(CommonRemaker):
 
 						data_font.characters[matrix_index] = data_matrix
 
-				self.scheme.fonts[font_index] = data_font
+				self.meta_remaked.fonts[font_index] = data_font

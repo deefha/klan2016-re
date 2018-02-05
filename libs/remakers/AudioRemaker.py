@@ -11,9 +11,7 @@ from CommonRemaker import CommonRemaker
 
 class AudioRemaker(CommonRemaker):
 
-	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
-
-	PATTERN_REMAKED_CONTENT = "remaked://%s/%s/%s/%04d.wav"
+	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%04d.wav"
 
 	def export_assets(self):
 		for wave_index, wave in self.meta_decompiled.data.waves.iteritems():
@@ -75,6 +73,6 @@ class AudioRemaker(CommonRemaker):
 				data_wave = ObjDict()
 				#data_wave.width = wave.content.width
 				#data_wave.height = wave.content.height
-				data_wave.asset = self.PATTERN_REMAKED_CONTENT % (self.issue.number, self.source.library, self.source_index, int(wave_index))
+				data_wave.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
 				self.meta_remaked.waves[wave_index] = data_wave

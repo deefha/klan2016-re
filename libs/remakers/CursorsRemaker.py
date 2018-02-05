@@ -10,29 +10,31 @@ from CommonRemaker import CommonRemaker
 
 class CursorsRemaker(CommonRemaker):
 
+	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%02d.png"
+
 	def export_assets(self):
-		for frame_index, frame in self.meta.data.frames.iteritems():
+		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
 			if frame.content:
-				with open(self.meta.data.colortables[str(frame.content.id)].content.data.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+				with open(self.meta_decompiled.data.colortables[str(frame.content.id)].content.data.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					frame_colormap = f.read()
 
-				with open(frame.content.data.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+				with open(frame.content.data.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					frame_content = f.read()
 
 					i = Image.frombytes("P", (32, 32), frame_content)
 					i.putpalette(frame_colormap)
-					i.save("%s%02d.png" % (self.PATH_ASSETS, int(frame_index)))
+					i.save("%s%02d.png" % (self.PATH_DATA_REMAKED, int(frame_index)))
 
 
 
-	def fill_scheme(self):
-		super(CursorsRemaker, self).fill_scheme()
+	def fill_meta(self):
+		super(CursorsRemaker, self).fill_meta()
 
-		self.scheme.frames = ObjDict()
+		self.meta_remaked.frames = ObjDict()
 
-		for frame_index, frame in self.meta.data.frames.iteritems():
+		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
 			if frame.content:
 				data_frame = ObjDict()
-				data_frame.asset = "assets://%s/%s/%s/%02d.png" % (self.issue.number, self.source.library, self.source_index, int(frame_index))
+				data_frame.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(frame_index))
 
-				self.scheme.frames[frame_index] = data_frame
+				self.meta_remaked.frames[frame_index] = data_frame
