@@ -17,6 +17,10 @@ class MusicDecompiler(CommonDecompiler):
 	PATTERN_FILE_MOD_PATTERNS = "%s/mods/%04d/patterns/content.bin"
 	PATTERN_FILE_SAMPLE = "%s/samples/%04d.bin"
 
+	PATTERN_DECOMPILED_MOD_PATTERN = "blobs://%s/%s/%s/mods/%04d/patterns/%04d.bin"
+	PATTERN_DECOMPILED_MOD_PATTERNS = "blobs://%s/%s/%s/mods/%04d/patterns/content.bin"
+	PATTERN_DECOMPILED_SAMPLE = "blobs://%s/%s/%s/samples/%04d.bin"
+
 	def fill_meta_data(self):
 		super(MusicDecompiler, self).fill_meta_data()
 
@@ -37,8 +41,8 @@ class MusicDecompiler(CommonDecompiler):
 				if self.source.version == 1:
 					print "Mod #%d: param_offset=%d, name='%s', count_sequences=%d, count_patterns=%d, count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_sequences, mod.content.count_patterns, mod.content.count_samples, mod.content.size_patterns)
 
-					path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
-					path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
+					path_mod = self.PATTERN_PATH_MOD % (self.PATH_DATA, mod_index)
+					path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_DATA, mod_index)
 
 					if not os.path.exists(path_mod):
 						os.makedirs(path_mod)
@@ -62,9 +66,9 @@ class MusicDecompiler(CommonDecompiler):
 					data_mod.content.data.patterns = ObjDict()
 
 					for pattern_index, pattern in enumerate(mod.content.data.patterns):
-						file_pattern = self.PATTERN_FILE_MOD_PATTERN % (self.PATH_BLOBS, mod_index, pattern_index)
+						file_pattern = self.PATTERN_FILE_MOD_PATTERN % (self.PATH_DATA, mod_index, pattern_index)
 
-						data_mod.content.data.patterns[str(pattern_index)] = "blobs://%s/%s/%s/mods/%04d/patterns/%04d.bin" % (self.issue.number, self.source.library, self.source_index, mod_index, pattern_index)
+						data_mod.content.data.patterns[str(pattern_index)] = self.PATTERN_DECOMPILED_MOD_PATTERN % (self.issue.number, self.source.library, self.source_index, mod_index, pattern_index)
 
 						print "\tPattern #%d" % pattern_index
 						f = open(file_pattern, "wb")
@@ -74,8 +78,8 @@ class MusicDecompiler(CommonDecompiler):
 				elif self.source.version == 2:
 					print "Mod #%d: param_offset=%d, name='%s', count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_samples, mod.content.size_patterns)
 
-					path_mod = self.PATTERN_PATH_MOD % (self.PATH_BLOBS, mod_index)
-					path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
+					path_mod = self.PATTERN_PATH_MOD % (self.PATH_DATA, mod_index)
+					path_mod_patterns = self.PATTERN_PATH_MOD_PATTERNS % (self.PATH_DATA, mod_index)
 
 					if not os.path.exists(path_mod):
 						os.makedirs(path_mod)
@@ -94,9 +98,9 @@ class MusicDecompiler(CommonDecompiler):
 					data_mod.content.data.param_size_patterns = mod.content.data.param_size_patterns
 					data_mod.content.data.samples = mod.content.data.samples
 
-					file_patterns = self.PATTERN_FILE_MOD_PATTERNS % (self.PATH_BLOBS, mod_index)
+					file_patterns = self.PATTERN_FILE_MOD_PATTERNS % (self.PATH_DATA, mod_index)
 
-					data_mod.content.data.patterns = "blobs://%s/%s/%s/mods/%04d/patterns/content.bin" % (self.issue.number, self.source.library, self.source_index, mod_index)
+					data_mod.content.data.patterns = self.PATTERN_DECOMPILED_MOD_PATTERNS % (self.issue.number, self.source.library, self.source_index, mod_index)
 
 					print "\tPatterns"
 					f = open(file_patterns, "wb")
@@ -119,7 +123,7 @@ class MusicDecompiler(CommonDecompiler):
 				if self.source.version == 1:
 					print "Sample #%d: param_offset=%d" % (sample_index, sample.param_offset)
 
-					path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_BLOBS)
+					path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_DATA)
 
 					if not os.path.exists(path_sample):
 						os.makedirs(path_sample)
@@ -133,9 +137,9 @@ class MusicDecompiler(CommonDecompiler):
 					data_sample.content.data = ObjDict()
 					data_sample.content.data.param_data_size = sample.content.data.param_data_size
 
-					file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_BLOBS, sample_index)
+					file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_DATA, sample_index)
 
-					data_sample.content.data.content = "blobs://%s/%s/%s/samples/%04d.bin" % (self.issue.number, self.source.library, self.source_index, sample_index)
+					data_sample.content.data.content = self.PATTERN_DECOMPILED_SAMPLE % (self.issue.number, self.source.library, self.source_index, sample_index)
 
 					print "\tContent"
 					f = open(file_sample, "wb")
@@ -145,7 +149,7 @@ class MusicDecompiler(CommonDecompiler):
 				elif self.source.version == 2:
 					print "Sample #%d: param_offset=%d" % (sample_index, sample.param_offset)
 
-					path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_BLOBS)
+					path_sample = self.PATTERN_PATH_SAMPLE % (self.PATH_DATA)
 
 					if not os.path.exists(path_sample):
 						os.makedirs(path_sample)
@@ -157,9 +161,9 @@ class MusicDecompiler(CommonDecompiler):
 					data_sample.content.data = ObjDict()
 					data_sample.content.data.param_data_size = sample.content.data.param_data_size
 
-					file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_BLOBS, sample_index)
+					file_sample = self.PATTERN_FILE_SAMPLE % (self.PATH_DATA, sample_index)
 
-					data_sample.content.data.content = "blobs://%s/%s/%s/samples/%04d.bin" % (self.issue.number, self.source.library, self.source_index, sample_index)
+					data_sample.content.data.content = self.PATTERN_DECOMPILED_SAMPLE % (self.issue.number, self.source.library, self.source_index, sample_index)
 
 					print "\tContent"
 					f = open(file_sample, "wb")

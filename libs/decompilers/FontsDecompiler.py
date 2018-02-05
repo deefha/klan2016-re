@@ -10,8 +10,12 @@ from CommonDecompiler import CommonDecompiler
 class FontsDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_MATRICES = "%s%02d/matrices/"
+
 	PATTERN_FILE_COLORMAP = "%s%02d/colormap.bin"
 	PATTERN_FILE_MATRIX = "%s%03d.bin"
+
+	PATTERN_DECOMPILED_COLORMAP = "decompiled://%s/%s/%s/%02d/colormap.bin"
+	PATTERN_DECOMPILED_MATRIX = "decompiled://%s/%s/%s/%02d/matrices/%03d.bin"
 
 	def fill_meta_data(self):
 		super(FontsDecompiler, self).fill_meta_data()
@@ -26,9 +30,9 @@ class FontsDecompiler(CommonDecompiler):
 			if font.content:
 				print "Font #%d: param_offset=%d, matrices_size=%d, height=%d, computed_matrices_offset=%d" % (font_index, font.param_offset, font.content.matrices_size, font.content.height, font.content.computed_matrices_offset)
 
-				file_colormap = self.PATTERN_FILE_COLORMAP % (self.PATH_BLOBS, font_index)
+				file_colormap = self.PATTERN_FILE_COLORMAP % (self.PATH_DATA, font_index)
 
-				path_matrices = self.PATTERN_PATH_MATRICES % (self.PATH_BLOBS, font_index)
+				path_matrices = self.PATTERN_PATH_MATRICES % (self.PATH_DATA, font_index)
 
 				if not os.path.exists(path_matrices):
 					os.makedirs(path_matrices)
@@ -36,7 +40,7 @@ class FontsDecompiler(CommonDecompiler):
 				data_font.content.matrices_size = font.content.matrices_size
 				data_font.content.height = font.content.height
 				data_font.content.computed_matrices_offset = font.content.computed_matrices_offset
-				data_font.content.colormap = "blobs://%s/%s/%s/%02d/colormap.bin" % (self.issue.number, self.source.library, self.source_index, font_index)
+				data_font.content.colormap = self.PATTERN_DECOMPILED_COLORMAP % (self.issue.number, self.source.library, self.source_index, font_index)
 				data_font.content.characters = ObjDict()
 				data_font.content.matrices = ObjDict()
 
@@ -66,7 +70,7 @@ class FontsDecompiler(CommonDecompiler):
 					if matrix.content:
 						print "\t\tMatrix #%d: param_offset=%d, param_width=%d, param_height=%d" % (matrix_index, matrix.param_offset, matrix.param_width, matrix.param_height)
 
-						data_matrix.content = "blobs://%s/%s/%s/%02d/matrices/%03d.bin" % (self.issue.number, self.source.library, self.source_index, font_index, matrix_index)
+						data_matrix.content = self.PATTERN_DECOMPILED_MATRIX % (self.issue.number, self.source.library, self.source_index, font_index, matrix_index)
 
 						file_matrix = self.PATTERN_FILE_MATRIX % (path_matrices, matrix_index)
 

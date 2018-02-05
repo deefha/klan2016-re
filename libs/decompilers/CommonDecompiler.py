@@ -15,7 +15,12 @@ from structs.klan_images import KlanImages
 from structs.klan_music_v1 import KlanMusicV1
 from structs.klan_music_v2 import KlanMusicV2
 
-PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
+ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
+
+PATH_PHASE = "%s/decompiled/" % ROOT_DATA
+PATH_ORIGINS = "%s/origins/" % ROOT_DATA
+
+PATTERN_FILE_ORIGIN = "%s%%s.iso" % PATH_ORIGINS
 
 
 
@@ -26,26 +31,19 @@ class CommonDecompiler(object):
 		self.source = source
 		self.source_index = source_index
 
-		self.PATH_BLOBS = "%sblobs/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
-		self.PATH_META = "%smeta/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.PATH_DATA = "%s/%s/%s/%s/" % (PATH_PHASE, self.issue.number, self.source.library, self.source_index)
 
-		self.FILE_META = "%smeta/%s/%s/%s.json" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.FILE_META = "%s/%s/%s/%s.json" % (PATH_PHASE, self.issue.number, self.source.library, self.source_index)
 
 		self.meta = ObjDict()
 
-		if not os.path.exists(self.PATH_BLOBS):
-			os.makedirs(self.PATH_BLOBS)
-
-		if not os.path.exists(self.PATH_META):
-			os.makedirs(self.PATH_META)
+		if not os.path.exists(self.PATH_DATA):
+			os.makedirs(self.PATH_DATA)
 
 		iso = PyCdlib()
 		self.iso_content = BytesIO()
 
-		iso.open("%sorigins/%s.iso" % (PATH_DATA, self.issue.number))
-
-		#for child in iso.list_dir(iso_path='/'):
-			#print(child.file_identifier())
+		iso.open(PATTERN_FILE_ORIGIN % self.issue.number)
 
 		iso.get_file_from_iso_fp(self.iso_content, iso_path="/%s;1" % self.source.path)
 		iso.close()

@@ -10,7 +10,10 @@ from CommonDecompiler import CommonDecompiler
 class AudioDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_WAVE = "%s%04d/"
+
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
+
+	PATTERN_DECOMPILED_CONTENT = "decompiled://%s/%s/%s/%04d/content.bin"
 
 	def fill_meta_data(self):
 		super(AudioDecompiler, self).fill_meta_data()
@@ -25,9 +28,9 @@ class AudioDecompiler(CommonDecompiler):
 			if wave.content:
 				print "Wave #%d: param_offset=%d, data_size=%d, wave_size=%d, mode=%d" % (wave_index, wave.param_offset, wave.content.data_size, wave.content.wave_size, wave.content.mode)
 
-				file_content = self.PATTERN_FILE_CONTENT % (self.PATH_BLOBS, wave_index)
+				file_content = self.PATTERN_FILE_CONTENT % (self.PATH_DATA, wave_index)
 
-				path_wave = self.PATTERN_PATH_WAVE % (self.PATH_BLOBS, wave_index)
+				path_wave = self.PATTERN_PATH_WAVE % (self.PATH_DATA, wave_index)
 
 				if not os.path.exists(path_wave):
 					os.makedirs(path_wave)
@@ -46,7 +49,7 @@ class AudioDecompiler(CommonDecompiler):
 					data_wave.content.data.title = ""
 					#data_wave.content.data.title = wave.content.data.title
 
-				data_wave.content.data.content = "blobs://%s/%s/%s/%04d/content.bin" % (self.issue.number, self.source.library, self.source_index, wave_index)
+				data_wave.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, wave_index)
 
 				print "\tContent"
 				f = open(file_content, "wb")

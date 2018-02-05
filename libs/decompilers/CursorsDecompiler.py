@@ -10,12 +10,19 @@ from CommonDecompiler import CommonDecompiler
 class CursorsDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_FRAMES = "%sframes/%02d/"
+	PATTERN_PATH_FOO_1 = "%sfoo_1/"
 	PATTERN_PATH_FOO_2 = "%sfoo_2/%02d/"
 	PATTERN_PATH_COLORTABLES = "%scolortables/%02d/"
 
 	PATTERN_FILE_FRAME = "%sframes/%02d/content.bin"
+	PATTERN_FILE_FOO_1 = "%sfoo_1/content.bin"
 	PATTERN_FILE_FOO_2 = "%sfoo_2/%02d/content.bin"
 	PATTERN_FILE_COLORTABLE = "%scolortables/%02d/content.bin"
+
+	PATTERN_DECOMPILED_FRAME = "decompiled://%s/%s/%s/frames/%02d/content.bin"
+	PATTERN_DECOMPILED_FOO_1 = "decompiled://%s/%s/%s/foo_1/content.bin"
+	PATTERN_DECOMPILED_FOO_2 = "decompiled://%s/%s/%s/foo_2/%02d/content.bin"
+	PATTERN_DECOMPILED_COLORTABLE = "decompiled://%s/%s/%s/colortables/%02d/content.bin"
 
 	def fill_meta_fat(self):
 		self.meta.fat = ObjDict()
@@ -54,9 +61,9 @@ class CursorsDecompiler(CommonDecompiler):
 
 			print "Frame #%d: param_offset=%d, param_index=%d, x=%d, y=%d, id=%d" % (frame_index, frame.param_offset, frame.param_index, frame.content.x, frame.content.y, frame.content.id)
 
-			file_frame = self.PATTERN_FILE_FRAME % (self.PATH_BLOBS, frame_index)
+			file_frame = self.PATTERN_FILE_FRAME % (self.PATH_DATA, frame_index)
 
-			path_frames = self.PATTERN_PATH_FRAMES % (self.PATH_BLOBS, frame_index)
+			path_frames = self.PATTERN_PATH_FRAMES % (self.PATH_DATA, frame_index)
 
 			if not os.path.exists(path_frames):
 				os.makedirs(path_frames)
@@ -64,7 +71,7 @@ class CursorsDecompiler(CommonDecompiler):
 			data_frame.content.x = frame.content.x
 			data_frame.content.y = frame.content.y
 			data_frame.content.id = frame.content.id
-			data_frame.content.data = "blobs://%s/%s/%s/frames/%02d/content.bin" % (self.issue.number, self.source.library, self.source_index, frame_index)
+			data_frame.content.data = self.PATTERN_DECOMPILED_FRAME % (self.issue.number, self.source.library, self.source_index, frame_index)
 
 			print "\tData"
 			f = open(file_frame, "wb")
@@ -75,7 +82,22 @@ class CursorsDecompiler(CommonDecompiler):
 
 		self.meta.data.foo_1.param_offset = self.library.data.foo_1.param_offset
 		self.meta.data.foo_1.content = ObjDict()
-		self.meta.data.foo_1.content.data =  "blobs://%s/%s/%s/foo_1/content.bin" % (self.issue.number, self.source.library, self.source_index)
+
+		print "foo_1: param_offset=%d" % self.meta.data.foo_1.param_offset
+
+		file_foo_1 = self.PATTERN_FILE_FOO_1 % self.PATH_DATA
+
+		path_foo_1 = self.PATTERN_PATH_FOO_1 % self.PATH_DATA
+
+		if not os.path.exists(path_foo_1):
+			os.makedirs(path_foo_1)
+
+		self.meta.data.foo_1.content.data = self.PATTERN_DECOMPILED_FOO_1 % (self.issue.number, self.source.library, self.source_index)
+
+		print "\tData"
+		f = open(file_foo_1, "wb")
+		f.write(self.library.data.foo_1.content.data)
+		f.close
 
 		for foo_2_index, foo_2 in enumerate(self.library.data.foo_2):
 			data_foo_2 = ObjDict()
@@ -84,14 +106,14 @@ class CursorsDecompiler(CommonDecompiler):
 
 			print "foo_2 #%d: param_offset=%d" % (foo_2_index, foo_2.param_offset)
 
-			file_foo_2 = self.PATTERN_FILE_FOO_2 % (self.PATH_BLOBS, foo_2_index)
+			file_foo_2 = self.PATTERN_FILE_FOO_2 % (self.PATH_DATA, foo_2_index)
 
-			path_foo_2 = self.PATTERN_PATH_FOO_2 % (self.PATH_BLOBS, foo_2_index)
+			path_foo_2 = self.PATTERN_PATH_FOO_2 % (self.PATH_DATA, foo_2_index)
 
 			if not os.path.exists(path_foo_2):
 				os.makedirs(path_foo_2)
 
-			data_foo_2.content.data = "blobs://%s/%s/%s/foo_2/%02d/content.bin" % (self.issue.number, self.source.library, self.source_index, foo_2_index)
+			data_foo_2.content.data = self.PATTERN_DECOMPILED_FOO_2 % (self.issue.number, self.source.library, self.source_index, foo_2_index)
 
 			print "\tData"
 			f = open(file_foo_2, "wb")
@@ -108,14 +130,14 @@ class CursorsDecompiler(CommonDecompiler):
 
 			print "Colortable #%d: param_offset=%d, param_index=%d" % (colortable_index, colortable.param_offset, colortable.param_index)
 
-			file_colortable = self.PATTERN_FILE_COLORTABLE % (self.PATH_BLOBS, colortable_index)
+			file_colortable = self.PATTERN_FILE_COLORTABLE % (self.PATH_DATA, colortable_index)
 
-			path_colortables = self.PATTERN_PATH_COLORTABLES % (self.PATH_BLOBS, colortable_index)
+			path_colortables = self.PATTERN_PATH_COLORTABLES % (self.PATH_DATA, colortable_index)
 
 			if not os.path.exists(path_colortables):
 				os.makedirs(path_colortables)
 
-			data_colortable.content.data = "blobs://%s/%s/%s/colortables/%02d/content.bin" % (self.issue.number, self.source.library, self.source_index, colortable_index)
+			data_colortable.content.data = self.PATTERN_DECOMPILED_COLORTABLE % (self.issue.number, self.source.library, self.source_index, colortable_index)
 
 			print "\tData"
 			f = open(file_colortable, "wb")
