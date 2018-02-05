@@ -1,7 +1,5 @@
-data/assets/**/
-data/blobs/**/
-data/meta/**/
+data/decompiled/**/
+data/remaked/**/
 data/origins/*.iso
 data/origins/*.check
-data/schemes/**/
 libs/**/*.pyc
