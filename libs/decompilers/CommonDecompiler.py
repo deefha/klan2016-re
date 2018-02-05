@@ -112,6 +112,5 @@ class CommonDecompiler(object):
 
 
 	def export_meta(self):
-		f = open(self.FILE_META, "w")
-		f.write(self.meta.dumps())
-		f.close
+		with open(self.FILE_META, "w") as f:
+			f.write(self.meta.dumps())
