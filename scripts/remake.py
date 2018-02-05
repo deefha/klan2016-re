@@ -79,8 +79,8 @@ def remake(config, issue, source, source_index):
 	else:
 		return False
 
-	remaker.fill_scheme()
-	remaker.export_scheme()
+	remaker.fill_meta()
+	remaker.export_meta()
 	remaker.export_assets()
 
 	return True
