@@ -90,7 +90,6 @@ def decompile(config, issue, source, source_index):
 
 def main():
 	config = KlanTools.config_load(CONFIG_PATH)
-
 	decompile_loop_issues(config, ARG_ISSUE_NUMBER, ARG_LIBRARY)
 
 

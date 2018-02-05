@@ -1,9 +1,10 @@
-import os, sys, pprint
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
-import wave as wavelib
-import audioop
 
+# specific imports
+import audioop
+import wave as wavelib
 from CommonRemaker import CommonRemaker
 
 
@@ -72,6 +73,6 @@ class AudioRemaker(CommonRemaker):
 				data_wave = ObjDict()
 				#data_wave.width = wave.content.width
 				#data_wave.height = wave.content.height
-				data_wave.asset = "assets://%s/%s/%04d.wav" % (self.issue, self.source, int(wave_index))
+				data_wave.asset = "assets://%s/%s/%s/%04d.wav" % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
 				self.scheme.waves[wave_index] = data_wave

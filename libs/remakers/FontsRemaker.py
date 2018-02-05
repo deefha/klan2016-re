@@ -1,8 +1,9 @@
-import os, sys, pprint
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
-from PIL import Image
 
+# specific imports
+from PIL import Image
 from CommonRemaker import CommonRemaker
 
 
@@ -38,8 +39,8 @@ class FontsRemaker(CommonRemaker):
 
 						i_font.paste(i_character, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
 
-				i_font.save("%s%02d/%s.gif" % (self.PATH_ASSETS, int(font_index), self.source), transparency = 0)
-				i_font.save("%s%02d/%s.png" % (self.PATH_ASSETS, int(font_index), self.source))
+				i_font.save("%s%02d/%s.gif" % (self.PATH_ASSETS, int(font_index), self.source.library), transparency = 0) # TODO path
+				i_font.save("%s%02d/%s.png" % (self.PATH_ASSETS, int(font_index), self.source.library)) # TODO path
 
 
 
@@ -50,11 +51,11 @@ class FontsRemaker(CommonRemaker):
 
 		for font_index, font in self.meta.data.fonts.iteritems():
 			if font.content:
-				path_characters = "assets://%s/%s/%02d/characters/" % (self.issue, self.source, int(font_index))
+				path_characters = "assets://%s/%s/%s/%02d/characters/" % (self.issue.number, self.source.library, self.source_index, int(font_index))
 
 				data_font = ObjDict()
 				data_font.height = font.content.height
-				data_font.asset = "assets://%s/%s/%02d/font.gif" % (self.issue, self.source, int(font_index))
+				data_font.asset = "assets://%s/%s/%s/%02d/font.gif" % (self.issue.number, self.source.library, self.source_index, int(font_index))
 				data_font.characters = ObjDict()
 
 				for matrix_index, matrix in font.content.matrices.iteritems():

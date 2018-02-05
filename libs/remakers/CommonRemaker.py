@@ -1,6 +1,9 @@
-import os, sys, pprint, datetime
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
+from pprint import pprint
+
+# specific imports
 
 PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -8,19 +11,20 @@ PATH_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
 class CommonRemaker(object):
 
-	def __init__(self, issue, source):
+	def __init__(self, issue, source, source_index):
 		self.issue = issue
 		self.source = source
+		self.source_index = source_index
 
 		self.ROOT_BLOBS = "%sblobs/" % PATH_DATA
 
-		self.PATH_BLOBS = "%sblobs/%s/%s/" % (PATH_DATA, self.issue, self.source)
-		self.PATH_META = "%smeta/%s/%s/" % (PATH_DATA, self.issue, self.source)
-		self.PATH_ASSETS = "%sassets/%s/%s/" % (PATH_DATA, self.issue, self.source)
-		self.PATH_SCHEMES = "%sschemes/%s/%s/" % (PATH_DATA, self.issue, self.source)
+		self.PATH_BLOBS = "%sblobs/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.PATH_META = "%smeta/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.PATH_ASSETS = "%sassets/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.PATH_SCHEMES = "%sschemes/%s/%s/%s/" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
 
-		self.FILE_META = "%smeta/%s/%s.json" % (PATH_DATA, self.issue, self.source)
-		self.FILE_SCHEME = "%sschemes/%s/%s.json" % (PATH_DATA, self.issue, self.source)
+		self.FILE_META = "%smeta/%s/%s/%s.json" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
+		self.FILE_SCHEME = "%sschemes/%s/%s/%s.json" % (PATH_DATA, self.issue.number, self.source.library, self.source_index)
 
 		if not os.path.exists(self.PATH_ASSETS):
 			os.makedirs(self.PATH_ASSETS)
@@ -40,8 +44,8 @@ class CommonRemaker(object):
 
 	def fill_scheme(self):
 		self.scheme.header = ObjDict()
-		self.scheme.header.issue = self.issue
-		self.scheme.header.source = self.source
+		self.scheme.header.issue = self.issue.number
+		self.scheme.header.library = self.source.library
 
 		if self.meta.header.filedate and self.meta.header.filetime:
 			year = ((self.meta.header.filedate & 0b1111111000000000) >> 9) + 1980

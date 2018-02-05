@@ -38,9 +38,9 @@ issues:
         - path: TEXTY/*.P
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "01":
     number: "01"
@@ -86,9 +86,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "02":
     number: "02"
@@ -134,9 +134,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "03":
     number: "03"
@@ -185,9 +185,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "04":
     number: "04"
@@ -236,9 +236,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "05":
     number: "05"
@@ -287,9 +287,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "06":
     number: "06"
@@ -344,9 +344,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "07":
     number: "07"
@@ -401,9 +401,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "08":
     number: "08"
@@ -458,9 +458,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "09":
     number: "09"
@@ -515,9 +515,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "10":
     number: "10"
@@ -572,9 +572,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "11":
     number: "11"
@@ -629,9 +629,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "12":
     number: "12"
@@ -686,9 +686,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "13":
     number: "13"
@@ -743,9 +743,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "14":
     number: "14"
@@ -800,9 +800,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "15":
     number: "15"
@@ -857,9 +857,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "16":
     number: "16"
@@ -914,9 +914,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "17":
     number: "17"
@@ -971,9 +971,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "18":
     number: "18"
@@ -1028,9 +1028,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "19":
     number: "19"
@@ -1085,9 +1085,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "20":
     number: "20"
@@ -1142,9 +1142,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "21":
     number: "21"
@@ -1199,9 +1199,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "22":
     number: "22"
@@ -1256,9 +1256,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "23":
     number: "23"
@@ -1313,9 +1313,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "24":
     number: "24"
@@ -1370,9 +1370,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "25":
     number: "25"
@@ -1427,9 +1427,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "26":
     number: "26"
@@ -1484,9 +1484,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "27":
     number: "27"
@@ -1541,9 +1541,9 @@ issues:
         - path: TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "28":
     number: "28"
@@ -1605,9 +1605,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "29":
     number: "29"
@@ -1669,9 +1669,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "30":
     number: "30"
@@ -1733,9 +1733,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "31":
     number: "31"
@@ -1794,9 +1794,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "32-33":
     number: "32-33"
@@ -1855,9 +1855,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "34":
     number: "34"
@@ -1916,9 +1916,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "35":
     number: "35"
@@ -1977,9 +1977,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "36":
     number: "36"
@@ -2038,9 +2038,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "37":
     number: "37"
@@ -2099,9 +2099,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "38":
     number: "38"
@@ -2160,9 +2160,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "39":
     number: "39"
@@ -2221,9 +2221,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "40":
     number: "40"
@@ -2282,9 +2282,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "41":
     number: "41"
@@ -2343,9 +2343,9 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1
   "42":
     number: "42"
@@ -2404,7 +2404,7 @@ issues:
         - path: KLAN/TEXTS.LIB
           library: texts
           version: 1
-      videos:
+      video:
         - path: KLAN/ANIM.LIB
-          library: videos
+          library: video
           version: 1

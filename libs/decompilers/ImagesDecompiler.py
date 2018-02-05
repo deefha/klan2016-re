@@ -44,7 +44,7 @@ class ImagesDecompiler(CommonDecompiler):
 				data_image.content.data.param_data_size = image.content.data.param_data_size
 
 				if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257:
-					data_image.content.data.colormap = "blobs://%s/%s/%s/%04d/colormap.bin" % (self.issue, self.source, self.source_index, image_index)
+					data_image.content.data.colormap = "blobs://%s/%s/%s/%04d/colormap.bin" % (self.issue.number, self.source.library, self.source_index, image_index)
 
 					print "\tColormap"
 					f = open(file_colormap, "wb")
@@ -54,14 +54,14 @@ class ImagesDecompiler(CommonDecompiler):
 				elif image.content.mode == 4:
 					data_image.content.data.foo = image.content.data.foo
 					data_image.content.data.header_size = image.content.data.header_size
-					data_image.content.data.header = "blobs://%s/%s/%s/%04d/header.bin" % (self.issue, self.source, self.source_index, image_index)
+					data_image.content.data.header = "blobs://%s/%s/%s/%04d/header.bin" % (self.issue.number, self.source.library, self.source_index, image_index)
 
 					print "\tHeader"
 					f = open(file_header, "wb")
 					f.write(image.content.data.header)
 					f.close
 
-				data_image.content.data.content = "blobs://%s/%s/%s/%04d/content.bin" % (self.issue, self.source, self.source_index, image_index)
+				data_image.content.data.content = "blobs://%s/%s/%s/%04d/content.bin" % (self.issue.number, self.source.library, self.source_index, image_index)
 
 				print "\tContent"
 				f = open(file_content, "wb")

@@ -25,20 +25,15 @@ ISSUE_PATH = "../data/origins/%s.iso"
 
 
 
-#iso = pycdlib.PyCdlib()
-#extracted = BytesIO()
-
-#iso.open("/mnt/bigboss/backup/deefha/klan2011/klan-00.iso")
-
-##for child in iso.list_dir(iso_path='/'):
-	##print(child.file_identifier())
-
-#iso.get_file_from_iso_fp(extracted, iso_path="/MODS.LIB;1")
-#iso.close()
-
-#extracted.seek(0)
-
-#library = KlanModsV1.from_io(extracted)
+def init_loop_issues(config, issue_number):
+	if issue_number == "all":
+		for issue_id, issue in sorted(config.issues.iteritems()):
+			init(config, issue)
+	else:
+		try:
+			init(config, config.issues[issue_number])
+		except KeyError, e:
+			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
 
 
 
@@ -115,15 +110,7 @@ def init(config, issue):
 
 def main():
 	config = KlanTools.config_load(CONFIG_PATH)
-
-	if ARG_ISSUE_NUMBER == "all":
-		for issue_id, issue in sorted(config.issues.iteritems()):
-			init(config, issue)
-	else:
-		try:
-			init(config, config.issues[ARG_ISSUE_NUMBER])
-		except KeyError, e:
-			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+	init_loop_issues(config, ARG_ISSUE_NUMBER)
 
 
 

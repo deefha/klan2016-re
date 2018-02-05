@@ -1,10 +1,11 @@
-import os, sys, pprint
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
-import struct
-import binascii
-import array
 
+# specific imports
+import array
+import binascii
+import struct
 from CommonRemaker import CommonRemaker
 
 
@@ -122,6 +123,6 @@ class MusicRemaker(CommonRemaker):
 				data_mod = ObjDict()
 				#data_mod.width = mod.content.width
 				#data_mod.height = mod.content.height
-				data_mod.asset = "assets://%s/%s/%04d.mod" % (self.issue, self.source, int(mod_index))
+				data_mod.asset = "assets://%s/%s/%s/%04d.mod" % (self.issue.number, self.source.library, self.source_index, int(mod_index))
 
 				self.scheme.mods[mod_index] = data_mod

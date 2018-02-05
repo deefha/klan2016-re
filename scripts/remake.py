@@ -1,70 +1,80 @@
 #!/usr/bin/python
 
-import os, sys
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
+# common imports
+import os, sys, datetime
+from pprint import pprint
+from colorama import init as colorama_init, Fore, Back, Style
 
+# specific imports
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
+import tools.KlanTools as KlanTools
 from remakers import *
 
-ISSUES = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32-33", "34", "35", "36", "37", "38", "39", "40", "41", "42"]
-SOURCES = ["font", "font2", "font_lt", "font2_lt", "imgs", "image1", "cache", "wave", "mods", "bgm"]
 
 
+colorama_init(autoreset=True)
 
 if len(sys.argv) != 3:
 	# TODO message
 	sys.exit()
 
-ARG_ISSUE = sys.argv[1]
-ARG_SOURCE = sys.argv[2]
+ARG_ISSUE_NUMBER = sys.argv[1]
+ARG_LIBRARY = sys.argv[2]
+
+CONFIG_PATH = "../data/config.yml"
+CHECK_PATH = "../data/origins/%s.check"
+ISSUE_PATH = "../data/origins/%s.iso"
 
 
 
-def remake_issue(issue, source):
-	if (source == "all"):
-		for source in SOURCES:
-			remake_source(issue, source)
+def remake_loop_issues(config, issue_number, library):
+	if issue_number == "all":
+		for issue_id, issue in sorted(config.issues.iteritems()):
+			remake_loop_libraries(config, issue, library)
 	else:
-		remake_source(issue, source)
+		try:
+			remake_loop_libraries(config, config.issues[issue_number], library)
+		except KeyError, e:
+			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+
+
+
+def remake_loop_libraries(config, issue, library):
+	if library == "all":
+		for library, sources in issue.libraries.iteritems():
+			if sources:
+				for source_index, source in enumerate(sources):
+					remake(config, issue, source, source_index)
+	else:
+		if issue.libraries[library]:
+			for source_index, source in enumerate(issue.libraries[library]):
+				remake(config, issue, source, source_index)
 
 	return True
 
 
 
-def remake_source(issue, source):
-	if issue < "01" and source == "font2":
-		return False
-	if issue < "01" and source == "image1":
-		return False
-	if issue < "28" and source == "font_lt":
-		return False
-	if issue < "28" and source == "font2_lt":
-		return False
-	if issue < "28" and source == "cache":
-		return False
-	if issue < "28" and source == "bgm":
-		return False
-	if issue >= "28" and source == "image1":
-		return False
-	if issue >= "28" and source == "mods":
-		return False
+def remake(config, issue, source, source_index):
+	print "Issue: %s" % issue.number
+	print "Path: %s" % source.path
+	print "Library: %s" % source.library
+	print "Version: %s" % source.version
+	print "Index: %s" % source_index
 
-	print "Issue: %s" % issue
-	print "Source: %s" % source
+	if source.library == "cursors":
+		remaker = CursorsRemaker.CursorsRemaker(issue, source, source_index)
 
-	if source == "cursors":
-		remaker = CursorsRemaker.CursorsRemaker(issue, source)
+	elif source.library == "fonts":
+		remaker = FontsRemaker.FontsRemaker(issue, source, source_index)
 
-	elif source == "font" or source == "font2" or source == "font_lt" or source == "font2_lt":
-		remaker = FontRemaker.FontRemaker(issue, source)
+	elif source.library == "images":
+		remaker = ImagesRemaker.ImagesRemaker(issue, source, source_index)
 
-	elif source == "imgs" or source == "image1" or source == "cache":
-		remaker = ImgsRemaker.ImgsRemaker(issue, source)
+	elif source.library == "audio":
+		remaker = AudioRemaker.AudioRemaker(issue, source, source_index)
 
-	elif source == "wave":
-		remaker = WaveRemaker.WaveRemaker(issue, source)
-
-	elif source == "mods" or source == "bgm":
-		remaker = ModsRemaker.ModsRemaker(issue, source)
+	elif source.library == "music":
+		remaker = MusicRemaker.MusicRemaker(issue, source, source_index)
 
 	else:
 		return False
@@ -78,11 +88,8 @@ def remake_source(issue, source):
 
 
 def main():
-	if ARG_ISSUE == "all":
-		for issue in ISSUES:
-			remake_issue(issue, ARG_SOURCE)
-	else:
-		remake_issue(ARG_ISSUE, ARG_SOURCE)
+	config = KlanTools.config_load(CONFIG_PATH)
+	remake_loop_issues(config, ARG_ISSUE_NUMBER, ARG_LIBRARY)
 
 
 

@@ -1,8 +1,9 @@
-import os, sys, pprint
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
-from PIL import Image
 
+# specific imports
+from PIL import Image
 from CommonRemaker import CommonRemaker
 
 
@@ -92,6 +93,6 @@ class ImagesRemaker(CommonRemaker):
 				data_image = ObjDict()
 				data_image.width = image.content.width
 				data_image.height = image.content.height
-				data_image.asset = "assets://%s/%s/%04d.png" % (self.issue, self.source, int(image_index))
+				data_image.asset = "assets://%s/%s/%s/%04d.png" % (self.issue.number, self.source.library, self.source_index, int(image_index))
 
 				self.scheme.images[image_index] = data_image

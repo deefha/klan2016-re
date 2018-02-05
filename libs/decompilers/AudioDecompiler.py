@@ -46,7 +46,7 @@ class AudioDecompiler(CommonDecompiler):
 					data_wave.content.data.title = ""
 					#data_wave.content.data.title = wave.content.data.title
 
-				data_wave.content.data.content = "blobs://%s/%s/%s/%04d/content.bin" % (self.issue, self.source, self.source_index, wave_index)
+				data_wave.content.data.content = "blobs://%s/%s/%s/%04d/content.bin" % (self.issue.number, self.source.library, self.source_index, wave_index)
 
 				print "\tContent"
 				f = open(file_content, "wb")

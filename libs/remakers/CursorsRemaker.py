@@ -1,8 +1,9 @@
-import os, sys, pprint
-
+# common imports
+import os, sys, datetime
 from objdict import ObjDict
-from PIL import Image
 
+# specific imports
+from PIL import Image
 from CommonRemaker import CommonRemaker
 
 
@@ -32,6 +33,6 @@ class CursorsRemaker(CommonRemaker):
 		for frame_index, frame in self.meta.data.frames.iteritems():
 			if frame.content:
 				data_frame = ObjDict()
-				data_frame.asset = "assets://%s/%s/%02d.png" % (self.issue, self.source, int(frame_index))
+				data_frame.asset = "assets://%s/%s/%s/%02d.png" % (self.issue.number, self.source.library, self.source_index, int(frame_index))
 
 				self.scheme.frames[frame_index] = data_frame
