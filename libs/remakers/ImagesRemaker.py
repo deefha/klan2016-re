@@ -14,14 +14,14 @@ class ImagesRemaker(CommonRemaker):
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
 	def export_assets(self):
-		for image_index, image in self.meta.data.images.iteritems():
+		for image_index, image in self.meta_decompiled.data.images.iteritems():
 			if image.content:
 				# colormap, indexed, RLE compression
 				if image.content.mode == 1 or image.content.mode == 257:
-					with open(image.content.data.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
-					with open(image.content.data.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
 					image_content_unpacked = []
@@ -54,45 +54,45 @@ class ImagesRemaker(CommonRemaker):
 
 					i = Image.frombytes("P", (image.content.width, image.content.height), image_content_unpacked)
 					i.putpalette(image_colormap)
-					i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# colormap, indexed, no compression
 				elif image.content.mode == 256:
-					with open(image.content.data.colormap.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
-					with open(image.content.data.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
 						i = Image.frombytes("P", (image.content.width, image.content.height), image_content)
 						i.putpalette(image_colormap)
-						i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# TODO, red placeholder
 				elif image.content.mode == 4 or image.content.mode == 258:
 					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
-					i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# RGB565
 				elif image.content.mode == 5 or image.content.mode == 261:
-					with open(image.content.data.content.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
+					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
 						i = Image.frombytes("RGB", (image.content.width, image.content.height), image_content, "raw", "BGR;16")
-						i.save("%s%04d.png" % (self.PATH_ASSETS, int(image_index)))
+						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 
 
-	def fill_scheme(self):
-		super(ImagesRemaker, self).fill_scheme()
+	def fill_meta(self):
+		super(ImagesRemaker, self).fill_meta()
 
-		self.scheme.images = ObjDict()
+		self.meta_remaked.images = ObjDict()
 
-		for image_index, image in self.meta.data.images.iteritems():
+		for image_index, image in self.meta_decompiled.data.images.iteritems():
 			if image.content:
 				data_image = ObjDict()
 				data_image.width = image.content.width
 				data_image.height = image.content.height
-				data_image.asset = "assets://%s/%s/%s/%04d.png" % (self.issue.number, self.source.library, self.source_index, int(image_index))
+				data_image.asset = "remaked://%s/%s/%s/%04d.png" % (self.issue.number, self.source.library, self.source_index, int(image_index))
 
-				self.scheme.images[image_index] = data_image
+				self.meta_remaked.images[image_index] = data_image
