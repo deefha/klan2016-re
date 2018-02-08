@@ -22,8 +22,8 @@ ARG_ISSUE_NUMBER = sys.argv[1]
 ARG_LIBRARY = sys.argv[2]
 
 CONFIG_PATH = "../data/config.yml"
-CHECK_PATH = "../data/origins/%s.check"
-ISSUE_PATH = "../data/origins/%s.iso"
+CHECK_PATH = "../data/initialized/%s.check"
+ISSUE_PATH = "../data/initialized/%s.iso"
 
 
 

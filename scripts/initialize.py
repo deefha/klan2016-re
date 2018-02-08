@@ -20,24 +20,24 @@ if len(sys.argv) != 2:
 ARG_ISSUE_NUMBER = sys.argv[1]
 
 CONFIG_PATH = "../data/config.yml"
-CHECK_PATH = "../data/origins/%s.check"
-ISSUE_PATH = "../data/origins/%s.iso"
+CHECK_PATH = "../data/initialized/%s.check"
+ISSUE_PATH = "../data/initialized/%s.iso"
 
 
 
-def init_loop_issues(config, issue_number):
+def initialize_loop_issues(config, issue_number):
 	if issue_number == "all":
 		for issue_id, issue in sorted(config.issues.iteritems()):
-			init(config, issue)
+			initialize(config, issue)
 	else:
 		try:
-			init(config, config.issues[issue_number])
+			initialize(config, config.issues[issue_number])
 		except KeyError, e:
 			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
 
 
 
-def init(config, issue):
+def initialize(config, issue):
 	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number
 
 	check_path = CHECK_PATH % issue.number
@@ -110,7 +110,7 @@ def init(config, issue):
 
 def main():
 	config = KlanTools.config_load(CONFIG_PATH)
-	init_loop_issues(config, ARG_ISSUE_NUMBER)
+	initialize_loop_issues(config, ARG_ISSUE_NUMBER)
 
 
 

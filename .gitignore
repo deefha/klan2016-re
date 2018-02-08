@@ -1,5 +1,5 @@
 data/decompiled/**/
 data/remaked/**/
-data/origins/*.iso
-data/origins/*.check
+data/initialized/*.iso
+data/initialized/*.check
 libs/**/*.pyc

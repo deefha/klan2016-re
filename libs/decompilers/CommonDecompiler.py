@@ -18,7 +18,7 @@ from structs.klan_music_v2 import KlanMusicV2
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
 PATH_PHASE = "%s/decompiled/" % ROOT_DATA
-PATH_ORIGINS = "%s/origins/" % ROOT_DATA
+PATH_ORIGINS = "%s/initialized/" % ROOT_DATA
 
 PATTERN_FILE_ORIGIN = "%s%%s.iso" % PATH_ORIGINS
 
