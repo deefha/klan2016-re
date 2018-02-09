@@ -1,9 +1,11 @@
 # common imports
 import os, sys, datetime
 from objdict import ObjDict
+from tqdm import tqdm
 
 # specific imports
 import audioop
+import struct
 import wave as wavelib
 from CommonRemaker import CommonRemaker
 
@@ -12,6 +14,65 @@ from CommonRemaker import CommonRemaker
 class AudioRemaker(CommonRemaker):
 
 	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%04d.wav"
+
+	adpcm_decoder_predicted = 0
+	adpcm_decoder_index = 0
+	adpcm_decoder_step = 7
+
+	adpcm_t_index = [ -1, -1, -1, -1, 2, 4, 6, 8, -1, -1, -1, -1, 2, 4, 6, 8 ]
+
+	adpcm_t_step = [
+		7, 8, 9, 10, 11, 12, 13, 14,
+		16, 17, 19, 21, 23, 25, 28, 31,
+		34, 37, 41, 45, 50, 55, 60, 66,
+		73, 80, 88, 97, 107, 118, 130, 143,
+		157, 173, 190, 209, 230, 253, 279, 307,
+		337, 371, 408, 449, 494, 544, 598, 658,
+		724, 796, 876, 963, 1060, 1166, 1282, 1411,
+		1552, 1707, 1878, 2066, 2272, 2499, 2749, 3024,
+		3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484,
+		7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899,
+		15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794,
+		32767 ]  # quantize table
+
+	def _decode_sample(self, neeble):
+		difference = 0
+
+		if neeble & 4:
+			difference += self.adpcm_decoder_step
+
+		if neeble & 2:
+			difference += self.adpcm_decoder_step >> 1
+
+		if neeble & 1:
+			difference += self.adpcm_decoder_step >> 2
+
+		difference += self.adpcm_decoder_step >> 3
+
+		if neeble & 8:
+			difference = -difference
+
+		self.adpcm_decoder_predicted += difference
+
+		if self.adpcm_decoder_predicted > 32767:
+			self.adpcm_decoder_predicted = 32767
+
+		elif self.adpcm_decoder_predicted < -32767:
+			self.adpcm_decoder_predicted = - 32767
+
+		self.adpcm_decoder_index += self.adpcm_t_index[neeble]
+
+		if self.adpcm_decoder_index < 0:
+			self.adpcm_decoder_index = 0
+
+		elif self.adpcm_decoder_index > 88:
+			self.adpcm_decoder_index = 88
+
+		self.adpcm_decoder_step = self.adpcm_t_step[self.adpcm_decoder_index]
+
+		return self.adpcm_decoder_predicted
+
+
 
 	def export_assets(self):
 		for wave_index, wave in self.meta_decompiled.data.waves.iteritems():
@@ -39,7 +100,7 @@ class AudioRemaker(CommonRemaker):
 
 				# ADPCM? (#04+)
 				elif wave.content.mode == 3:
-					#state = None 
+					#state = None
 					#pcm, state = audioop.adpcm2lin(wave_content, 1, state)
 					##pcm = audioop.alaw2lin(wave_content, 2)
 
@@ -47,7 +108,35 @@ class AudioRemaker(CommonRemaker):
 					#f.setparams((1, 2, 11025, len(wave_content), "NONE", "Uncompressed"))
 					#f.writeframes(pcm)
 					#f.close()
-					continue
+					#continue
+
+
+					#adpcm_decoder_predicted = struct.unpack('h', block[0:2])[0]
+					self.adpcm_decoder_predicted = 0
+					#adpcm_decoder_index = struct.unpack('B', block[2:3])[0]
+					self.adpcm_decoder_index = 0
+					self.adpcm_decoder_step = self.adpcm_t_step[self.adpcm_decoder_index]
+
+					result = ''
+
+					for original_sample in tqdm(wave_content):
+						original_sample = ord(original_sample)
+						second_sample = original_sample >> 4
+						first_sample = (second_sample << 4) ^ original_sample
+						#print(hex(original_sample), hex(first_sample), hex(second_sample))
+
+						#high, low = ord(content_byte) >> 4, ord(content_byte) & 0x0F
+						#print(content_byte, hex(high), hex(low))
+
+						result += struct.pack('h', self._decode_sample(first_sample))
+						result += struct.pack('h', self._decode_sample(second_sample))
+
+					print len(result)
+
+					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
+					f.setparams((1, 2, 11025, len(result), "NONE", "Uncompressed"))
+					f.writeframes(result)
+					f.close()
 
 				# ?? (#35+)
 				elif wave.content.mode == 256:
