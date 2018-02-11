@@ -35,6 +35,8 @@ class AudioRemaker(CommonRemaker):
 		15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794,
 		32767 ]  # quantize table
 
+	ulaw_lut = [ 0, 132, 396, 924, 1980, 4092, 8316, 16764 ]
+
 	def _decode_sample(self, neeble):
 		difference = 0
 
@@ -71,6 +73,43 @@ class AudioRemaker(CommonRemaker):
 		self.adpcm_decoder_step = self.adpcm_t_step[self.adpcm_decoder_index]
 
 		return self.adpcm_decoder_predicted
+
+
+
+	#def _decode_ulaw(self, number):
+		#ULAW_BIAS = 33
+		#sign = 0
+		#position = 0
+		#decoded = 0;
+
+		#number = ~number
+
+		#if number & 0x80:
+			#number &= ~(1 << 7)
+			#sign = -1
+
+		#position = ((number & 0xF0) >> 4) + 5
+		#decoded = (
+			#(1 << position) | ((number & 0x0F) << (position - 4)) | (1 << (position - 5))
+		#) - ULAW_BIAS;
+
+		#if sign == 0:
+			#return decoded
+		#else:
+			#return (-(decoded))
+
+
+
+	def _decode_ulaw(self, ulawbyte):
+		ulawbyte = ~ulawbyte
+		sign = (ulawbyte & 0x80)
+		exponent = (ulawbyte >> 4) & 0x07
+		mantissa = ulawbyte & 0x0F
+		sample = self.ulaw_lut[exponent] + (mantissa << (exponent + 3));
+		if sign != 0:
+			sample = -sample
+
+		return sample
 
 
 
@@ -118,32 +157,43 @@ class AudioRemaker(CommonRemaker):
 					result = ''
 					index = 0;
 
-					for original_sample in tqdm(wave_content):
-						#if index == 500:
-							#index = 0
-							#self.adpcm_decoder_predicted = 0
-							#self.adpcm_decoder_index = 0
-							#self.adpcm_decoder_step = self.adpcm_t_step[self.adpcm_decoder_index]
+					#for original_sample in tqdm(wave_content):
+						##if index == 500:
+							##index = 0
+							##self.adpcm_decoder_predicted = 0
+							##self.adpcm_decoder_index = 0
+							##self.adpcm_decoder_step = self.adpcm_t_step[self.adpcm_decoder_index]
 
+						#original_sample = ord(original_sample)
+						#second_sample = original_sample >> 4
+						#first_sample = (second_sample << 4) ^ original_sample
+						##first_sample = original_sample >> 4
+						##second_sample = (first_sample << 4) ^ original_sample
+						##print(hex(original_sample), hex(first_sample), hex(second_sample))
+
+						##high, low = ord(content_byte) >> 4, ord(content_byte) & 0x0F
+						##print(content_byte, hex(high), hex(low))
+
+						#result += struct.pack('h', self._decode_sample(first_sample))
+						#result += struct.pack('h', self._decode_sample(second_sample))
+
+						#index += 1
+
+					for original_sample in tqdm(wave_content, ascii=True, leave=False):
+						#result += original_sample + original_sample
 						original_sample = ord(original_sample)
-						second_sample = original_sample >> 4
-						first_sample = (second_sample << 4) ^ original_sample
-						#first_sample = original_sample >> 4
-						#second_sample = (first_sample << 4) ^ original_sample
-						#print(hex(original_sample), hex(first_sample), hex(second_sample))
+						print original_sample
+						decoded = self._decode_ulaw(original_sample)
+						#print(hex(original_sample), hex(decoded))
+						result += struct.pack('h', decoded)
 
-						#high, low = ord(content_byte) >> 4, ord(content_byte) & 0x0F
-						#print(content_byte, hex(high), hex(low))
+					#f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
+					#f.setparams((1, 2, 22050, len(result), "NONE", "Uncompressed"))
+					#f.writeframes(result)
+					#f.close()
 
-						result += struct.pack('h', self._decode_sample(first_sample))
-						result += struct.pack('h', self._decode_sample(second_sample))
-
-						index += 1
-
-					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 2, 22050, len(result), "NONE", "Uncompressed"))
-					f.writeframes(result)
-					f.close()
+					with open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb") as f:
+						f.write(result)
 
 				# ?? (#35+)
 				elif wave.content.mode == 256:
