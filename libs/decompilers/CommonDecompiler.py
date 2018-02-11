@@ -32,6 +32,15 @@ class CommonDecompiler(object):
 		self.source = source
 		self.source_index = source_index
 
+		print "\tPath: %s" % self.source.path
+		print "\tLibrary: %s" % self.source.library
+		print "\tVersion: %s" % self.source.version
+		print "\tIndex: %s" % self.source_index
+
+		if not os.path.isfile(PATTERN_FILE_ORIGIN % self.issue.number):
+			print "\tOrigin not exists, initialize first"
+			sys.exit()
+
 		self.PATH_DATA = "%s/%s/%s/%s/" % (PATH_PHASE, self.issue.number, self.source.library, self.source_index)
 
 		self.FILE_META = "%s/%s/%s/%s.json" % (PATH_PHASE, self.issue.number, self.source.library, self.source_index)

@@ -57,11 +57,6 @@ def decompile_loop_libraries(config, issue, library):
 
 
 def decompile(config, issue, source, source_index):
-	print "\tPath: %s" % source.path
-	print "\tLibrary: %s" % source.library
-	print "\tVersion: %s" % source.version
-	print "\tIndex: %s" % source_index
-
 	if source.library == "cursors":
 		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source, source_index)
 
