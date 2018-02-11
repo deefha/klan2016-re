@@ -40,6 +40,8 @@ def decompile_loop_issues(config, issue_number, library):
 
 
 def decompile_loop_libraries(config, issue, library):
+	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number
+
 	if library == "all":
 		for library, sources in issue.libraries.iteritems():
 			if sources:
@@ -55,11 +57,10 @@ def decompile_loop_libraries(config, issue, library):
 
 
 def decompile(config, issue, source, source_index):
-	print "Issue: %s" % issue.number
-	print "Path: %s" % source.path
-	print "Library: %s" % source.library
-	print "Version: %s" % source.version
-	print "Index: %s" % source_index
+	print "\tPath: %s" % source.path
+	print "\tLibrary: %s" % source.library
+	print "\tVersion: %s" % source.version
+	print "\tIndex: %s" % source_index
 
 	if source.library == "cursors":
 		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source, source_index)

@@ -1,6 +1,7 @@
 # common imports
 import os, sys, datetime
 from objdict import ObjDict
+from tqdm import tqdm
 
 # specific imports
 from CommonDecompiler import CommonDecompiler
@@ -20,13 +21,13 @@ class AudioDecompiler(CommonDecompiler):
 
 		self.meta.data.waves = ObjDict()
 
-		for wave_index, wave in enumerate(self.library.data.waves):
+		for wave_index, wave in enumerate(tqdm(self.library.data.waves, desc="data.waves", ascii=True, leave=True)):
 			data_wave = ObjDict()
 			data_wave.param_offset = wave.param_offset
 			data_wave.content = ObjDict()
 
 			if wave.content:
-				print "Wave #%d: param_offset=%d, data_size=%d, wave_size=%d, mode=%d" % (wave_index, wave.param_offset, wave.content.data_size, wave.content.wave_size, wave.content.mode)
+				#print "Wave #%d: param_offset=%d, data_size=%d, wave_size=%d, mode=%d" % (wave_index, wave.param_offset, wave.content.data_size, wave.content.wave_size, wave.content.mode)
 
 				file_content = self.PATTERN_FILE_CONTENT % (self.PATH_DATA, wave_index)
 
@@ -51,12 +52,12 @@ class AudioDecompiler(CommonDecompiler):
 
 				data_wave.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, wave_index)
 
-				print "\tContent"
+				#print "\tContent"
 				f = open(file_content, "wb")
 				f.write(wave.content.data.content)
 				f.close
 
-			else:
-				print "Wave #%d: param_offset=%d, no content" % (wave_index, wave.param_offset)
+			#else:
+				#print "Wave #%d: param_offset=%d, no content" % (wave_index, wave.param_offset)
 
 			self.meta.data.waves[str(wave_index)] = data_wave

@@ -4,6 +4,7 @@ from io import BytesIO
 from objdict import ObjDict
 from pycdlib import PyCdlib
 from pprint import pprint
+from tqdm import tqdm
 
 # specific imports
 from structs.klan_audio_v1 import KlanAudioV1
@@ -97,10 +98,10 @@ class CommonDecompiler(object):
 		self.meta.fat.foo_3 = self.library.fat.foo_3
 		self.meta.fat.offsets = ObjDict()
 
-		print "Count: %d" % self.library.fat.count
+		#print "Count: %d" % self.library.fat.count
 
-		for offset_index, offset in enumerate(self.library.fat.offsets):
-			print "Offset #%d: %d" % (offset_index, offset)
+		for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=True)):
+			#print "Offset #%d: %d" % (offset_index, offset)
 
 			self.meta.fat.offsets[str(offset_index)] = offset
 

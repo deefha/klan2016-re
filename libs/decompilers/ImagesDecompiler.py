@@ -1,6 +1,7 @@
 # common imports
 import os, sys, datetime
 from objdict import ObjDict
+from tqdm import tqdm
 
 # specific imports
 from CommonDecompiler import CommonDecompiler
@@ -24,13 +25,13 @@ class ImagesDecompiler(CommonDecompiler):
 
 		self.meta.data.images = ObjDict()
 
-		for image_index, image in enumerate(self.library.data.images):
+		for image_index, image in enumerate(tqdm(self.library.data.images, desc="data.images", ascii=True, leave=True)):
 			data_image = ObjDict()
 			data_image.param_offset = image.param_offset
 			data_image.content = ObjDict()
 
 			if image.content:
-				print "Image #%d: param_offset=%d, data_size=%d, width=%d, height=%d, mode=%d" % (image_index, image.param_offset, image.content.data_size, image.content.width, image.content.height, image.content.mode)
+				#print "Image #%d: param_offset=%d, data_size=%d, width=%d, height=%d, mode=%d" % (image_index, image.param_offset, image.content.data_size, image.content.width, image.content.height, image.content.mode)
 
 				file_colormap = self.PATTERN_FILE_COLORMAP % (self.PATH_DATA, image_index)
 				file_content = self.PATTERN_FILE_CONTENT % (self.PATH_DATA, image_index)
@@ -51,7 +52,7 @@ class ImagesDecompiler(CommonDecompiler):
 				if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257:
 					data_image.content.data.colormap = self.PATTERN_DECOMPILED_COLORMAP % (self.issue.number, self.source.library, self.source_index, image_index)
 
-					print "\tColormap"
+					#print "\tColormap"
 					f = open(file_colormap, "wb")
 					f.write(image.content.data.colormap)
 					f.close
@@ -61,19 +62,19 @@ class ImagesDecompiler(CommonDecompiler):
 					data_image.content.data.header_size = image.content.data.header_size
 					data_image.content.data.header = self.PATTERN_DECOMPILED_HEADER % (self.issue.number, self.source.library, self.source_index, image_index)
 
-					print "\tHeader"
+					#print "\tHeader"
 					f = open(file_header, "wb")
 					f.write(image.content.data.header)
 					f.close
 
 				data_image.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, image_index)
 
-				print "\tContent"
+				#print "\tContent"
 				f = open(file_content, "wb")
 				f.write(image.content.data.content)
 				f.close
 
-			else:
-				print "Image #%d: param_offset=%d, no content" % (image_index, image.param_offset)
+			#else:
+				#print "Image #%d: param_offset=%d, no content" % (image_index, image.param_offset)
 
 			self.meta.data.images[str(image_index)] = data_image
