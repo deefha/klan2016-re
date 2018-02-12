@@ -21,7 +21,7 @@ class AudioDecompiler(CommonDecompiler):
 
 		self.meta.data.waves = ObjDict()
 
-		for wave_index, wave in enumerate(tqdm(self.library.data.waves, desc="data.waves", ascii=True, leave=True)):
+		for wave_index, wave in enumerate(tqdm(self.library.data.waves, desc="data.waves", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_wave = ObjDict()
 			data_wave.param_offset = wave.param_offset
 			data_wave.content = ObjDict()
@@ -53,9 +53,8 @@ class AudioDecompiler(CommonDecompiler):
 				data_wave.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, wave_index)
 
 				#print "\tContent"
-				f = open(file_content, "wb")
-				f.write(wave.content.data.content)
-				f.close
+				with open(file_content, "wb") as f:
+					f.write(wave.content.data.content)
 
 			#else:
 				#print "Wave #%d: param_offset=%d, no content" % (wave_index, wave.param_offset)

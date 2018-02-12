@@ -27,13 +27,13 @@ class MusicDecompiler(CommonDecompiler):
 
 		self.meta.data.names = ObjDict()
 
-		for names_index, name in enumerate(tqdm(self.library.data.names, desc="data.names", ascii=True, leave=True)):
+		for names_index, name in enumerate(tqdm(self.library.data.names, desc="data.names", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			#self.meta.data.names[str(names_index)] = name
 			self.meta.data.names[str(names_index)] = ""
 
 		self.meta.data.mods = ObjDict()
 
-		for mod_index, mod in enumerate(tqdm(self.library.data.mods, desc="data.mods", ascii=True, leave=True)):
+		for mod_index, mod in enumerate(tqdm(self.library.data.mods, desc="data.mods", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_mod = ObjDict()
 			data_mod.param_offset = mod.param_offset
 			data_mod.content = ObjDict()
@@ -66,15 +66,14 @@ class MusicDecompiler(CommonDecompiler):
 					data_mod.content.data.sequences = mod.content.data.sequences
 					data_mod.content.data.patterns = ObjDict()
 
-					for pattern_index, pattern in enumerate(tqdm(mod.content.data.patterns, desc="mod.content.data.patterns", ascii=True, leave=True)):
+					for pattern_index, pattern in enumerate(tqdm(mod.content.data.patterns, desc="mod.content.data.patterns", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 						file_pattern = self.PATTERN_FILE_MOD_PATTERN % (self.PATH_DATA, mod_index, pattern_index)
 
 						data_mod.content.data.patterns[str(pattern_index)] = self.PATTERN_DECOMPILED_MOD_PATTERN % (self.issue.number, self.source.library, self.source_index, mod_index, pattern_index)
 
 						#print "\tPattern #%d" % pattern_index
-						f = open(file_pattern, "wb")
-						f.write(pattern)
-						f.close
+						with open(file_pattern, "wb") as f:
+							f.write(pattern)
 
 				elif self.source.version == 2:
 					#print "Mod #%d: param_offset=%d, name='%s', count_samples=%d, size_patterns=%d" % (mod_index, mod.param_offset, mod.content.name, mod.content.count_samples, mod.content.size_patterns)
@@ -104,9 +103,8 @@ class MusicDecompiler(CommonDecompiler):
 					data_mod.content.data.patterns = self.PATTERN_DECOMPILED_MOD_PATTERNS % (self.issue.number, self.source.library, self.source_index, mod_index)
 
 					#print "\tPatterns"
-					f = open(file_patterns, "wb")
-					f.write(mod.content.data.patterns)
-					f.close
+					with open(file_patterns, "wb") as f:
+						f.write(mod.content.data.patterns)
 
 			#else:
 				#print "Mod #%d: param_offset=%d, no content" % (mod_index, mod.param_offset)
@@ -115,7 +113,7 @@ class MusicDecompiler(CommonDecompiler):
 
 		self.meta.data.samples = ObjDict()
 
-		for sample_index, sample in enumerate(tqdm(self.library.data.samples, desc="data.samples", ascii=True, leave=True)):
+		for sample_index, sample in enumerate(tqdm(self.library.data.samples, desc="data.samples", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_sample = ObjDict()
 			data_sample.param_offset = sample.param_offset
 			data_sample.content = ObjDict()
@@ -143,9 +141,8 @@ class MusicDecompiler(CommonDecompiler):
 					data_sample.content.data.content = self.PATTERN_DECOMPILED_SAMPLE % (self.issue.number, self.source.library, self.source_index, sample_index)
 
 					#print "\tContent"
-					f = open(file_sample, "wb")
-					f.write(sample.content.data.content)
-					f.close
+					with open(file_sample, "wb") as f:
+						f.write(sample.content.data.content)
 
 				elif self.source.version == 2:
 					#print "Sample #%d: param_offset=%d" % (sample_index, sample.param_offset)
@@ -167,9 +164,8 @@ class MusicDecompiler(CommonDecompiler):
 					data_sample.content.data.content = self.PATTERN_DECOMPILED_SAMPLE % (self.issue.number, self.source.library, self.source_index, sample_index)
 
 					#print "\tContent"
-					f = open(file_sample, "wb")
-					f.write(sample.content.data.content)
-					f.close
+					with open(file_sample, "wb") as f:
+						f.write(sample.content.data.content)
 
 			#else:
 				#print "Sample #%d: param_offset=%d, no content" % (sample_index, sample.param_offset)
@@ -194,7 +190,7 @@ class MusicDecompiler(CommonDecompiler):
 
 		#print "Mods count: %d" % self.library.header2.count_mods
 
-		for offset_index, offset in enumerate(tqdm(self.library.fat_mods.offsets, desc="fat_mods.offsets", ascii=True, leave=True)):
+		for offset_index, offset in enumerate(tqdm(self.library.fat_mods.offsets, desc="fat_mods.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			#print "Offset #%d: %d" % (offset_index, offset)
 
 			self.meta.fat_mods.offsets[str(offset_index)] = offset
@@ -204,7 +200,7 @@ class MusicDecompiler(CommonDecompiler):
 
 		#print "Samples count: %d" % self.library.header2.count_samples
 
-		for offset_index, offset in enumerate(tqdm(self.library.fat_samples.offsets, desc="fat_samples.offsets", ascii=True, leave=True)):
+		for offset_index, offset in enumerate(tqdm(self.library.fat_samples.offsets, desc="fat_samples.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			#print "Offset #%d: %d" % (offset_index, offset)
 
 			self.meta.fat_samples.offsets[str(offset_index)] = offset

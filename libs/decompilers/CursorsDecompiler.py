@@ -35,7 +35,7 @@ class CursorsDecompiler(CommonDecompiler):
 		self.meta.fat.foo = self.library.fat.foo
 		self.meta.fat.foo_2 = ObjDict()
 
-		for foo_2_index, foo_2 in enumerate(tqdm(self.library.fat.foo_2, desc="fat.foo_2", ascii=True, leave=True)):
+		for foo_2_index, foo_2 in enumerate(tqdm(self.library.fat.foo_2, desc="fat.foo_2", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			#print "foo_2 #%d: offset=%d, foo=%d" % (foo_2_index, foo_2.offset, foo_2.foo)
 
 			data_foo_2 = ObjDict()
@@ -54,7 +54,7 @@ class CursorsDecompiler(CommonDecompiler):
 		self.meta.data.foo_2 = ObjDict()
 		self.meta.data.colortables = ObjDict()
 
-		for frame_index, frame in enumerate(tqdm(self.library.data.frames, desc="data.frames", ascii=True, leave=True)):
+		for frame_index, frame in enumerate(tqdm(self.library.data.frames, desc="data.frames", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_frame = ObjDict()
 			data_frame.param_offset = frame.param_offset
 			data_frame.param_index = frame.param_index
@@ -75,9 +75,8 @@ class CursorsDecompiler(CommonDecompiler):
 			data_frame.content.data = self.PATTERN_DECOMPILED_FRAME % (self.issue.number, self.source.library, self.source_index, frame_index)
 
 			#print "\tData"
-			f = open(file_frame, "wb")
-			f.write(frame.content.data)
-			f.close
+			with open(file_frame, "wb") as f:
+				f.write(frame.content.data)
 
 			self.meta.data.frames[str(frame_index)] = data_frame
 
@@ -96,11 +95,10 @@ class CursorsDecompiler(CommonDecompiler):
 		self.meta.data.foo_1.content.data = self.PATTERN_DECOMPILED_FOO_1 % (self.issue.number, self.source.library, self.source_index)
 
 		#print "\tData"
-		f = open(file_foo_1, "wb")
-		f.write(self.library.data.foo_1.content.data)
-		f.close
+		with open(file_foo_1, "wb") as f:
+			f.write(self.library.data.foo_1.content.data)
 
-		for foo_2_index, foo_2 in enumerate(tqdm(self.library.data.foo_2, desc="data.foo_2", ascii=True, leave=True)):
+		for foo_2_index, foo_2 in enumerate(tqdm(self.library.data.foo_2, desc="data.foo_2", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_foo_2 = ObjDict()
 			data_foo_2.param_offset = foo_2.param_offset
 			data_foo_2.content = ObjDict()
@@ -117,13 +115,12 @@ class CursorsDecompiler(CommonDecompiler):
 			data_foo_2.content.data = self.PATTERN_DECOMPILED_FOO_2 % (self.issue.number, self.source.library, self.source_index, foo_2_index)
 
 			#print "\tData"
-			f = open(file_foo_2, "wb")
-			f.write(foo_2.content.data)
-			f.close
+			with open(file_foo_2, "wb") as f:
+				f.write(foo_2.content.data)
 
 			self.meta.data.foo_2[str(foo_2_index)] = data_foo_2
 
-		for colortable_index, colortable in enumerate(tqdm(self.library.data.colortables, desc="data.colortables", ascii=True, leave=True)):
+		for colortable_index, colortable in enumerate(tqdm(self.library.data.colortables, desc="data.colortables", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_colortable = ObjDict()
 			data_colortable.param_offset = colortable.param_offset
 			data_colortable.param_index = colortable.param_index
@@ -141,8 +138,7 @@ class CursorsDecompiler(CommonDecompiler):
 			data_colortable.content.data = self.PATTERN_DECOMPILED_COLORTABLE % (self.issue.number, self.source.library, self.source_index, colortable_index)
 
 			#print "\tData"
-			f = open(file_colortable, "wb")
-			f.write(colortable.content.data)
-			f.close
+			with open(file_colortable, "wb") as f:
+				f.write(colortable.content.data)
 
 			self.meta.data.colortables[str(colortable_index)] = data_colortable

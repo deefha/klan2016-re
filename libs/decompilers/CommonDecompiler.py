@@ -109,7 +109,7 @@ class CommonDecompiler(object):
 
 		#print "Count: %d" % self.library.fat.count
 
-		for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=True)):
+		for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			#print "Offset #%d: %d" % (offset_index, offset)
 
 			self.meta.fat.offsets[str(offset_index)] = offset

@@ -25,7 +25,7 @@ class ImagesDecompiler(CommonDecompiler):
 
 		self.meta.data.images = ObjDict()
 
-		for image_index, image in enumerate(tqdm(self.library.data.images, desc="data.images", ascii=True, leave=True)):
+		for image_index, image in enumerate(tqdm(self.library.data.images, desc="data.images", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_image = ObjDict()
 			data_image.param_offset = image.param_offset
 			data_image.content = ObjDict()
@@ -53,9 +53,8 @@ class ImagesDecompiler(CommonDecompiler):
 					data_image.content.data.colormap = self.PATTERN_DECOMPILED_COLORMAP % (self.issue.number, self.source.library, self.source_index, image_index)
 
 					#print "\tColormap"
-					f = open(file_colormap, "wb")
-					f.write(image.content.data.colormap)
-					f.close
+					with open(file_colormap, "wb") as f:
+						f.write(image.content.data.colormap)
 
 				elif image.content.mode == 4:
 					data_image.content.data.foo = image.content.data.foo
@@ -63,16 +62,14 @@ class ImagesDecompiler(CommonDecompiler):
 					data_image.content.data.header = self.PATTERN_DECOMPILED_HEADER % (self.issue.number, self.source.library, self.source_index, image_index)
 
 					#print "\tHeader"
-					f = open(file_header, "wb")
-					f.write(image.content.data.header)
-					f.close
+					with open(file_header, "wb") as f:
+						f.write(image.content.data.header)
 
 				data_image.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, image_index)
 
 				#print "\tContent"
-				f = open(file_content, "wb")
-				f.write(image.content.data.content)
-				f.close
+				with open(file_content, "wb") as f:
+					f.write(image.content.data.content)
 
 			#else:
 				#print "Image #%d: param_offset=%d, no content" % (image_index, image.param_offset)

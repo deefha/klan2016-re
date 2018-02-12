@@ -80,6 +80,8 @@ def decompile(config, issue, source, source_index):
 	decompiler.fill_meta_data()
 	decompiler.export_meta()
 
+	print Fore.GREEN + "\tDecompiling OK"
+
 	return True
 
 

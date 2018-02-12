@@ -23,7 +23,7 @@ class FontsDecompiler(CommonDecompiler):
 
 		self.meta.data.fonts = ObjDict()
 
-		for font_index, font in enumerate(tqdm(self.library.data.fonts, desc="data.fonts", ascii=True, leave=True)):
+		for font_index, font in enumerate(tqdm(self.library.data.fonts, desc="data.fonts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_font = ObjDict()
 			data_font.param_offset = font.param_offset
 			data_font.content = ObjDict()
@@ -46,12 +46,12 @@ class FontsDecompiler(CommonDecompiler):
 				data_font.content.matrices = ObjDict()
 
 				#print "\tColormap"
-				f = open(file_colormap, "wb")
-				f.write(font.content.colormap)
-				f.close
+				with open(file_colormap, "wb") as f:
+					f.write(font.content.colormap)
 
 				#print "\tCharacters"
-				for character_index, character in enumerate(tqdm(font.content.characters, desc="font.content.characters", ascii=True, leave=True)):
+				#for character_index, character in enumerate(tqdm(font.content.characters, desc="font.content.characters", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+				for character_index, character in enumerate(font.content.characters):
 					data_character = ObjDict()
 					data_character.offset_and_width = character.offset_and_width
 					data_character.computed_offset = character.computed_offset
@@ -62,7 +62,8 @@ class FontsDecompiler(CommonDecompiler):
 					data_font.content.characters[str(character_index)] = data_character
 
 				#print "\tMatrices"
-				for matrix_index, matrix in enumerate(tqdm(font.content.matrices, desc="font.content.matrices", ascii=True, leave=True)):
+				#for matrix_index, matrix in enumerate(tqdm(font.content.matrices, desc="font.content.matrices", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+				for matrix_index, matrix in enumerate(font.content.matrices):
 					data_matrix = ObjDict()
 					data_matrix.param_offset = matrix.param_offset
 					data_matrix.param_width = matrix.param_width
@@ -75,9 +76,8 @@ class FontsDecompiler(CommonDecompiler):
 
 						file_matrix = self.PATTERN_FILE_MATRIX % (path_matrices, matrix_index)
 
-						f = open(file_matrix, "wb")
-						f.write(matrix.content)
-						f.close
+						with open(file_matrix, "wb") as f:
+							f.write(matrix.content)
 
 					else:
 						#print "\t\tMatrix #%d: param_offset=%d, param_width=%d, param_height=%d, no content" % (matrix_index, matrix.param_offset, matrix.param_width, matrix.param_height)
