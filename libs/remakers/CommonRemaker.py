@@ -12,9 +12,14 @@ ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 class CommonRemaker(object):
 
 	def __init__(self, issue, source, source_index):
+		self.initialized = False
 		self.issue = issue
 		self.source = source
 		self.source_index = source_index
+
+		self.items_total = 0
+		self.items_hit = 0
+		self.items_miss = 0
 
 		self.PATH_PHASE_DECOMPILED = "%s/decompiled/" % ROOT_DATA
 		self.PATH_PHASE_REMAKED = "%s/remaked/" % ROOT_DATA
@@ -28,13 +33,18 @@ class CommonRemaker(object):
 		if not os.path.exists(self.PATH_DATA_REMAKED):
 			os.makedirs(self.PATH_DATA_REMAKED)
 
-		with open(self.FILE_META_DECOMPILED, "r") as f:
-			#content = f.read()
-			lines = f.readlines() # TODO
-			content = ''.join(lines) # TODO
+		try:
+			with open(self.FILE_META_DECOMPILED, "r") as f:
+				#content = f.read()
+				lines = f.readlines() # TODO
+				content = ''.join(lines) # TODO
 
-		self.meta_decompiled = ObjDict(content)
-		self.meta_remaked = ObjDict()
+				self.meta_decompiled = ObjDict(content)
+				self.meta_remaked = ObjDict()
+				
+				self.initialized = True
+		except IOError:
+			print "Not decompiled"
 
 
 
@@ -62,3 +72,10 @@ class CommonRemaker(object):
 	def export_meta(self):
 		with open(self.FILE_META_REMAKED, "w") as f:
 			f.write(self.meta_remaked.dumps())
+
+
+
+	def print_stats(self):
+		print "Total: %s" % self.items_total
+		print "Hit: %s" % self.items_hit
+		print "Miss: %s" % self.items_miss

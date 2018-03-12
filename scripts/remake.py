@@ -79,9 +79,11 @@ def remake(config, issue, source, source_index):
 	else:
 		return False
 
-	remaker.fill_meta()
-	remaker.export_meta()
-	remaker.export_assets()
+	if remaker.initialized:
+		remaker.fill_meta()
+		remaker.export_meta()
+		remaker.export_assets()
+		remaker.print_stats()
 
 	return True
 

@@ -1,6 +1,7 @@
 # common imports
 import os, sys, datetime
 from objdict import ObjDict
+from tqdm import tqdm
 
 # specific imports
 from PIL import Image
@@ -14,9 +15,15 @@ class ImagesRemaker(CommonRemaker):
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
 	def export_assets(self):
-		for image_index, image in self.meta_decompiled.data.images.iteritems():
+		for image_index, image in tqdm(self.meta_decompiled.data.images.iteritems(), desc="data.images", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+		#for image_index, image in self.meta_decompiled.data.images.iteritems():
 			if image.content:
+				self.items_total += 1
+				status = True
+
 				# colormap, indexed, RLE compression
+				# 1 (#00+)
+				# 257 (#09+)
 				if image.content.mode == 1 or image.content.mode == 257:
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
@@ -57,6 +64,7 @@ class ImagesRemaker(CommonRemaker):
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# colormap, indexed, no compression
+				# 256 (#00+)
 				elif image.content.mode == 256:
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
@@ -69,17 +77,28 @@ class ImagesRemaker(CommonRemaker):
 						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# TODO, red placeholder
+				# 4 (#06+)
+				# 258 (#11+)
 				elif image.content.mode == 4 or image.content.mode == 258:
+					status = False
+
 					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# RGB565
+				# 5 (#11+)
+				# 261 (#11+)
 				elif image.content.mode == 5 or image.content.mode == 261:
 					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
 						i = Image.frombytes("RGB", (image.content.width, image.content.height), image_content, "raw", "BGR;16")
 						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
+
+				if status:
+					self.items_hit += 1
+				else:
+					self.items_miss += 1
 
 
 

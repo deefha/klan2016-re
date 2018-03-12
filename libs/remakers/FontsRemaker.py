@@ -13,6 +13,9 @@ class FontsRemaker(CommonRemaker):
 	def export_assets(self):
 		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
 			if font.content:
+				self.items_total += 1
+				status = True
+
 				path_characters = "%s%02d/characters/" % (self.PATH_DATA_REMAKED, int(font_index))
 
 				if not os.path.exists(path_characters):
@@ -37,6 +40,11 @@ class FontsRemaker(CommonRemaker):
 
 				i_font.save("%s%02d/%s.gif" % (self.PATH_DATA_REMAKED, int(font_index), self.source.library), transparency = 0) # TODO path
 				i_font.save("%s%02d/%s.png" % (self.PATH_DATA_REMAKED, int(font_index), self.source.library)) # TODO path
+
+				if status:
+					self.items_hit += 1
+				else:
+					self.items_miss += 1
 
 
 

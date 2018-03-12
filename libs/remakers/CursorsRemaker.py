@@ -15,6 +15,9 @@ class CursorsRemaker(CommonRemaker):
 	def export_assets(self):
 		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
 			if frame.content:
+				self.items_total += 1
+				status = True
+
 				with open(self.meta_decompiled.data.colortables[str(frame.content.id)].content.data.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					frame_colormap = f.read()
 
@@ -24,6 +27,11 @@ class CursorsRemaker(CommonRemaker):
 					i = Image.frombytes("P", (32, 32), frame_content)
 					i.putpalette(frame_colormap)
 					i.save("%s%02d.png" % (self.PATH_DATA_REMAKED, int(frame_index)))
+
+				if status:
+					self.items_hit += 1
+				else:
+					self.items_miss += 1
 
 
 
