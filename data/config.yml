@@ -85,7 +85,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -133,7 +133,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -184,7 +184,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -235,7 +235,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -286,7 +286,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -343,7 +343,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -400,7 +400,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -457,7 +457,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -514,7 +514,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -571,7 +571,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -628,7 +628,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -685,7 +685,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -742,7 +742,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -799,7 +799,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -856,7 +856,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -913,7 +913,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -970,7 +970,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1027,7 +1027,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1084,7 +1084,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1141,7 +1141,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1198,7 +1198,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1255,7 +1255,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1312,7 +1312,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1369,7 +1369,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1426,7 +1426,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1483,7 +1483,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1540,7 +1540,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: ANIM.LIB
           library: video
@@ -1604,7 +1604,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -1668,7 +1668,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -1732,7 +1732,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -1793,7 +1793,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -1854,7 +1854,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -1915,7 +1915,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -1976,7 +1976,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2037,7 +2037,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2098,7 +2098,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2159,7 +2159,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2220,7 +2220,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2281,7 +2281,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2342,7 +2342,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video
@@ -2403,7 +2403,7 @@ issues:
       texts:
         - path: KLAN/TEXTS.LIB
           library: texts
-          version: 1
+          version: 2
       video:
         - path: KLAN/ANIM.LIB
           library: video

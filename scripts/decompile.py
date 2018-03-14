@@ -57,7 +57,10 @@ def decompile_loop_libraries(config, issue, library):
 
 
 def decompile(config, issue, source, source_index):
-	if source.library == "cursors":
+	if source.library == "audio":
+		decompiler = AudioDecompiler.AudioDecompiler(issue, source, source_index)
+
+	elif source.library == "cursors":
 		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source, source_index)
 
 	elif source.library == "fonts":
@@ -66,19 +69,20 @@ def decompile(config, issue, source, source_index):
 	elif source.library == "images":
 		decompiler = ImagesDecompiler.ImagesDecompiler(issue, source, source_index)
 
-	elif source.library == "audio":
-		decompiler = AudioDecompiler.AudioDecompiler(issue, source, source_index)
-
 	elif source.library == "music":
 		decompiler = MusicDecompiler.MusicDecompiler(issue, source, source_index)
+
+	elif source.library == "texts":
+		decompiler = TextsDecompiler.TextsDecompiler(issue, source, source_index)
 
 	else:
 		return False
 
-	decompiler.fill_meta_header()
-	decompiler.fill_meta_fat()
-	decompiler.fill_meta_data()
-	decompiler.export_meta()
+	#decompiler.fill_meta_header()
+	#decompiler.fill_meta_fat()
+	#decompiler.fill_meta_data()
+	#decompiler.export_meta()
+	decompiler.decompile()
 
 	print Fore.GREEN + "\tDecompiling OK"
 

@@ -1,5 +1,5 @@
 # common imports
-import os, sys, datetime
+import datetime, os, string, sys, re
 from io import BytesIO
 from objdict import ObjDict
 from pycdlib import PyCdlib
@@ -15,6 +15,7 @@ from structs.klan_fonts import KlanFonts
 from structs.klan_images import KlanImages
 from structs.klan_music_v1 import KlanMusicV1
 from structs.klan_music_v2 import KlanMusicV2
+from structs.klan_texts_v1 import KlanTextsV1
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -50,38 +51,67 @@ class CommonDecompiler(object):
 		if not os.path.exists(self.PATH_DATA):
 			os.makedirs(self.PATH_DATA)
 
-		iso = PyCdlib()
+		self.iso = PyCdlib()
+		self.iso_paths = []
 		self.iso_content = BytesIO()
 
-		iso.open(PATTERN_FILE_ORIGIN % self.issue.number)
+		self.iso.open(PATTERN_FILE_ORIGIN % self.issue.number)
 
-		iso.get_file_from_iso_fp(self.iso_content, iso_path="/%s;1" % self.source.path)
-		iso.close()
+		if '*' not in self.source.path:
+			self.iso_paths.append("/%s;1" % self.source.path)
+		else:
+			path = os.path.dirname(self.source.path)
+			mask = string.replace(os.path.basename(self.source.path), '.', '\.')
+			mask = string.replace(mask, '*', '.*')
+			regex = re.compile(mask)
 
-		self.iso_content.seek(0)
+			for child in self.iso.list_children(iso_path="/%s" % path):
+				if re.match(regex, child.file_identifier()):
+					self.iso_paths.append("/%s/%s" % (path, child.file_identifier()))
 
-		if self.source.library == "audio":
-			if self.source.version == 1:
-				self.library = KlanAudioV1.from_io(self.iso_content)
-			elif self.source.version == 2:
-				self.library = KlanAudioV2.from_io(self.iso_content)
-			elif self.source.version == 3:
-				self.library = KlanAudioV3.from_io(self.iso_content)
 
-		elif self.source.library == "cursors":
-			self.library = KlanCursors.from_io(self.iso_content)
 
-		elif self.source.library == "fonts":
-			self.library = KlanFonts.from_io(self.iso_content)
+	def decompile(self):
+		for self.iso_path_index, self.iso_path in enumerate(self.iso_paths):
+			print "%s %s" % (self.iso_path_index, self.iso_path)
+			self.iso_content = BytesIO()
+			self.iso.get_file_from_iso_fp(self.iso_content, iso_path=self.iso_path)
+			self.iso_content.seek(0)
 
-		elif self.source.library == "images":
-			self.library = KlanImages.from_io(self.iso_content)
+			if self.source.library == "audio":
+				if self.source.version == 1:
+					self.library = KlanAudioV1.from_io(self.iso_content)
+				elif self.source.version == 2:
+					self.library = KlanAudioV2.from_io(self.iso_content)
+				elif self.source.version == 3:
+					self.library = KlanAudioV3.from_io(self.iso_content)
 
-		elif self.source.library == "music":
-			if self.source.version == 1:
-				self.library = KlanMusicV1.from_io(self.iso_content)
-			elif self.source.version == 2:
-				self.library = KlanMusicV2.from_io(self.iso_content)
+			elif self.source.library == "cursors":
+				self.library = KlanCursors.from_io(self.iso_content)
+
+			elif self.source.library == "fonts":
+				self.library = KlanFonts.from_io(self.iso_content)
+
+			elif self.source.library == "images":
+				self.library = KlanImages.from_io(self.iso_content)
+
+			elif self.source.library == "music":
+				if self.source.version == 1:
+					self.library = KlanMusicV1.from_io(self.iso_content)
+				elif self.source.version == 2:
+					self.library = KlanMusicV2.from_io(self.iso_content)
+
+			elif self.source.library == "texts":
+				if self.source.version == 1:
+					self.library = KlanTextsV1.from_io(self.iso_content)
+
+			self.fill_meta_header()
+			self.fill_meta_fat()
+			self.fill_meta_data()
+
+			self.iso_content.close()
+
+		self.export_meta()
 
 
 
@@ -124,3 +154,8 @@ class CommonDecompiler(object):
 	def export_meta(self):
 		with open(self.FILE_META, "w") as f:
 			f.write(self.meta.dumps())
+
+
+
+	def __del__(self):
+		self.iso.close()
