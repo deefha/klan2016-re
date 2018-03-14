@@ -52,7 +52,7 @@ typedef struct {
 
             struct mLinkMetaTable {
                 local UINT linkMetaIndex;
-                for (linkMetaIndex = 1; linkMetaIndex <= linktable_count; linkMetaIndex++) {
+                for (linkMetaIndex = 0; linkMetaIndex < linktable_count; linkMetaIndex++) {
                     mLinkMeta linkMeta;
                 }
             } linkMetaTable;

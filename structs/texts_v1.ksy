@@ -21,6 +21,44 @@ instances:
     repeat: expr
     repeat-expr: count_linktable
     if: count_linktable != 0
+  linktable:
+    type:
+      switch-on: _index
+      cases:
+        (count_linktable - 1): t_linktable(linktable_meta[_index].content.offset, offset_linktable_meta - linktable_meta[_index].content.offset)
+        _: t_linktable(linktable_meta[_index].content.offset, linktable_meta[_index + 1].content.offset - linktable_meta[_index].content.offset)
+    repeat: expr
+    repeat-expr: count_linktable
+    if: count_linktable != 0
+  count_linetable_meta:
+    pos: offset_linktable - 52
+    type: u4
+  offset_linetable_meta:
+    value: offset_linktable - 52 - (count_linetable_meta * 17) - 17
+  linetable_meta:
+    type: t_linetable_meta(offset_linetable_meta + 17 * _index)
+    repeat: expr
+    repeat-expr: count_linetable_meta
+    if: count_linetable_meta != 0
+  count_palettetable:
+    pos: offset_linetable_meta - 1
+    type: u1
+  offset_palettetable:
+    value: offset_linetable_meta - 1 - (count_palettetable * 768)
+  palettetable:
+    type: t_palettetable(offset_palettetable + 768 * _index)
+    repeat: expr
+    repeat-expr: count_palettetable
+    if: count_palettetable != 0
+  linetable:
+    type:
+      switch-on: _index
+      cases:
+        (count_linetable_meta - 1): t_linetable(linetable_meta[_index].content.offset, offset_palettetable - linetable_meta[_index].content.offset)
+        _: t_linetable(linetable_meta[_index].content.offset, linetable_meta[_index + 1].content.offset - linetable_meta[_index].content.offset)
+    repeat: expr
+    repeat-expr: count_linetable_meta
+    if: count_linetable_meta != 0
 
 types:
   t_linktable_meta:
@@ -44,3 +82,54 @@ types:
         type: u4
       - id: offset
         type: u4
+
+  t_linktable:
+    params:
+      - id: param_offset
+        type: u4
+      - id: length
+        type: u4
+    instances:
+      content:
+        pos: param_offset
+        size: length
+
+  t_linetable_meta:
+    params:
+      - id: param_offset
+        type: u4
+    instances:
+      content:
+        type: t_linetable_meta_content
+        pos: param_offset
+
+  t_linetable_meta_content:
+    seq:
+      - id: offset
+        type: u4
+      - id: height
+        type: u1
+      - id: top
+        type: u2
+      - id: foo
+        size: 10
+
+  t_palettetable:
+    params:
+      - id: param_offset
+        type: u4
+    instances:
+      content:
+        size: 768
+        pos: param_offset
+
+  t_linetable:
+    params:
+      - id: param_offset
+        type: u4
+      - id: length
+        type: u4
+    instances:
+      content:
+        pos: param_offset
+        size: length
