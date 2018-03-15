@@ -1,0 +1,221 @@
+typedef struct {
+} mBlank;
+
+typedef struct {
+} mPadding;
+
+typedef struct {
+    CHAR vendor[8] <bgcolor=cRed, fgcolor=cWhite>;
+    UINT version <fgcolor=cRed, format=hex, comment="meni se?">;
+    USHORT type <bgcolor=cDkGreen, fgcolor=cLtGray>;
+    UINT filesize;
+    UBYTE foo[14] <bgcolor=cDkGreen, fgcolor=cLtRed, format=hex>;
+    USHORT count;
+} mLibHeader <bgcolor=cLtGreen>;
+
+typedef struct {
+    CHAR name[9];
+    UINT offset_1;
+    UINT offset_2;
+    UINT offset_3;
+    UINT offset_4;
+} mTextOffset <comment=GetTextOffsetInfo>;
+
+typedef struct {
+    UINT offset;
+    UBYTE height;
+    USHORT top;
+    UBYTE foo[10];
+} mLineMeta <bgcolor=cLtBlue>;
+
+typedef struct {
+    UBYTE data[768];
+} mPalette <bgcolor=cLtGreen>;
+
+typedef struct {
+    UINT topleft_x;
+    UINT topleft_y;
+    UINT bottomright_x;
+    UINT bottomleft_y;
+    UINT offset;
+} mLinkMeta;
+
+typedef struct {
+    USHORT type;
+} mLink <bgcolor=cBlue>;
+
+typedef struct {
+    USHORT type;
+} mLine <bgcolor=cYellow>;
+
+typedef struct {
+    local UINT version_length;
+
+    version_length = offset_end - offset_begin;
+
+//    FSeek(offset_begin);
+
+    switch (version) {
+        case 1:
+        case 2:
+            local UINT offset_linemetatable_begin;
+            local UINT offset_palettetable_begin;
+
+            FSeek(offset_end - 4);
+            UINT offset_linktable_begin <bgcolor=cRed>;
+
+            FSeek(offset_end - 8);
+            UINT linktable_count <bgcolor=cGreen>;
+
+            if (linktable_count) {
+                FSeek(offset_begin + offset_linktable_begin);
+
+                struct mLinkTable {
+                    FSeek(offset_end - 8 - (linktable_count * 20));
+
+                    struct mLinkMetaTable {
+                        local UINT linkMetaIndex;
+                        for (linkMetaIndex = 1; linkMetaIndex <= linktable_count; linkMetaIndex++) {
+                            mLinkMeta linkMeta;
+                        }
+                    } linkMetaTable;
+
+                    FSeek(offset_begin + offset_linktable_begin);
+
+                    struct mLinks {
+                        local UINT linkIndex;
+                        for (linkIndex = 0; linkIndex < linktable_count; linkIndex++) {
+                            FSeek(offset_begin + linkMetaTable.linkMeta[linkIndex].offset);
+                            mLink link;
+                        }
+                    } links;
+                } linkTable;
+            }
+            else {
+                mBlank linkTable;
+            }
+
+            FSeek(offset_begin + offset_linktable_begin - 52);
+            UINT linemetatable_count <bgcolor=cGreen>;
+            offset_linemetatable_begin = offset_begin + offset_linktable_begin - 52 - (linemetatable_count * 17) - 17;
+
+            FSeek(offset_linemetatable_begin);
+
+            struct mLineMetaTable {
+                local UINT lineMetaIndex;
+                for (lineMetaIndex = 1; lineMetaIndex <= linemetatable_count; lineMetaIndex++) {
+                    mLineMeta lineMeta;
+                }
+            } lineMetaTable;
+
+            FSeek(offset_linemetatable_begin - 1);
+            UBYTE palettetable_count <bgcolor=cGreen>;
+            offset_palettetable_begin = offset_linemetatable_begin - 1 - (palettetable_count * 768);
+
+            FSeek(offset_palettetable_begin);
+
+            struct mPaletteTable {
+                local UINT paletteIndex;
+                for (paletteIndex = 1; paletteIndex <= palettetable_count; paletteIndex++) {
+                    mPalette palette;
+                }
+            } paletteTable;
+
+            FSeek(offset_begin);
+
+            struct mLineTable {
+                local UINT lineIndex;
+                for (lineIndex = 0; lineIndex < linemetatable_count; lineIndex++) {
+                    FSeek(offset_begin + lineMetaTable.lineMeta[lineIndex].offset);
+                    mLine line;
+                }
+            } lineTable;
+            break;
+        case 3:
+//            UBYTE data[version_length];
+            UBYTE data[2];
+            break;
+    }
+
+    FSeek(offset_end);
+} mTextVersion <bgcolor=cLtAqua>;
+
+typedef struct {
+    local UINT offset_index;
+    local UINT offset_begin;
+    local UINT offset_end;
+    local UBYTE version;
+
+    offset_index = offsetIndex;
+
+    offset_begin = textOffsets.textOffset[offsetIndex].offset_1;
+    offset_end = textOffsets.textOffset[offsetIndex].offset_2;
+    version = 1;
+    FSeek(offset_begin);
+    mTextVersion version_1;    
+
+    offset_begin = textOffsets.textOffset[offsetIndex].offset_2;
+    offset_end = textOffsets.textOffset[offsetIndex].offset_3;
+    version = 2;
+    FSeek(offset_begin);
+    mTextVersion version_2;    
+
+//    offset_begin = textOffsets.textOffset[offsetIndex].offset_3;
+//    offset_end = textOffsets.textOffset[offsetIndex].offset_4;
+//    version = 3;
+//    FSeek(offset_begin);
+//    mTextVersion version_3;    
+} mText <bgcolor=cAqua, comment=GetTextInfo>;
+
+
+
+string GetTextOffsetInfo(mTextOffset &textOffset) {
+    string s;
+    SPrintf(s, "%s", textOffset.name);
+    return s;
+}
+
+string GetTextInfo(mText &text) {
+    string s;
+    SPrintf(s, "%s", textOffsets.textOffset[text.offset_index].name);
+    return s;
+}
+
+
+
+local UINT offsetIndex;
+local UINT offset_1;
+local UINT offset_2;
+local UINT offset_3;
+local UINT offset_4;
+
+mLibHeader header;
+
+struct mTextOffsets {
+//    mPadding textOffset;
+    for (offsetIndex = 0; offsetIndex < 200; offsetIndex++) {
+        if (offsetIndex == 0) {
+            mTextOffset textOffset <bgcolor=cRed, fgcolor=cWhite>;
+        }
+        else {
+            if (offsetIndex % 2) {
+                mTextOffset textOffset <bgcolor=cLtPurple>;
+            }
+            else {
+                mTextOffset textOffset <bgcolor=cDkPurple, fgcolor=cLtGray>;
+            }
+        }
+    }
+} textOffsets;
+
+struct mTexts {
+//    mPadding text;
+    for (offsetIndex = 0; offsetIndex < header.count; offsetIndex++) {
+        offset_1 = textOffsets.textOffset[offsetIndex].offset_1;
+        offset_2 = textOffsets.textOffset[offsetIndex].offset_2;
+        offset_3 = textOffsets.textOffset[offsetIndex].offset_3;
+        offset_4 = textOffsets.textOffset[offsetIndex].offset_4;
+        FSeek(offset_1);
+        mText text;
+    }
+} texts;
