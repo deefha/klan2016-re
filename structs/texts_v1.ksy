@@ -4,6 +4,7 @@ meta:
   title: KLAN texts library v1
   application: KLAN discmag engine
   endian: le
+  encoding: ASCII
 
 doc-ref: https://wiki.klan2016.cz/knihovny/texty.html
 
