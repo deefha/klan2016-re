@@ -127,9 +127,9 @@ types:
     params:
       - id: param_offset
         type: u4
-      - id: length
+      - id: param_length
         type: u4
     instances:
       content:
         pos: param_offset
-        size: length
+        size: param_length

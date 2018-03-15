@@ -73,7 +73,8 @@ class CommonDecompiler(object):
 
 	def decompile(self):
 		for self.iso_path_index, self.iso_path in enumerate(self.iso_paths):
-			print "%s %s" % (self.iso_path_index, self.iso_path)
+			print "\t\tISO path #%s: %s" % (self.iso_path_index, self.iso_path)
+
 			self.iso_content = BytesIO()
 			self.iso.get_file_from_iso_fp(self.iso_content, iso_path=self.iso_path)
 			self.iso_content.seek(0)

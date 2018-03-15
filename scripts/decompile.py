@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from pprint import pprint
 from colorama import init as colorama_init, Fore, Back, Style
 
@@ -78,10 +78,6 @@ def decompile(config, issue, source, source_index):
 	else:
 		return False
 
-	#decompiler.fill_meta_header()
-	#decompiler.fill_meta_fat()
-	#decompiler.fill_meta_data()
-	#decompiler.export_meta()
 	decompiler.decompile()
 
 	print Fore.GREEN + "\tDecompiling OK"

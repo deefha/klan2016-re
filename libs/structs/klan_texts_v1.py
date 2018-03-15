@@ -46,12 +46,12 @@ class KlanTextsV1(KaitaiStruct):
 
 
     class TLinetable(KaitaiStruct):
-        def __init__(self, param_offset, length, _io, _parent=None, _root=None):
+        def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
             self.param_offset = param_offset
-            self.length = length
+            self.param_length = param_length
             self._read()
 
         def _read(self):
@@ -64,7 +64,7 @@ class KlanTextsV1(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
-            self._m_content = self._io.read_bytes(self.length)
+            self._m_content = self._io.read_bytes(self.param_length)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 

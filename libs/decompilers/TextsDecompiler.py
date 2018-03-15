@@ -1,5 +1,5 @@
 # common imports
-import os, sys, datetime
+import datetime, os, sys, re
 from objdict import ObjDict
 from tqdm import tqdm
 
@@ -12,19 +12,24 @@ class TextsDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_LINKTABLE = "%s%04d/linktable/%04d/"
 	PATTERN_PATH_PALETTETABLE = "%s%04d/palettetable/%04d/"
+	PATTERN_PATH_LINETABLE = "%s%04d/linetable/%04d/"
 
 	PATTERN_FILE_LINKTABLE = "%s%04d/linktable/%04d/content.bin"
 	PATTERN_FILE_PALETTETABLE = "%s%04d/palettetable/%04d/content.bin"
+	PATTERN_FILE_LINETABLE = "%s%04d/linetable/%04d/content.bin"
 
 	PATTERN_DECOMPILED_LINKTABLE = "decompiled://%s/%s/%s/%04d/linktable/%04d/content.bin"
 	PATTERN_DECOMPILED_PALETTETABLE = "decompiled://%s/%s/%s/%04d/palettetable/%04d/content.bin"
+	PATTERN_DECOMPILED_LINETABLE = "decompiled://%s/%s/%s/%04d/linetable/%04d/content.bin"
+
+
 
 	def fill_meta_data(self):
 		if self.source.version == 1:
-			if not hasattr(self.meta, 'data'):
+			if not hasattr(self.meta, "data"):
 				self.meta.data = ObjDict()
 
-			if not hasattr(self.meta.data, 'texts'):
+			if not hasattr(self.meta.data, "texts"):
 				self.meta.data.texts = ObjDict()
 		else:
 			super(TextsDecompiler, self).fill_meta_data()
@@ -43,6 +48,7 @@ class TextsDecompiler(CommonDecompiler):
 			data_text.count_palettetable = self.library.count_palettetable
 			data_text.offset_palettetable = self.library.offset_palettetable
 			data_text.palettetable = ObjDict()
+			data_text.linetable = ObjDict()
 
 			if self.library.linktable_meta:
 				for linktable_meta_index, linktable_meta in enumerate(self.library.linktable_meta):
@@ -113,58 +119,28 @@ class TextsDecompiler(CommonDecompiler):
 
 					data_text.palettetable[str(palettetable_index)] = data_palettetable
 
+			if self.library.linetable:
+				for linetable_index, linetable in enumerate(self.library.linetable):
+					data_linetable = ObjDict()
+					data_linetable.param_offset = linetable.param_offset
+					data_linetable.param_length = linetable.param_length
+					data_linetable.content = ObjDict()
+
+					file_linetable = self.PATTERN_FILE_LINETABLE % (self.PATH_DATA, self.iso_path_index, linetable_index)
+
+					path_linetable = self.PATTERN_PATH_LINETABLE % (self.PATH_DATA, self.iso_path_index, linetable_index)
+
+					if not os.path.exists(path_linetable):
+						os.makedirs(path_linetable)
+
+					data_linetable.content.data = self.PATTERN_DECOMPILED_LINETABLE % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linetable_index)
+
+					with open(file_linetable, "wb") as f:
+						f.write(linetable.content)
+
+					data_text.linetable[str(linetable_index)] = data_linetable
+
 			self.meta.data.texts[str(self.iso_path_index)] = data_text
-
-		#for image_index, image in enumerate(tqdm(self.library.data.images, desc="data.images", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
-			#data_image = ObjDict()
-			#data_image.param_offset = image.param_offset
-			#data_image.content = ObjDict()
-
-			#if image.content:
-				##print "Image #%d: param_offset=%d, data_size=%d, width=%d, height=%d, mode=%d" % (image_index, image.param_offset, image.content.data_size, image.content.width, image.content.height, image.content.mode)
-
-				#file_colormap = self.PATTERN_FILE_COLORMAP % (self.PATH_DATA, image_index)
-				#file_content = self.PATTERN_FILE_CONTENT % (self.PATH_DATA, image_index)
-				#file_header = self.PATTERN_FILE_HEADER % (self.PATH_DATA, image_index)
-
-				#path_image = self.PATTERN_PATH_IMAGE % (self.PATH_DATA, image_index)
-
-				#if not os.path.exists(path_image):
-					#os.makedirs(path_image)
-
-				#data_image.content.data_size = image.content.data_size
-				#data_image.content.width = image.content.width
-				#data_image.content.height = image.content.height
-				#data_image.content.mode = image.content.mode
-				#data_image.content.data = ObjDict()
-				#data_image.content.data.param_data_size = image.content.data.param_data_size
-
-				#if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257:
-					#data_image.content.data.colormap = self.PATTERN_DECOMPILED_COLORMAP % (self.issue.number, self.source.library, self.source_index, image_index)
-
-					##print "\tColormap"
-					#with open(file_colormap, "wb") as f:
-						#f.write(image.content.data.colormap)
-
-				#elif image.content.mode == 4:
-					#data_image.content.data.foo = image.content.data.foo
-					#data_image.content.data.header_size = image.content.data.header_size
-					#data_image.content.data.header = self.PATTERN_DECOMPILED_HEADER % (self.issue.number, self.source.library, self.source_index, image_index)
-
-					##print "\tHeader"
-					#with open(file_header, "wb") as f:
-						#f.write(image.content.data.header)
-
-				#data_image.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, image_index)
-
-				##print "\tContent"
-				#with open(file_content, "wb") as f:
-					#f.write(image.content.data.content)
-
-			##else:
-				##print "Image #%d: param_offset=%d, no content" % (image_index, image.param_offset)
-
-			#self.meta.data.images[str(image_index)] = data_image
 
 
 
@@ -178,6 +154,14 @@ class TextsDecompiler(CommonDecompiler):
 
 	def fill_meta_fat(self):
 		if self.source.version == 1:
-			self.meta.fat = ObjDict()
+			if not hasattr(self.meta, "fat"):
+				self.meta.fat = ObjDict()
+
+			data_fat = ObjDict()
+
+			regex = re.compile("^\/(.*);1$")
+			data_fat.name = re.search(regex, self.iso_path).group(1)
+
+			self.meta.fat[str(self.iso_path_index)] = data_fat
 		else:
 			super(TextsDecompiler, self).fill_meta_fat()
