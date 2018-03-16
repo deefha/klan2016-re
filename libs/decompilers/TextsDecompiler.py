@@ -70,18 +70,53 @@ class TextsDecompiler(CommonDecompiler):
 					data_linktable.param_offset = linktable.param_offset
 					data_linktable.param_length = linktable.param_length
 					data_linktable.content = ObjDict()
+					data_linktable.content.items = ObjDict()
 
-					file_linktable = self.PATTERN_FILE_LINKTABLE % (self.PATH_DATA, self.iso_path_index, linktable_index)
+					#file_linktable = self.PATTERN_FILE_LINKTABLE % (self.PATH_DATA, self.iso_path_index, linktable_index)
 
-					path_linktable = self.PATTERN_PATH_LINKTABLE % (self.PATH_DATA, self.iso_path_index, linktable_index)
+					#path_linktable = self.PATTERN_PATH_LINKTABLE % (self.PATH_DATA, self.iso_path_index, linktable_index)
 
-					if not os.path.exists(path_linktable):
-						os.makedirs(path_linktable)
+					#if not os.path.exists(path_linktable):
+						#os.makedirs(path_linktable)
 
-					data_linktable.content.data = self.PATTERN_DECOMPILED_LINKTABLE % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linktable_index)
+					#data_linktable.content.data = self.PATTERN_DECOMPILED_LINKTABLE % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linktable_index)
 
-					with open(file_linktable, "wb") as f:
-						f.write(linktable.content)
+					#with open(file_linktable, "wb") as f:
+						#f.write(linktable.content)
+
+					for linktable_content_item_index, linktable_content_item in enumerate(linktable.content.items):
+						data_linktable_content_item = ObjDict()
+						data_linktable_content_item.mode = linktable_content_item.mode
+						data_linktable_content_item.data = ObjDict()
+						
+						if data_linktable_content_item.mode == 4:
+							data_linktable_content_item.data.topleft_x = linktable_content_item.data.topleft_x
+							data_linktable_content_item.data.topleft_y = linktable_content_item.data.topleft_y
+							data_linktable_content_item.data.width = linktable_content_item.data.width
+							data_linktable_content_item.data.height = linktable_content_item.data.height
+							data_linktable_content_item.data.slider_topleft_x = linktable_content_item.data.slider_topleft_x
+							data_linktable_content_item.data.slider_topleft_y = linktable_content_item.data.slider_topleft_y
+							data_linktable_content_item.data.textfile_length = linktable_content_item.data.textfile_length
+							data_linktable_content_item.data.textfile = linktable_content_item.data.textfile
+
+						elif data_linktable_content_item.mode == 6:
+							#data_linktable_content_item.data.foo = linktable_content_item.data.foo # TODO
+							data_linktable_content_item.data.foo = ""
+
+						elif data_linktable_content_item.mode == 12:
+							data_linktable_content_item.data.foo_1 = linktable_content_item.data.foo_1
+							data_linktable_content_item.data.foo_2 = linktable_content_item.data.foo_2
+
+						elif data_linktable_content_item.mode == 13:
+							data_linktable_content_item.data.id = linktable_content_item.data.id
+							data_linktable_content_item.data.textfile_length = linktable_content_item.data.textfile_length
+							data_linktable_content_item.data.textfile = linktable_content_item.data.textfile
+
+						elif data_linktable_content_item.mode == 14:
+							data_linktable_content_item.data.id = linktable_content_item.data.id
+							data_linktable_content_item.data.value = linktable_content_item.data.value
+
+						data_linktable.content.items[str(linktable_content_item_index)] = data_linktable_content_item
 
 					data_text.linktable[str(linktable_index)] = data_linktable
 

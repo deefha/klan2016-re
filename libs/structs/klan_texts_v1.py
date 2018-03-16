@@ -21,6 +21,39 @@ class KlanTextsV1(KaitaiStruct):
     def _read(self):
         pass
 
+    class TLinktableContentItem6(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes(71)
+
+
+    class TLinktableContentItem(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.mode = self._io.read_u2le()
+            _on = self.mode
+            if _on == 14:
+                self.data = self._root.TLinktableContentItem14(self._io, self, self._root)
+            elif _on == 4:
+                self.data = self._root.TLinktableContentItem4(self._io, self, self._root)
+            elif _on == 6:
+                self.data = self._root.TLinktableContentItem6(self._io, self, self._root)
+            elif _on == 13:
+                self.data = self._root.TLinktableContentItem13(self._io, self, self._root)
+            elif _on == 12:
+                self.data = self._root.TLinktableContentItem12(self._io, self, self._root)
+
+
     class TLinktable(KaitaiStruct):
         def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
             self._io = _io
@@ -40,9 +73,24 @@ class KlanTextsV1(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
-            self._m_content = self._io.read_bytes(self.param_length)
+            self._raw__m_content = self._io.read_bytes(self.param_length)
+            io = KaitaiStream(BytesIO(self._raw__m_content))
+            self._m_content = self._root.TLinktableContent(io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TLinktableContentItem13(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.id = self._io.read_u2le()
+            self.textfile_length = self._io.read_u1()
+            self.textfile = self._io.read_bytes(self.textfile_length)
 
 
     class TLinetable(KaitaiStruct):
@@ -81,6 +129,18 @@ class KlanTextsV1(KaitaiStruct):
             self.height = self._io.read_u1()
             self.top = self._io.read_u2le()
             self.foo = self._io.read_bytes(10)
+
+
+    class TLinktableContentItem12(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo_1 = self._io.read_u2le()
+            self.foo_2 = self._io.read_u4le()
 
 
     class TLinktableMetaContent(KaitaiStruct):
@@ -165,6 +225,53 @@ class KlanTextsV1(KaitaiStruct):
             self._m_content = self._root.TLinktableMetaContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TLinktableContentItem4(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.topleft_x = self._io.read_u2le()
+            self.topleft_y = self._io.read_u2le()
+            self.width = self._io.read_u2le()
+            self.height = self._io.read_u2le()
+            self.slider_topleft_x = self._io.read_u2le()
+            self.slider_topleft_y = self._io.read_u2le()
+            self.slider_height = self._io.read_u2le()
+            self.textfile_length = self._io.read_u1()
+            self.textfile = self._io.read_bytes(self.textfile_length)
+
+
+    class TLinktableContentItem14(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.id = self._io.read_u2le()
+            self.value = self._io.read_u2le()
+
+
+    class TLinktableContent(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.items = []
+            i = 0
+            while not self._io.is_eof():
+                self.items.append(self._root.TLinktableContentItem(self._io, self, self._root))
+                i += 1
+
 
 
     @property
