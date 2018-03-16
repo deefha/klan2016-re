@@ -1,5 +1,5 @@
 # common imports
-import datetime, os, string, sys, re
+import datetime, json, os, string, sys, re
 from io import BytesIO
 from objdict import ObjDict
 from pycdlib import PyCdlib
@@ -154,7 +154,7 @@ class CommonDecompiler(object):
 
 	def export_meta(self):
 		with open(self.FILE_META, "w") as f:
-			f.write(self.meta.dumps())
+			f.write(json.dumps(json.loads(self.meta.dumps()), indent=4))
 
 
 
