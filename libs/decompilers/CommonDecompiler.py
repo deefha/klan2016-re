@@ -73,7 +73,7 @@ class CommonDecompiler(object):
 
 	def decompile(self):
 		for self.iso_path_index, self.iso_path in enumerate(self.iso_paths):
-			print "\t\tISO path #%s: %s" % (self.iso_path_index, self.iso_path)
+			print "\t\tISO path #%s/%s: %s" % (self.iso_path_index, len(self.iso_paths), self.iso_path)
 
 			self.iso_content = BytesIO()
 			self.iso.get_file_from_iso_fp(self.iso_content, iso_path=self.iso_path)
@@ -154,7 +154,8 @@ class CommonDecompiler(object):
 
 	def export_meta(self):
 		with open(self.FILE_META, "w") as f:
-			f.write(json.dumps(json.loads(self.meta.dumps()), indent=4))
+			f.write(self.meta.dumps())
+			#f.write(json.dumps(json.loads(self.meta.dumps()), indent=4))
 
 
 
