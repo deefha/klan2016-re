@@ -1,5 +1,5 @@
 # common imports
-import datetime, os, sys, re
+import datetime, os, re, struct, sys
 from objdict import ObjDict
 from tqdm import tqdm
 
@@ -10,17 +10,14 @@ from CommonDecompiler import CommonDecompiler
 
 class TextsDecompiler(CommonDecompiler):
 
-	PATTERN_PATH_LINKTABLE = "%s%04d/linktable/%04d/"
 	PATTERN_PATH_PALETTETABLE = "%s%04d/palettetable/%04d/"
-	PATTERN_PATH_LINETABLE = "%s%04d/linetable/%04d/"
+	PATTERN_PATH_ROW = "%s%04d/linetable/%04d/items/%04d/rows/"
 
-	PATTERN_FILE_LINKTABLE = "%s%04d/linktable/%04d/content.bin"
 	PATTERN_FILE_PALETTETABLE = "%s%04d/palettetable/%04d/content.bin"
-	PATTERN_FILE_LINETABLE = "%s%04d/linetable/%04d/content.bin"
+	PATTERN_FILE_ROW = "%s%04d/linetable/%04d/items/%04d/rows/%02d.bin"
 
-	PATTERN_DECOMPILED_LINKTABLE = "decompiled://%s/%s/%s/%04d/linktable/%04d/content.bin"
 	PATTERN_DECOMPILED_PALETTETABLE = "decompiled://%s/%s/%s/%04d/palettetable/%04d/content.bin"
-	PATTERN_DECOMPILED_LINETABLE = "decompiled://%s/%s/%s/%04d/linetable/%04d/content.bin"
+	PATTERN_DECOMPILED_ROW = "decompiled://%s/%s/%s/%04d/linetable/%04d/items/%04d/rows/%02d.bin"
 
 
 
@@ -51,7 +48,7 @@ class TextsDecompiler(CommonDecompiler):
 			data_text.linetable = ObjDict()
 
 			if self.library.linktable_meta:
-				for linktable_meta_index, linktable_meta in enumerate(self.library.linktable_meta):
+				for linktable_meta_index, linktable_meta in enumerate(tqdm(self.library.linktable_meta, desc="linktable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 					data_linktable_meta = ObjDict()
 					data_linktable_meta.param_offset = linktable_meta.param_offset
 					data_linktable_meta.content = ObjDict()
@@ -65,30 +62,18 @@ class TextsDecompiler(CommonDecompiler):
 					data_text.linktable_meta[str(linktable_meta_index)] = data_linktable_meta
 
 			if self.library.linktable:
-				for linktable_index, linktable in enumerate(self.library.linktable):
+				for linktable_index, linktable in enumerate(tqdm(self.library.linktable, desc="linktable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 					data_linktable = ObjDict()
 					data_linktable.param_offset = linktable.param_offset
 					data_linktable.param_length = linktable.param_length
 					data_linktable.content = ObjDict()
 					data_linktable.content.items = ObjDict()
 
-					#file_linktable = self.PATTERN_FILE_LINKTABLE % (self.PATH_DATA, self.iso_path_index, linktable_index)
-
-					#path_linktable = self.PATTERN_PATH_LINKTABLE % (self.PATH_DATA, self.iso_path_index, linktable_index)
-
-					#if not os.path.exists(path_linktable):
-						#os.makedirs(path_linktable)
-
-					#data_linktable.content.data = self.PATTERN_DECOMPILED_LINKTABLE % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linktable_index)
-
-					#with open(file_linktable, "wb") as f:
-						#f.write(linktable.content)
-
 					for linktable_content_item_index, linktable_content_item in enumerate(linktable.content.items):
 						data_linktable_content_item = ObjDict()
 						data_linktable_content_item.mode = linktable_content_item.mode
 						data_linktable_content_item.data = ObjDict()
-						
+
 						if data_linktable_content_item.mode == 4:
 							data_linktable_content_item.data.topleft_x = linktable_content_item.data.topleft_x
 							data_linktable_content_item.data.topleft_y = linktable_content_item.data.topleft_y
@@ -121,7 +106,7 @@ class TextsDecompiler(CommonDecompiler):
 					data_text.linktable[str(linktable_index)] = data_linktable
 
 			if self.library.linetable_meta:
-				for linetable_meta_index, linetable_meta in enumerate(self.library.linetable_meta):
+				for linetable_meta_index, linetable_meta in enumerate(tqdm(self.library.linetable_meta, desc="linetable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 					data_linetable_meta = ObjDict()
 					data_linetable_meta.param_offset = linetable_meta.param_offset
 					data_linetable_meta.content = ObjDict()
@@ -135,7 +120,7 @@ class TextsDecompiler(CommonDecompiler):
 					data_text.linetable_meta[str(linetable_meta_index)] = data_linetable_meta
 
 			if self.library.palettetable:
-				for palettetable_index, palettetable in enumerate(self.library.palettetable):
+				for palettetable_index, palettetable in enumerate(tqdm(self.library.palettetable, desc="palettetable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 					data_palettetable = ObjDict()
 					data_palettetable.param_offset = palettetable.param_offset
 					data_palettetable.content = ObjDict()
@@ -155,23 +140,55 @@ class TextsDecompiler(CommonDecompiler):
 					data_text.palettetable[str(palettetable_index)] = data_palettetable
 
 			if self.library.linetable:
-				for linetable_index, linetable in enumerate(self.library.linetable):
+				for linetable_index, linetable in enumerate(tqdm(self.library.linetable, desc="linetable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 					data_linetable = ObjDict()
 					data_linetable.param_offset = linetable.param_offset
 					data_linetable.param_length = linetable.param_length
 					data_linetable.content = ObjDict()
+					data_linetable.content.items = ObjDict()
 
-					file_linetable = self.PATTERN_FILE_LINETABLE % (self.PATH_DATA, self.iso_path_index, linetable_index)
+					for linetable_content_item_index, linetable_content_item in enumerate(linetable.content.items):
+						data_linetable_content_item = ObjDict()
+						data_linetable_content_item.raw = linetable_content_item.raw
 
-					path_linetable = self.PATTERN_PATH_LINETABLE % (self.PATH_DATA, self.iso_path_index, linetable_index)
+						if hasattr(linetable_content_item, "data"):
+							data_linetable_content_item.data = ObjDict()
 
-					if not os.path.exists(path_linetable):
-						os.makedirs(path_linetable)
+							if data_linetable_content_item.raw == 1:
+								data_linetable_content_item.data.mode = linetable_content_item.data.mode
 
-					data_linetable.content.data = self.PATTERN_DECOMPILED_LINETABLE % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linetable_index)
+							elif data_linetable_content_item.raw == 8:
+								data_linetable_content_item.data.table = linetable_content_item.data.table
+								data_linetable_content_item.data.width = linetable_content_item.data.width
+								data_linetable_content_item.data.height = linetable_content_item.data.height
+								data_linetable_content_item.data.rows = ObjDict()
 
-					with open(file_linetable, "wb") as f:
-						f.write(linetable.content)
+								for row_index, row in enumerate(linetable_content_item.data.rows):
+									file_row = self.PATTERN_FILE_ROW % (self.PATH_DATA, self.iso_path_index, linetable_index, linetable_content_item_index, row_index)
+
+									path_row = self.PATTERN_PATH_ROW % (self.PATH_DATA, self.iso_path_index, linetable_index, linetable_content_item_index)
+
+									if not os.path.exists(path_row):
+										os.makedirs(path_row)
+
+									data_linetable_content_item.data.rows[str(row_index)] = self.PATTERN_DECOMPILED_ROW % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linetable_index, linetable_content_item_index, row_index)
+
+									row_content_data = []
+									for row_content in row.content:
+										row_content_data.append(row_content.data)
+										if hasattr(row_content, "addon"):
+											row_content_data.append(row_content.addon)
+
+									with open(file_row, "wb") as f:
+										f.write(struct.pack("%sB" % len(row_content_data), *row_content_data))
+
+							elif data_linetable_content_item.raw == 9:
+								data_linetable_content_item.data.id = linetable_content_item.data.id
+
+							elif data_linetable_content_item.raw == 32:
+								data_linetable_content_item.data.length = linetable_content_item.data.length
+
+						data_linetable.content.items[str(linetable_content_item_index)] = data_linetable_content_item
 
 					data_text.linetable[str(linetable_index)] = data_linetable
 

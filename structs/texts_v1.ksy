@@ -220,29 +220,19 @@ types:
         type:
           switch-on: raw
           cases:
-            # konec radky
-            #0: t_linetable_content_item_0
-            # font
             1: t_linetable_content_item_1
-            # bold
-            #2: t_linetable_content_item_2
-            # italic
-            #4: t_linetable_content_item_4
-            # obrazek
             8: t_linetable_content_item_8
-            # odkaz
             9: t_linetable_content_item_9
-            # mezera
             32: t_linetable_content_item_32
-            # default
-            #_: t_linetable_content_item
         if: raw == 1 or raw == 8 or raw == 9 or raw == 32
 
+  # font
   t_linetable_content_item_1:
     seq:
       - id: mode
         type: u1
 
+  # obrazek
   t_linetable_content_item_8:
     seq:
       - id: table
@@ -259,16 +249,26 @@ types:
 
   t_linktable_content_item_8_row:
     seq:
-      - id: numbers
-        type: u1
+      - id: content
+        type: t_linktable_content_item_8_row_data
         repeat: until
-        repeat-until: _ == 192
+        repeat-until: _.data == 192
 
+  t_linktable_content_item_8_row_data:
+    seq:
+      - id: data
+        type: u1
+      - id: addon
+        type: u1
+        if: data > 192
+
+  # odkaz
   t_linetable_content_item_9:
     seq:
       - id: id
         type: u2
 
+  # mezera
   t_linetable_content_item_32:
     seq:
       - id: length
