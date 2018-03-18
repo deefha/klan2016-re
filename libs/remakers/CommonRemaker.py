@@ -33,6 +33,8 @@ class CommonRemaker(object):
 		if not os.path.exists(self.PATH_DATA_REMAKED):
 			os.makedirs(self.PATH_DATA_REMAKED)
 
+		print "Loading decompiled data..."
+
 		try:
 			with open(self.FILE_META_DECOMPILED, "r") as f:
 				#content = f.read()
@@ -53,7 +55,7 @@ class CommonRemaker(object):
 		self.meta_remaked.header.issue = self.issue.number
 		self.meta_remaked.header.library = self.source.library
 
-		if self.meta_decompiled.header.filedate and self.meta_decompiled.header.filetime:
+		if hasattr(self.meta_decompiled.header, "filedate") and hasattr(self.meta_decompiled.header, "filetime"):
 			year = ((self.meta_decompiled.header.filedate & 0b1111111000000000) >> 9) + 1980
 			month = (self.meta_decompiled.header.filedate & 0b0000000111100000) >> 5
 			day = self.meta_decompiled.header.filedate & 0b0000000000011111

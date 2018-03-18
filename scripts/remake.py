@@ -61,7 +61,10 @@ def remake(config, issue, source, source_index):
 	print "Version: %s" % source.version
 	print "Index: %s" % source_index
 
-	if source.library == "cursors":
+	if source.library == "audio":
+		remaker = AudioRemaker.AudioRemaker(issue, source, source_index)
+
+	elif source.library == "cursors":
 		remaker = CursorsRemaker.CursorsRemaker(issue, source, source_index)
 
 	elif source.library == "fonts":
@@ -70,11 +73,11 @@ def remake(config, issue, source, source_index):
 	elif source.library == "images":
 		remaker = ImagesRemaker.ImagesRemaker(issue, source, source_index)
 
-	elif source.library == "audio":
-		remaker = AudioRemaker.AudioRemaker(issue, source, source_index)
-
 	elif source.library == "music":
 		remaker = MusicRemaker.MusicRemaker(issue, source, source_index)
+
+	elif source.library == "texts":
+		remaker = TextsRemaker.TextsRemaker(issue, source, source_index)
 
 	else:
 		return False
