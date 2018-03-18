@@ -98,11 +98,11 @@ types:
 
   t_linktable_content:
     seq:
-      - id: items
-        type: t_linktable_content_item
+      - id: pieces
+        type: t_linktable_content_piece
         repeat: eos
 
-  t_linktable_content_item:
+  t_linktable_content_piece:
     seq:
       - id: mode
         type: u2
@@ -110,13 +110,13 @@ types:
         type:
           switch-on: mode
           cases:
-            4: t_linktable_content_item_4
-            6: t_linktable_content_item_6
-            12: t_linktable_content_item_12
-            13: t_linktable_content_item_13
-            14: t_linktable_content_item_14
+            4: t_linktable_content_piece_4
+            6: t_linktable_content_piece_6
+            12: t_linktable_content_piece_12
+            13: t_linktable_content_piece_13
+            14: t_linktable_content_piece_14
 
-  t_linktable_content_item_4:
+  t_linktable_content_piece_4:
     seq:
       - id: topleft_x
         type: u2
@@ -137,19 +137,19 @@ types:
       - id: textfile
         size: textfile_length
 
-  t_linktable_content_item_6:
+  t_linktable_content_piece_6:
     seq:
       - id: foo
         size: 71
 
-  t_linktable_content_item_12:
+  t_linktable_content_piece_12:
     seq:
       - id: foo_1
         type: u2
       - id: foo_2
         type: u4
 
-  t_linktable_content_item_13:
+  t_linktable_content_piece_13:
     seq:
       - id: id
         type: u2
@@ -158,7 +158,7 @@ types:
       - id: textfile
         size: textfile_length
 
-  t_linktable_content_item_14:
+  t_linktable_content_piece_14:
     seq:
       - id: id
         type: u2
@@ -208,11 +208,11 @@ types:
 
   t_linetable_content:
     seq:
-      - id: items
-        type: t_linetable_content_item
+      - id: pieces
+        type: t_linetable_content_piece
         repeat: eos
 
-  t_linetable_content_item:
+  t_linetable_content_piece:
     seq:
       - id: raw
         type: u1
@@ -220,20 +220,20 @@ types:
         type:
           switch-on: raw
           cases:
-            1: t_linetable_content_item_1
-            8: t_linetable_content_item_8
-            9: t_linetable_content_item_9
-            32: t_linetable_content_item_32
+            1: t_linetable_content_piece_1
+            8: t_linetable_content_piece_8
+            9: t_linetable_content_piece_9
+            32: t_linetable_content_piece_32
         if: raw == 1 or raw == 8 or raw == 9 or raw == 32
 
   # font
-  t_linetable_content_item_1:
+  t_linetable_content_piece_1:
     seq:
       - id: mode
         type: u1
 
   # obrazek
-  t_linetable_content_item_8:
+  t_linetable_content_piece_8:
     seq:
       - id: table
         type: u1
@@ -242,19 +242,19 @@ types:
       - id: height
         type: u1
       - id: rows
-        type: t_linktable_content_item_8_row
+        type: t_linktable_content_piece_8_row
         repeat: expr
         repeat-expr: height
         if: height != 0
 
-  t_linktable_content_item_8_row:
+  t_linktable_content_piece_8_row:
     seq:
       - id: content
-        type: t_linktable_content_item_8_row_data
+        type: t_linktable_content_piece_8_row_data
         repeat: until
         repeat-until: _.data == 192
 
-  t_linktable_content_item_8_row_data:
+  t_linktable_content_piece_8_row_data:
     seq:
       - id: data
         type: u1
@@ -263,13 +263,13 @@ types:
         if: data > 192
 
   # odkaz
-  t_linetable_content_item_9:
+  t_linetable_content_piece_9:
     seq:
       - id: id
         type: u2
 
   # mezera
-  t_linetable_content_item_32:
+  t_linetable_content_piece_32:
     seq:
       - id: length
         type: u1

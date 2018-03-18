@@ -11,13 +11,13 @@ from CommonDecompiler import CommonDecompiler
 class TextsDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_PALETTETABLE = "%s%04d/palettetable/%04d/"
-	PATTERN_PATH_ROW = "%s%04d/linetable/%04d/items/%04d/rows/"
+	PATTERN_PATH_ROW = "%s%04d/linetable/%04d/pieces/%04d/rows/"
 
 	PATTERN_FILE_PALETTETABLE = "%s%04d/palettetable/%04d/content.bin"
-	PATTERN_FILE_ROW = "%s%04d/linetable/%04d/items/%04d/rows/%02d.bin"
+	PATTERN_FILE_ROW = "%s%04d/linetable/%04d/pieces/%04d/rows/%02d.bin"
 
 	PATTERN_DECOMPILED_PALETTETABLE = "decompiled://%s/%s/%s/%04d/palettetable/%04d/content.bin"
-	PATTERN_DECOMPILED_ROW = "decompiled://%s/%s/%s/%04d/linetable/%04d/items/%04d/rows/%02d.bin"
+	PATTERN_DECOMPILED_ROW = "decompiled://%s/%s/%s/%04d/linetable/%04d/pieces/%04d/rows/%02d.bin"
 
 
 
@@ -67,41 +67,41 @@ class TextsDecompiler(CommonDecompiler):
 					data_linktable.param_offset = linktable.param_offset
 					data_linktable.param_length = linktable.param_length
 					data_linktable.content = ObjDict()
-					data_linktable.content.items = ObjDict()
+					data_linktable.content.pieces = ObjDict()
 
-					for linktable_content_item_index, linktable_content_item in enumerate(linktable.content.items):
-						data_linktable_content_item = ObjDict()
-						data_linktable_content_item.mode = linktable_content_item.mode
-						data_linktable_content_item.data = ObjDict()
+					for linktable_content_piece_index, linktable_content_piece in enumerate(linktable.content.pieces):
+						data_linktable_content_piece = ObjDict()
+						data_linktable_content_piece.mode = linktable_content_piece.mode
+						data_linktable_content_piece.data = ObjDict()
 
-						if data_linktable_content_item.mode == 4:
-							data_linktable_content_item.data.topleft_x = linktable_content_item.data.topleft_x
-							data_linktable_content_item.data.topleft_y = linktable_content_item.data.topleft_y
-							data_linktable_content_item.data.width = linktable_content_item.data.width
-							data_linktable_content_item.data.height = linktable_content_item.data.height
-							data_linktable_content_item.data.slider_topleft_x = linktable_content_item.data.slider_topleft_x
-							data_linktable_content_item.data.slider_topleft_y = linktable_content_item.data.slider_topleft_y
-							data_linktable_content_item.data.textfile_length = linktable_content_item.data.textfile_length
-							data_linktable_content_item.data.textfile = linktable_content_item.data.textfile
+						if data_linktable_content_piece.mode == 4:
+							data_linktable_content_piece.data.topleft_x = linktable_content_piece.data.topleft_x
+							data_linktable_content_piece.data.topleft_y = linktable_content_piece.data.topleft_y
+							data_linktable_content_piece.data.width = linktable_content_piece.data.width
+							data_linktable_content_piece.data.height = linktable_content_piece.data.height
+							data_linktable_content_piece.data.slider_topleft_x = linktable_content_piece.data.slider_topleft_x
+							data_linktable_content_piece.data.slider_topleft_y = linktable_content_piece.data.slider_topleft_y
+							data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
+							data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
 
-						elif data_linktable_content_item.mode == 6:
-							#data_linktable_content_item.data.foo = linktable_content_item.data.foo # TODO
-							data_linktable_content_item.data.foo = ""
+						elif data_linktable_content_piece.mode == 6:
+							#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+							data_linktable_content_piece.data.foo = ""
 
-						elif data_linktable_content_item.mode == 12:
-							data_linktable_content_item.data.foo_1 = linktable_content_item.data.foo_1
-							data_linktable_content_item.data.foo_2 = linktable_content_item.data.foo_2
+						elif data_linktable_content_piece.mode == 12:
+							data_linktable_content_piece.data.foo_1 = linktable_content_piece.data.foo_1
+							data_linktable_content_piece.data.foo_2 = linktable_content_piece.data.foo_2
 
-						elif data_linktable_content_item.mode == 13:
-							data_linktable_content_item.data.id = linktable_content_item.data.id
-							data_linktable_content_item.data.textfile_length = linktable_content_item.data.textfile_length
-							data_linktable_content_item.data.textfile = linktable_content_item.data.textfile
+						elif data_linktable_content_piece.mode == 13:
+							data_linktable_content_piece.data.id = linktable_content_piece.data.id
+							data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
+							data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
 
-						elif data_linktable_content_item.mode == 14:
-							data_linktable_content_item.data.id = linktable_content_item.data.id
-							data_linktable_content_item.data.value = linktable_content_item.data.value
+						elif data_linktable_content_piece.mode == 14:
+							data_linktable_content_piece.data.id = linktable_content_piece.data.id
+							data_linktable_content_piece.data.value = linktable_content_piece.data.value
 
-						data_linktable.content.items[str(linktable_content_item_index)] = data_linktable_content_item
+						data_linktable.content.pieces[str(linktable_content_piece_index)] = data_linktable_content_piece
 
 					data_text.linktable[str(linktable_index)] = data_linktable
 
@@ -145,33 +145,33 @@ class TextsDecompiler(CommonDecompiler):
 					data_linetable.param_offset = linetable.param_offset
 					data_linetable.param_length = linetable.param_length
 					data_linetable.content = ObjDict()
-					data_linetable.content.items = ObjDict()
+					data_linetable.content.pieces = ObjDict()
 
-					for linetable_content_item_index, linetable_content_item in enumerate(linetable.content.items):
-						data_linetable_content_item = ObjDict()
-						data_linetable_content_item.raw = linetable_content_item.raw
+					for linetable_content_piece_index, linetable_content_piece in enumerate(linetable.content.pieces):
+						data_linetable_content_piece = ObjDict()
+						data_linetable_content_piece.raw = linetable_content_piece.raw
 
-						if hasattr(linetable_content_item, "data"):
-							data_linetable_content_item.data = ObjDict()
+						if hasattr(linetable_content_piece, "data"):
+							data_linetable_content_piece.data = ObjDict()
 
-							if data_linetable_content_item.raw == 1:
-								data_linetable_content_item.data.mode = linetable_content_item.data.mode
+							if data_linetable_content_piece.raw == 1:
+								data_linetable_content_piece.data.mode = linetable_content_piece.data.mode
 
-							elif data_linetable_content_item.raw == 8:
-								data_linetable_content_item.data.table = linetable_content_item.data.table
-								data_linetable_content_item.data.width = linetable_content_item.data.width
-								data_linetable_content_item.data.height = linetable_content_item.data.height
-								data_linetable_content_item.data.rows = ObjDict()
+							elif data_linetable_content_piece.raw == 8:
+								data_linetable_content_piece.data.table = linetable_content_piece.data.table
+								data_linetable_content_piece.data.width = linetable_content_piece.data.width
+								data_linetable_content_piece.data.height = linetable_content_piece.data.height
+								data_linetable_content_piece.data.rows = ObjDict()
 
-								for row_index, row in enumerate(linetable_content_item.data.rows):
-									file_row = self.PATTERN_FILE_ROW % (self.PATH_DATA, self.iso_path_index, linetable_index, linetable_content_item_index, row_index)
+								for row_index, row in enumerate(linetable_content_piece.data.rows):
+									file_row = self.PATTERN_FILE_ROW % (self.PATH_DATA, self.iso_path_index, linetable_index, linetable_content_piece_index, row_index)
 
-									path_row = self.PATTERN_PATH_ROW % (self.PATH_DATA, self.iso_path_index, linetable_index, linetable_content_item_index)
+									path_row = self.PATTERN_PATH_ROW % (self.PATH_DATA, self.iso_path_index, linetable_index, linetable_content_piece_index)
 
 									if not os.path.exists(path_row):
 										os.makedirs(path_row)
 
-									data_linetable_content_item.data.rows[str(row_index)] = self.PATTERN_DECOMPILED_ROW % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linetable_index, linetable_content_item_index, row_index)
+									data_linetable_content_piece.data.rows[str(row_index)] = self.PATTERN_DECOMPILED_ROW % (self.issue.number, self.source.library, self.source_index, self.iso_path_index, linetable_index, linetable_content_piece_index, row_index)
 
 									row_content_data = []
 									for row_content in row.content:
@@ -182,13 +182,13 @@ class TextsDecompiler(CommonDecompiler):
 									with open(file_row, "wb") as f:
 										f.write(struct.pack("%sB" % len(row_content_data), *row_content_data))
 
-							elif data_linetable_content_item.raw == 9:
-								data_linetable_content_item.data.id = linetable_content_item.data.id
+							elif data_linetable_content_piece.raw == 9:
+								data_linetable_content_piece.data.id = linetable_content_piece.data.id
 
-							elif data_linetable_content_item.raw == 32:
-								data_linetable_content_item.data.length = linetable_content_item.data.length
+							elif data_linetable_content_piece.raw == 32:
+								data_linetable_content_piece.data.length = linetable_content_piece.data.length
 
-						data_linetable.content.items[str(linetable_content_item_index)] = data_linetable_content_item
+						data_linetable.content.pieces[str(linetable_content_piece_index)] = data_linetable_content_piece
 
 					data_text.linetable[str(linetable_index)] = data_linetable
 
