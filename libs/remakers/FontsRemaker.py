@@ -14,23 +14,68 @@ from CommonRemaker import CommonRemaker
 
 class FontsRemaker(CommonRemaker):
 
+	def __init__(self, issue, source, source_index):
+		super(FontsRemaker, self).__init__(issue, source, source_index)
+
+		self.PATTERN_PATH_FONT_NORMAL = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/normal/")
+		self.PATTERN_PATH_FONT_NORMAL_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/normal_link/")
+		self.PATTERN_PATH_FONT_BOLD = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/bold/")
+		self.PATTERN_PATH_FONT_BOLD_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/bold_link/")
+		self.PATTERN_PATH_FONT_ITALIC = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/italic/")
+		self.PATTERN_PATH_FONT_ITALIC_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/italic_link/")
+
+		self.PATTERN_FILE_FONT_NORMAL = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/normal.png")
+		self.PATTERN_FILE_FONT_NORMAL_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/normal_link.png")
+		self.PATTERN_FILE_FONT_BOLD = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/bold.png")
+		self.PATTERN_FILE_FONT_BOLD_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/bold_link.png")
+		self.PATTERN_FILE_FONT_ITALIC = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/italic.png")
+		self.PATTERN_FILE_FONT_ITALIC_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/italic_link.png")
+		self.PATTERN_FILE_CHARACTER = "%s%03d.png"
+
+
+
 	def export_assets(self):
 		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
 			if font.content:
 				self.items_total += 1
 				status = True
 
-				path_characters = "%s%02d/characters/" % (self.PATH_DATA_REMAKED, int(font_index))
+				path_font_normal = self.PATTERN_PATH_FONT_NORMAL % int(font_index)
+				path_font_normal_link = self.PATTERN_PATH_FONT_NORMAL_LINK % int(font_index)
+				path_font_bold = self.PATTERN_PATH_FONT_BOLD % int(font_index)
+				path_font_bold_link = self.PATTERN_PATH_FONT_BOLD_LINK % int(font_index)
+				path_font_italic = self.PATTERN_PATH_FONT_ITALIC % int(font_index)
+				path_font_italic_link = self.PATTERN_PATH_FONT_ITALIC_LINK % int(font_index)
 
-				if not os.path.exists(path_characters):
-					os.makedirs(path_characters)
+				if not os.path.exists(path_font_normal):
+					os.makedirs(path_font_normal)
+
+				if not os.path.exists(path_font_normal_link):
+					os.makedirs(path_font_normal_link)
+
+				if not os.path.exists(path_font_bold):
+					os.makedirs(path_font_bold)
+
+				if not os.path.exists(path_font_bold_link):
+					os.makedirs(path_font_bold_link)
+
+				if not os.path.exists(path_font_italic):
+					os.makedirs(path_font_italic)
+
+				if not os.path.exists(path_font_italic_link):
+					os.makedirs(path_font_italic_link)
 
 				with open(font.content.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					font_colormap = f.read()
 
 				transparent_r, transparent_g, transparent_b = bytearray(font_colormap)[765:768]
 
-				i_font = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
+				i_font_normal = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
+				i_font_normal_link = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
+				i_font_bold = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
+				i_font_bold_link = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
+				i_font_italic = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
+				i_font_italic_link = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
 
 				for matrix_index, matrix in font.content.matrices.iteritems():
 					if matrix.content:
@@ -40,19 +85,87 @@ class FontsRemaker(CommonRemaker):
 						i_character = Image.frombytes("P", (font.content.characters[matrix_index].computed_width, font.content.height), matrix_content)
 						i_character.putpalette(font_colormap)
 
-						i_character_new = i_character.convert("RGBA")
-						i_character_new_pixels = i_character_new.load()
-						i_character_new_width, i_character_new_height = i_character_new.size
+						# normal
+						i_character_normal = i_character.convert("RGBA")
+						i_character_normal_pixels = i_character_normal.load()
+						i_character_normal_width, i_character_normal_height = i_character_normal.size
 
-						for x in range(i_character_new_width):
-							for y in range(i_character_new_height):
-								if i_character_new_pixels[x, y] == (transparent_r, transparent_g, transparent_b, 255):
-									i_character_new_pixels[x, y] = (255, 255, 255, 0)
+						for x in range(i_character_normal_width):
+							for y in range(i_character_normal_height):
+								if i_character_normal_pixels[x, y] == (transparent_r, transparent_g, transparent_b, 255):
+									i_character_normal_pixels[x, y] = (255, 255, 255, 0)
 
-						i_character_new.save("%s%03d.png" % (path_characters, int(matrix_index)))
-						i_font.paste(i_character_new, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
+						i_character_normal.save(self.PATTERN_FILE_CHARACTER % (path_font_normal, int(matrix_index)))
+						i_font_normal.paste(i_character_normal, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
 
-				i_font.save("%s%02d/%s.png" % (self.PATH_DATA_REMAKED, int(font_index), self.source.library)) # TODO path
+						# normal link
+						i_character_normal_link = Image.new("RGBA", (i_character_normal_width, i_character_normal_height), (255, 255, 255, 0))
+						i_character_normal_link.paste(i_character_normal)
+						i_character_normal_link_pixels = i_character_normal_link.load()
+						i_character_normal_link_width, i_character_normal_link_height = i_character_normal_link.size
+
+						for x in range(i_character_normal_link_width):
+							for y in range(i_character_normal_link_height):
+								pixel_r, pixel_g, pixel_b, pixel_a = i_character_normal_link_pixels[x, y]
+								i_character_normal_link_pixels[x, y] = (pixel_r, 0, 0, pixel_a)
+
+						i_character_normal_link.save(self.PATTERN_FILE_CHARACTER % (path_font_normal_link, int(matrix_index)))
+						i_font_normal_link.paste(i_character_normal_link, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
+
+						# bold
+						i_character_bold = Image.new("RGBA", (i_character_normal_width, i_character_normal_height), (255, 255, 255, 0))
+						i_character_temp = Image.new("RGBA", (i_character_normal_width, i_character_normal_height), (255, 255, 255, 0))
+						i_character_temp.paste(i_character_normal, (1, 0))
+						i_character_bold = Image.alpha_composite(i_character_bold, i_character_temp)
+						i_character_bold = Image.alpha_composite(i_character_bold, i_character_normal)
+						i_character_bold.save(self.PATTERN_FILE_CHARACTER % (path_font_bold, int(matrix_index)))
+						i_font_bold.paste(i_character_bold, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
+
+						# bold link
+						i_character_bold_link = Image.new("RGBA", (i_character_normal_width, i_character_normal_height), (255, 255, 255, 0))
+						i_character_bold_link.paste(i_character_bold)
+						i_character_bold_link_pixels = i_character_bold_link.load()
+						i_character_bold_link_width, i_character_bold_link_height = i_character_bold_link.size
+
+						for x in range(i_character_bold_link_width):
+							for y in range(i_character_bold_link_height):
+								pixel_r, pixel_g, pixel_b, pixel_a = i_character_bold_link_pixels[x, y]
+								i_character_bold_link_pixels[x, y] = (pixel_r, 0, 0, pixel_a)
+
+						i_character_bold_link.save(self.PATTERN_FILE_CHARACTER % (path_font_bold_link, int(matrix_index)))
+						i_font_bold_link.paste(i_character_bold_link, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
+
+						# italic
+						i_character_italic = Image.new("RGBA", (i_character_normal_width, i_character_normal_height), (255, 255, 255, 0))
+						i_character_temp = i_character_normal.crop((0, 0, i_character_normal_width, i_character_normal_height / 3))
+						i_character_italic.paste(i_character_temp, (2, 0))
+						i_character_temp = i_character_normal.crop((0, i_character_normal_height / 3, i_character_normal_width, (i_character_normal_height / 3) * 2))
+						i_character_italic.paste(i_character_temp, (1, i_character_normal_height / 3))
+						i_character_temp = i_character_normal.crop((0, (i_character_normal_height / 3) * 2, i_character_normal_width, (i_character_normal_height / 3) * 3))
+						i_character_italic.paste(i_character_temp, (0, (i_character_normal_height / 3) * 2))
+						i_character_italic.save(self.PATTERN_FILE_CHARACTER % (path_font_italic, int(matrix_index)))
+						i_font_italic.paste(i_character_italic, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
+
+						# italic link
+						i_character_italic_link = Image.new("RGBA", (i_character_normal_width, i_character_normal_height), (255, 255, 255, 0))
+						i_character_italic_link.paste(i_character_italic)
+						i_character_italic_link_pixels = i_character_italic_link.load()
+						i_character_italic_link_width, i_character_italic_link_height = i_character_italic_link.size
+
+						for x in range(i_character_italic_link_width):
+							for y in range(i_character_italic_link_height):
+								pixel_r, pixel_g, pixel_b, pixel_a = i_character_italic_link_pixels[x, y]
+								i_character_italic_link_pixels[x, y] = (pixel_r, 0, 0, pixel_a)
+
+						i_character_italic_link.save(self.PATTERN_FILE_CHARACTER % (path_font_italic_link, int(matrix_index)))
+						i_font_italic_link.paste(i_character_italic_link, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
+
+				i_font_normal.save(self.PATTERN_FILE_FONT_NORMAL % int(font_index))
+				i_font_normal_link.save(self.PATTERN_FILE_FONT_NORMAL_LINK % int(font_index))
+				i_font_bold.save(self.PATTERN_FILE_FONT_BOLD % int(font_index))
+				i_font_bold_link.save(self.PATTERN_FILE_FONT_BOLD_LINK % int(font_index))
+				i_font_italic.save(self.PATTERN_FILE_FONT_ITALIC % int(font_index))
+				i_font_italic_link.save(self.PATTERN_FILE_FONT_ITALIC_LINK % int(font_index))
 
 				if status:
 					self.items_hit += 1
@@ -68,18 +181,18 @@ class FontsRemaker(CommonRemaker):
 
 		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
 			if font.content:
-				path_characters = "remaked://%s/%s/%s/%02d/characters/" % (self.issue.number, self.source.library, self.source_index, int(font_index))
+				path_font_normal = self.PATTERN_PATH_FONT_NORMAL % int(font_index)
 
 				data_font = ObjDict()
 				data_font.height = font.content.height
-				data_font.asset = "remaked://%s/%s/%s/%02d/font.png" % (self.issue.number, self.source.library, self.source_index, int(font_index))
+				data_font.asset = (self.PATTERN_FILE_FONT_NORMAL % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
 				data_font.characters = ObjDict()
 
 				for matrix_index, matrix in font.content.matrices.iteritems():
 					if matrix.content:
 						data_matrix = ObjDict()
 						data_matrix.width = font.content.characters[matrix_index].computed_width
-						data_matrix.asset = "%s%03d.png" % (path_characters, int(matrix_index))
+						data_matrix.asset = (self.PATTERN_FILE_CHARACTER % (path_font_normal, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
 
 						data_font.characters[matrix_index] = data_matrix
 
