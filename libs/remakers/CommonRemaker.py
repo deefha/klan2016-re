@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
 from pprint import pprint
+from tqdm import tqdm
 
 # specific imports
+# NONE
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 

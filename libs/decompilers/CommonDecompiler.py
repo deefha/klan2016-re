@@ -1,12 +1,15 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import datetime, json, os, string, sys, re
-from io import BytesIO
+import datetime, os, sys
 from objdict import ObjDict
-from pycdlib import PyCdlib
 from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
+import json, re, string
+from io import BytesIO
+from pycdlib import PyCdlib
 from structs.klan_audio_v1 import KlanAudioV1
 from structs.klan_audio_v2 import KlanAudioV2
 from structs.klan_audio_v3 import KlanAudioV3

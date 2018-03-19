@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -21,6 +24,8 @@ class MusicDecompiler(CommonDecompiler):
 	PATTERN_DECOMPILED_MOD_PATTERN = "blobs://%s/%s/%s/mods/%04d/patterns/%04d.bin"
 	PATTERN_DECOMPILED_MOD_PATTERNS = "blobs://%s/%s/%s/mods/%04d/patterns/content.bin"
 	PATTERN_DECOMPILED_SAMPLE = "blobs://%s/%s/%s/samples/%04d.bin"
+
+
 
 	def fill_meta_data(self):
 		super(MusicDecompiler, self).fill_meta_data()

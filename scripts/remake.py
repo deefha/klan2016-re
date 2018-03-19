@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from pprint import pprint
 from colorama import init as colorama_init, Fore, Back, Style
 

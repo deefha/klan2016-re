@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
+from tqdm import tqdm
 
 # specific imports
 from PIL import Image
@@ -11,6 +15,8 @@ from CommonRemaker import CommonRemaker
 class CursorsRemaker(CommonRemaker):
 
 	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%02d.png"
+
+
 
 	def export_assets(self):
 		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():

@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -24,6 +27,8 @@ class CursorsDecompiler(CommonDecompiler):
 	PATTERN_DECOMPILED_FOO_1 = "decompiled://%s/%s/%s/foo_1/content.bin"
 	PATTERN_DECOMPILED_FOO_2 = "decompiled://%s/%s/%s/foo_2/%02d/content.bin"
 	PATTERN_DECOMPILED_COLORTABLE = "decompiled://%s/%s/%s/colortables/%02d/content.bin"
+
+
 
 	def fill_meta_fat(self):
 		self.meta.fat = ObjDict()

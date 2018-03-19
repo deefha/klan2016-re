@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -17,6 +20,8 @@ class FontsDecompiler(CommonDecompiler):
 
 	PATTERN_DECOMPILED_COLORMAP = "decompiled://%s/%s/%s/%02d/colormap.bin"
 	PATTERN_DECOMPILED_MATRIX = "decompiled://%s/%s/%s/%02d/matrices/%03d.bin"
+
+
 
 	def fill_meta_data(self):
 		super(FontsDecompiler, self).fill_meta_data()

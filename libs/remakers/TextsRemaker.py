@@ -3,6 +3,7 @@
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -17,6 +18,8 @@ class TextsRemaker(CommonRemaker):
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
 	chartable = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™"
+
+
 
 	def export_assets(self):
 		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):

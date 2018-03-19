@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -13,6 +16,8 @@ class ImagesRemaker(CommonRemaker):
 
 	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
+
+
 
 	def export_assets(self):
 		for image_index, image in tqdm(self.meta_decompiled.data.images.iteritems(), total=len(self.meta_decompiled.data.images), desc="data.images", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):

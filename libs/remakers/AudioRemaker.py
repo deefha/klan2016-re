@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -39,6 +42,8 @@ class AudioRemaker(CommonRemaker):
 	#ulaw_lut = [ 0, 132, 396, 924, 1980, 4092, 8316, 16764 ]
 
 	#adpcm_table = [ 0, 1, 2, 4, 8, 16, 32, 64, -1, -2, -4, -8, -16, -32, -48, -64 ]
+
+
 
 	def _adpcm_decode_sample(self, nibble):
 		if self.adpcm_step_index < 0:

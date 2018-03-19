@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import datetime, os, re, struct, sys
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
+import re, struct
 from CommonDecompiler import CommonDecompiler
 
 

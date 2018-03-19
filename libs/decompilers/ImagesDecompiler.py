@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -19,6 +22,8 @@ class ImagesDecompiler(CommonDecompiler):
 	PATTERN_DECOMPILED_COLORMAP = "decompiled://%s/%s/%s/%04d/colormap.bin"
 	PATTERN_DECOMPILED_CONTENT = "decompiled://%s/%s/%s/%04d/content.bin"
 	PATTERN_DECOMPILED_HEADER = "decompiled://%s/%s/%s/%04d/header.bin"
+
+
 
 	def fill_meta_data(self):
 		super(ImagesDecompiler, self).fill_meta_data()

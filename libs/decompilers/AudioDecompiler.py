@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # common imports
-import os, sys, datetime
+import datetime, os, sys
 from objdict import ObjDict
+from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
@@ -15,6 +18,8 @@ class AudioDecompiler(CommonDecompiler):
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
 
 	PATTERN_DECOMPILED_CONTENT = "decompiled://%s/%s/%s/%04d/content.bin"
+
+
 
 	def fill_meta_data(self):
 		super(AudioDecompiler, self).fill_meta_data()
