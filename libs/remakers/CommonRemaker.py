@@ -25,14 +25,14 @@ class CommonRemaker(object):
 		self.items_hit = 0
 		self.items_miss = 0
 
-		self.PATH_PHASE_DECOMPILED = "%s/decompiled/" % ROOT_DATA
-		self.PATH_PHASE_REMAKED = "%s/remaked/" % ROOT_DATA
+		self.PATH_PHASE_DECOMPILED = "%sdecompiled/" % ROOT_DATA
+		self.PATH_PHASE_REMAKED = "%sremaked/" % ROOT_DATA
 
-		self.PATH_DATA_DECOMPILED = "%s/%s/%s/%s/" % (self.PATH_PHASE_DECOMPILED, self.issue.number, self.source.library, self.source_index)
-		self.PATH_DATA_REMAKED = "%s/%s/%s/%s/" % (self.PATH_PHASE_REMAKED, self.issue.number, self.source.library, self.source_index)
+		self.PATH_DATA_DECOMPILED = "%s%s/%s/%s/" % (self.PATH_PHASE_DECOMPILED, self.issue.number, self.source.library, self.source_index)
+		self.PATH_DATA_REMAKED = "%s%s/%s/%s/" % (self.PATH_PHASE_REMAKED, self.issue.number, self.source.library, self.source_index)
 
-		self.FILE_META_DECOMPILED = "%s/%s/%s/%s.json" % (self.PATH_PHASE_DECOMPILED, self.issue.number, self.source.library, self.source_index)
-		self.FILE_META_REMAKED = "%s/%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, self.source.library, self.source_index)
+		self.FILE_META_DECOMPILED = "%s%s/%s/%s.json" % (self.PATH_PHASE_DECOMPILED, self.issue.number, self.source.library, self.source_index)
+		self.FILE_META_REMAKED = "%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, self.source.library, self.source_index)
 
 		if not os.path.exists(self.PATH_DATA_REMAKED):
 			os.makedirs(self.PATH_DATA_REMAKED)
