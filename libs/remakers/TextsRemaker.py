@@ -14,14 +14,11 @@ from CommonRemaker import CommonRemaker
 
 class TextsRemaker(CommonRemaker):
 
-	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
-	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
+	def __init__(self, issue, source, source_index):
+		super(TextsRemaker, self).__init__(issue, source, source_index)
 
-	chartable = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™"
+		self.CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™"
 
-
-
-	def export_assets(self):
 		with open("%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", 0), "r") as f:
 			#content = f.read()
 			lines = f.readlines() # TODO
@@ -29,6 +26,9 @@ class TextsRemaker(CommonRemaker):
 
 			self.fonts_0 = ObjDict(content)
 
+
+
+	def export_assets(self):
 		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			self.items_total += 1
 			status = True
@@ -45,6 +45,12 @@ class TextsRemaker(CommonRemaker):
 					line_height = text.linetable_meta[linetable_index].content.height
 					line_pieces = []
 
+					flag_bold = False
+					flag_italic = False
+					flag_link = False
+
+					font_id = 1
+
 					if linetable.content.pieces:
 						for piece_index, piece in linetable.content.pieces.iteritems():
 							# konec radku
@@ -52,18 +58,50 @@ class TextsRemaker(CommonRemaker):
 								data_text += "\n"
 							# font
 							elif piece.raw == 1:
+								font_id = piece.data.mode
 								continue
 							# bold
 							elif piece.raw == 2:
+								flag_bold = not flag_bold
 								continue
 							# italic
 							elif piece.raw == 4:
+								flag_italic = not flag_italic
 								continue
 							# obrazek
 							elif piece.raw == 8:
+								image_content_unpacked = []
+
+								for row_index, row in piece.data.rows.iteritems():
+									content_byte_count = None
+
+									with open(row.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
+										row_content = f.read()
+
+									for content_byte in row_content[:-1]:
+										if content_byte_count:
+											image_content_unpacked.extend([content_byte] * content_byte_count)
+											content_byte_count = None
+										else:
+											if ord(content_byte) > 192:
+												content_byte_count = ord(content_byte) - 192
+											else:
+												image_content_unpacked.append(content_byte)
+
+								image_content_unpacked = "".join(image_content_unpacked)
+
+								with open(text.palettetable[str(piece.data.table)].content.data.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
+									piece_colormap = f.read()
+
+								i_piece = Image.frombytes("P", (piece.data.width, piece.data.height), image_content_unpacked)
+								i_piece.putpalette(piece_colormap)
+								i_piece.convert("RGBA")
+								line_width += piece.data.width
+								line_pieces.append(i_piece)
 								continue
 							# odkaz
 							elif piece.raw == 9:
+								flag_link = not flag_link
 								continue
 							# mezera
 							elif piece.raw == 32:
@@ -77,11 +115,20 @@ class TextsRemaker(CommonRemaker):
 								if piece.raw < 128:
 									data_text += chr(piece.raw)
 								else:
-									data_text += self.chartable[piece.raw - 128]
+									data_text += self.CHARTABLE[piece.raw - 128]
 
-								#print "%s: %s, %s" % (text_index, linetable_index, piece_index)
-								if str(piece.raw) in self.fonts_0.fonts["1"].characters:
-									i_piece = Image.open("%s%s/%s/%s/%02d/normal/%03d.png" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", 0, 1, piece.raw))
+								if str(piece.raw) in self.fonts_0.fonts[str(font_id)].normal.characters:
+									if flag_bold:
+										font_variant = "bold"
+									elif flag_italic:
+										font_variant = "italic"
+									else:
+										font_variant = "normal"
+
+									if flag_link:
+										font_variant += "_link"
+
+									i_piece = Image.open(self.fonts_0.fonts[str(font_id)][font_variant].characters[str(piece.raw)].asset.replace("remaked://", self.PATH_PHASE_REMAKED))
 									i_piece_width, i_piece_height = i_piece.size
 									line_width += i_piece_width
 									line_pieces.append(i_piece)
@@ -109,6 +156,7 @@ class TextsRemaker(CommonRemaker):
 
 				i_lines = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 255))
 				i_lines = Image.alpha_composite(i_lines, i_lines_temp)
+				i_lines.convert("RGBA")
 				i_lines.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(text_index)))
 
 			with open("%s%04d.txt" % (self.PATH_DATA_REMAKED, int(text_index)), "w") as f:
