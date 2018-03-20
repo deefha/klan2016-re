@@ -35,7 +35,7 @@ class FontsRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
+		for font_index, font in tqdm(self.meta_decompiled.data.fonts.iteritems(), total=len(self.meta_decompiled.data.fonts), desc="data.fonts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if font.content:
 				self.items_total += 1
 				status = True
@@ -181,19 +181,83 @@ class FontsRemaker(CommonRemaker):
 
 		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
 			if font.content:
-				path_font_normal = self.PATTERN_PATH_FONT_NORMAL % int(font_index)
+				data_variants = ObjDict()
 
-				data_font = ObjDict()
-				data_font.height = font.content.height
-				data_font.asset = (self.PATTERN_FILE_FONT_NORMAL % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
-				data_font.characters = ObjDict()
+				path_font_normal = self.PATTERN_PATH_FONT_NORMAL % int(font_index)
+				path_font_normal_link = self.PATTERN_PATH_FONT_NORMAL_LINK % int(font_index)
+				path_font_bold = self.PATTERN_PATH_FONT_BOLD % int(font_index)
+				path_font_bold_link = self.PATTERN_PATH_FONT_BOLD_LINK % int(font_index)
+				path_font_italic = self.PATTERN_PATH_FONT_ITALIC % int(font_index)
+				path_font_italic_link = self.PATTERN_PATH_FONT_ITALIC_LINK % int(font_index)
+
+				data_font_normal = ObjDict()
+				data_font_normal.height = font.content.height
+				data_font_normal.asset = (self.PATTERN_FILE_FONT_NORMAL % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
+				data_font_normal.characters = ObjDict()
+
+				data_font_normal_link = ObjDict()
+				data_font_normal_link.height = font.content.height
+				data_font_normal_link.asset = (self.PATTERN_FILE_FONT_NORMAL_LINK % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
+				data_font_normal_link.characters = ObjDict()
+
+				data_font_bold = ObjDict()
+				data_font_bold.height = font.content.height
+				data_font_bold.asset = (self.PATTERN_FILE_FONT_BOLD % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
+				data_font_bold.characters = ObjDict()
+
+				data_font_bold_link = ObjDict()
+				data_font_bold_link.height = font.content.height
+				data_font_bold_link.asset = (self.PATTERN_FILE_FONT_BOLD_LINK % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
+				data_font_bold_link.characters = ObjDict()
+
+				data_font_italic = ObjDict()
+				data_font_italic.height = font.content.height
+				data_font_italic.asset = (self.PATTERN_FILE_FONT_ITALIC % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
+				data_font_italic.characters = ObjDict()
+
+				data_font_italic_link = ObjDict()
+				data_font_italic_link.height = font.content.height
+				data_font_italic_link.asset = (self.PATTERN_FILE_FONT_ITALIC_LINK % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
+				data_font_italic_link.characters = ObjDict()
 
 				for matrix_index, matrix in font.content.matrices.iteritems():
 					if matrix.content:
-						data_matrix = ObjDict()
-						data_matrix.width = font.content.characters[matrix_index].computed_width
-						data_matrix.asset = (self.PATTERN_FILE_CHARACTER % (path_font_normal, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+						data_matrix_normal = ObjDict()
+						data_matrix_normal.width = font.content.characters[matrix_index].computed_width
+						data_matrix_normal.asset = (self.PATTERN_FILE_CHARACTER % (path_font_normal, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
 
-						data_font.characters[matrix_index] = data_matrix
+						data_matrix_normal_link = ObjDict()
+						data_matrix_normal_link.width = font.content.characters[matrix_index].computed_width
+						data_matrix_normal_link.asset = (self.PATTERN_FILE_CHARACTER % (path_font_normal_link, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
 
-				self.meta_remaked.fonts[font_index] = data_font
+						data_matrix_bold = ObjDict()
+						data_matrix_bold.width = font.content.characters[matrix_index].computed_width
+						data_matrix_bold.asset = (self.PATTERN_FILE_CHARACTER % (path_font_bold, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+
+						data_matrix_bold_link = ObjDict()
+						data_matrix_bold_link.width = font.content.characters[matrix_index].computed_width
+						data_matrix_bold_link.asset = (self.PATTERN_FILE_CHARACTER % (path_font_bold_link, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+
+						data_matrix_italic = ObjDict()
+						data_matrix_italic.width = font.content.characters[matrix_index].computed_width
+						data_matrix_italic.asset = (self.PATTERN_FILE_CHARACTER % (path_font_italic, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+
+						data_matrix_italic_link = ObjDict()
+						data_matrix_italic_link.width = font.content.characters[matrix_index].computed_width
+						data_matrix_italic_link.asset = (self.PATTERN_FILE_CHARACTER % (path_font_italic_link, int(matrix_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+
+						data_font_normal.characters[matrix_index] = data_matrix_normal
+						data_font_normal_link.characters[matrix_index] = data_matrix_normal_link
+						data_font_bold.characters[matrix_index] = data_matrix_bold
+						data_font_bold_link.characters[matrix_index] = data_matrix_bold_link
+						data_font_italic.characters[matrix_index] = data_matrix_italic
+						data_font_italic_link.characters[matrix_index] = data_matrix_italic_link
+
+				data_variants.normal = data_font_normal
+				data_variants.normal_link = data_font_normal_link
+				data_variants.bold = data_font_bold
+				data_variants.bold_link = data_font_bold_link
+				data_variants.italic = data_font_italic
+				data_variants.italic_link = data_font_italic_link
+
+				self.meta_remaked.fonts[font_index] = data_variants
