@@ -58,6 +58,7 @@ class CommonRemaker(object):
 		self.meta_remaked.header = ObjDict()
 		self.meta_remaked.header.issue = self.issue.number
 		self.meta_remaked.header.library = self.source.library
+		self.meta_remaked.header.index = self.source_index
 
 		if hasattr(self.meta_decompiled.header, "filedate") and hasattr(self.meta_decompiled.header, "filetime"):
 			year = ((self.meta_decompiled.header.filedate & 0b1111111000000000) >> 9) + 1980
