@@ -34,8 +34,6 @@ class TextsRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		print "Export assets begin"
-
 		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if self.source.version == 1 or text.content:
 				if self.source.version > 1:
