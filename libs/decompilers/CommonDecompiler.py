@@ -19,6 +19,7 @@ from structs.klan_images import KlanImages
 from structs.klan_music_v1 import KlanMusicV1
 from structs.klan_music_v2 import KlanMusicV2
 from structs.klan_texts_v1 import KlanTextsV1
+from structs.klan_texts_v2 import KlanTextsV2
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -108,6 +109,8 @@ class CommonDecompiler(object):
 			elif self.source.library == "texts":
 				if self.source.version == 1:
 					self.library = KlanTextsV1.from_io(self.iso_content)
+				elif self.source.version == 2:
+					self.library = KlanTextsV2.from_io(self.iso_content)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()
@@ -141,11 +144,7 @@ class CommonDecompiler(object):
 		self.meta.fat.foo_3 = self.library.fat.foo_3
 		self.meta.fat.offsets = ObjDict()
 
-		#print "Count: %d" % self.library.fat.count
-
 		for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
-			#print "Offset #%d: %d" % (offset_index, offset)
-
 			self.meta.fat.offsets[str(offset_index)] = offset
 
 

@@ -7,7 +7,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-import re, struct
+import re, string, struct
 from CommonDecompiler import CommonDecompiler
 
 
@@ -121,8 +121,8 @@ class TextsDecompiler(CommonDecompiler):
 					data_linetable_meta.content.offset = linetable_meta.content.offset
 					data_linetable_meta.content.height = linetable_meta.content.height
 					data_linetable_meta.content.top = linetable_meta.content.top
-					data_linetable_meta.content.foo = ''
 					#data_linetable_meta.content.foo = linetable_meta.content.foo # TODO
+					data_linetable_meta.content.foo = ''
 
 					data_text.linetable_meta[str(linetable_meta_index)] = data_linetable_meta
 
@@ -201,6 +201,193 @@ class TextsDecompiler(CommonDecompiler):
 
 			self.meta.data.texts[str(self.iso_path_index)] = data_text
 
+		else:
+			for text_index, text in enumerate(tqdm(self.library.data.texts, desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+				data_text = ObjDict()
+				data_text.param_offset = text.param_offset
+				data_text.param_offset = text.param_length
+				data_text.content = ObjDict()
+
+				if text.content:
+					data_text.content.offset_linktable = text.content.offset_linktable
+					data_text.content.count_linktable = text.content.count_linktable
+					data_text.content.linktable_meta = ObjDict()
+					data_text.content.linktable = ObjDict()
+					data_text.content.count_linetable_meta = text.content.count_linetable_meta
+					data_text.content.offset_linetable_meta = text.content.offset_linetable_meta
+					data_text.content.linetable_meta = ObjDict()
+					data_text.content.count_palettetable = text.content.count_palettetable
+					data_text.content.offset_palettetable = text.content.offset_palettetable
+					data_text.content.palettetable = ObjDict()
+					data_text.content.linetable = ObjDict()
+
+					if text.content.linktable_meta:
+						for linktable_meta_index, linktable_meta in enumerate(tqdm(text.content.linktable_meta, desc="linktable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+							data_linktable_meta = ObjDict()
+							data_linktable_meta.param_offset = linktable_meta.param_offset
+							data_linktable_meta.content = ObjDict()
+
+							data_linktable_meta.content.topleft_x = linktable_meta.content.topleft_x
+							data_linktable_meta.content.topleft_y = linktable_meta.content.topleft_y
+							data_linktable_meta.content.bottomright_x = linktable_meta.content.bottomright_x
+							data_linktable_meta.content.bottomright_y = linktable_meta.content.bottomright_y
+							data_linktable_meta.content.offset = linktable_meta.content.offset
+
+							data_text.content.linktable_meta[str(linktable_meta_index)] = data_linktable_meta
+
+					if text.content.linktable:
+						for linktable_index, linktable in enumerate(tqdm(text.content.linktable, desc="linktable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+							data_linktable = ObjDict()
+							data_linktable.param_offset = linktable.param_offset
+							data_linktable.param_length = linktable.param_length
+							data_linktable.content = ObjDict()
+							data_linktable.content.pieces = ObjDict()
+
+							for linktable_content_piece_index, linktable_content_piece in enumerate(linktable.content.pieces):
+								data_linktable_content_piece = ObjDict()
+								data_linktable_content_piece.mode = linktable_content_piece.mode
+								data_linktable_content_piece.data = ObjDict()
+
+								if data_linktable_content_piece.mode == 4:
+									data_linktable_content_piece.data.topleft_x = linktable_content_piece.data.topleft_x
+									data_linktable_content_piece.data.topleft_y = linktable_content_piece.data.topleft_y
+									data_linktable_content_piece.data.width = linktable_content_piece.data.width
+									data_linktable_content_piece.data.height = linktable_content_piece.data.height
+									data_linktable_content_piece.data.slider_topleft_x = linktable_content_piece.data.slider_topleft_x
+									data_linktable_content_piece.data.slider_topleft_y = linktable_content_piece.data.slider_topleft_y
+									data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
+									data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
+
+								elif data_linktable_content_piece.mode == 6:
+									#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+									data_linktable_content_piece.data.foo = ""
+
+								elif data_linktable_content_piece.mode == 9:
+									#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+									data_linktable_content_piece.data.foo = ""
+
+								elif data_linktable_content_piece.mode == 11:
+									data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
+
+								elif data_linktable_content_piece.mode == 12:
+									data_linktable_content_piece.data.id = linktable_content_piece.data.id
+									data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
+
+								elif data_linktable_content_piece.mode == 13:
+									data_linktable_content_piece.data.id = linktable_content_piece.data.id
+									data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
+									data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
+
+								elif data_linktable_content_piece.mode == 14:
+									data_linktable_content_piece.data.id = linktable_content_piece.data.id
+									data_linktable_content_piece.data.value = linktable_content_piece.data.value
+
+								elif data_linktable_content_piece.mode == 20:
+									data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
+									data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
+									data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
+
+								elif data_linktable_content_piece.mode == 65535:
+									data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
+
+								else:
+									print "Unknown linktable piece mode: %s (text_index=%s, linktable_index=%s)" % (data_linktable_content_piece.mode, text_index, linktable_index)
+									sys.exit()
+
+								data_linktable.content.pieces[str(linktable_content_piece_index)] = data_linktable_content_piece
+
+							data_text.content.linktable[str(linktable_index)] = data_linktable
+
+					if text.content.linetable_meta:
+						for linetable_meta_index, linetable_meta in enumerate(tqdm(text.content.linetable_meta, desc="linetable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+							data_linetable_meta = ObjDict()
+							data_linetable_meta.param_offset = linetable_meta.param_offset
+							data_linetable_meta.content = ObjDict()
+
+							data_linetable_meta.content.offset = linetable_meta.content.offset
+							data_linetable_meta.content.height = linetable_meta.content.height
+							data_linetable_meta.content.top = linetable_meta.content.top
+							#data_linetable_meta.content.foo = linetable_meta.content.foo # TODO
+							data_linetable_meta.content.foo = ''
+
+							data_text.content.linetable_meta[str(linetable_meta_index)] = data_linetable_meta
+
+					if text.content.palettetable:
+						for palettetable_index, palettetable in enumerate(tqdm(text.content.palettetable, desc="palettetable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+							data_palettetable = ObjDict()
+							data_palettetable.param_offset = palettetable.param_offset
+							data_palettetable.content = ObjDict()
+
+							file_palettetable = self.PATTERN_FILE_PALETTETABLE % (self.PATH_DATA, text_index, palettetable_index)
+
+							path_palettetable = self.PATTERN_PATH_PALETTETABLE % (self.PATH_DATA, text_index, palettetable_index)
+
+							if not os.path.exists(path_palettetable):
+								os.makedirs(path_palettetable)
+
+							data_palettetable.content.data = self.PATTERN_DECOMPILED_PALETTETABLE % (self.issue.number, self.source.library, self.source_index, text_index, palettetable_index)
+
+							with open(file_palettetable, "wb") as f:
+								f.write(palettetable.content)
+
+							data_text.content.palettetable[str(palettetable_index)] = data_palettetable
+
+					if text.content.linetable:
+						for linetable_index, linetable in enumerate(tqdm(text.content.linetable, desc="linetable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+							data_linetable = ObjDict()
+							data_linetable.param_offset = linetable.param_offset
+							data_linetable.param_length = linetable.param_length
+							data_linetable.content = ObjDict()
+							data_linetable.content.pieces = ObjDict()
+
+							for linetable_content_piece_index, linetable_content_piece in enumerate(linetable.content.pieces):
+								data_linetable_content_piece = ObjDict()
+								data_linetable_content_piece.raw = linetable_content_piece.raw
+
+								if hasattr(linetable_content_piece, "data"):
+									data_linetable_content_piece.data = ObjDict()
+
+									if data_linetable_content_piece.raw == 1:
+										data_linetable_content_piece.data.mode = linetable_content_piece.data.mode
+
+									elif data_linetable_content_piece.raw == 8:
+										data_linetable_content_piece.data.table = linetable_content_piece.data.table
+										data_linetable_content_piece.data.width = linetable_content_piece.data.width
+										data_linetable_content_piece.data.height = linetable_content_piece.data.height
+										data_linetable_content_piece.data.rows = ObjDict()
+
+										for row_index, row in enumerate(linetable_content_piece.data.rows):
+											file_row = self.PATTERN_FILE_ROW % (self.PATH_DATA, text_index, linetable_index, linetable_content_piece_index, row_index)
+
+											path_row = self.PATTERN_PATH_ROW % (self.PATH_DATA, text_index, linetable_index, linetable_content_piece_index)
+
+											if not os.path.exists(path_row):
+												os.makedirs(path_row)
+
+											data_linetable_content_piece.data.rows[str(row_index)] = self.PATTERN_DECOMPILED_ROW % (self.issue.number, self.source.library, self.source_index, text_index, linetable_index, linetable_content_piece_index, row_index)
+
+											row_content_data = []
+											for row_content in row.content:
+												row_content_data.append(row_content.data)
+												if hasattr(row_content, "addon"):
+													row_content_data.append(row_content.addon)
+
+											with open(file_row, "wb") as f:
+												f.write(struct.pack("%sB" % len(row_content_data), *row_content_data))
+
+									elif data_linetable_content_piece.raw == 9:
+										data_linetable_content_piece.data.id = linetable_content_piece.data.id
+
+									elif data_linetable_content_piece.raw == 32:
+										data_linetable_content_piece.data.length = linetable_content_piece.data.length
+
+								data_linetable.content.pieces[str(linetable_content_piece_index)] = data_linetable_content_piece
+
+							data_text.content.linetable[str(linetable_index)] = data_linetable
+
+				self.meta.data.texts[str(text_index)] = data_text
+
+
 
 
 	def fill_meta_header(self):
@@ -223,4 +410,18 @@ class TextsDecompiler(CommonDecompiler):
 
 			self.meta.fat[str(self.iso_path_index)] = data_fat
 		else:
-			super(TextsDecompiler, self).fill_meta_fat()
+			self.meta.fat = ObjDict()
+			self.meta.fat.count = self.library.fat.count
+			self.meta.fat.offsets = ObjDict()
+
+			all_bytes = string.maketrans("", "")
+
+			for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+				data_offset = ObjDict()
+				data_offset.name = offset.name.translate(all_bytes, all_bytes[:32])
+				data_offset.offset_1 = offset.offset_1
+				data_offset.offset_2 = offset.offset_2
+				data_offset.offset_3 = offset.offset_3
+				data_offset.offset_4 = offset.offset_4
+
+				self.meta.fat.offsets[str(offset_index)] = data_offset
