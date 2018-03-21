@@ -115,6 +115,7 @@ types:
             12: t_linktable_content_piece_12
             13: t_linktable_content_piece_13
             14: t_linktable_content_piece_14
+            65535: t_linktable_content_piece_65535
 
   t_linktable_content_piece_4:
     seq:
@@ -144,10 +145,10 @@ types:
 
   t_linktable_content_piece_12:
     seq:
-      - id: foo_1
-        type: u2
-      - id: foo_2
-        type: u4
+      - id: id
+        type: u1
+      - id: foo
+        type: u1
 
   t_linktable_content_piece_13:
     seq:
@@ -163,6 +164,11 @@ types:
       - id: id
         type: u2
       - id: value
+        type: u2
+
+  t_linktable_content_piece_65535:
+    seq:
+      - id: foo
         type: u2
 
   t_linetable_meta:

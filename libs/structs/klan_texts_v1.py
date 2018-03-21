@@ -48,8 +48,8 @@ class KlanTextsV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.foo_1 = self._io.read_u2le()
-            self.foo_2 = self._io.read_u4le()
+            self.id = self._io.read_u1()
+            self.foo = self._io.read_u1()
 
 
     class TLinetableContentPiece(KaitaiStruct):
@@ -203,6 +203,8 @@ class KlanTextsV1(KaitaiStruct):
                 self.data = self._root.TLinktableContentPiece13(self._io, self, self._root)
             elif _on == 12:
                 self.data = self._root.TLinktableContentPiece12(self._io, self, self._root)
+            elif _on == 65535:
+                self.data = self._root.TLinktableContentPiece65535(self._io, self, self._root)
 
 
     class TLinktableMetaContent(KaitaiStruct):
@@ -345,6 +347,17 @@ class KlanTextsV1(KaitaiStruct):
             self._m_content = self._root.TLinktableMetaContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TLinktableContentPiece65535(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_u2le()
 
 
     class TLinetableContentPiece32(KaitaiStruct):

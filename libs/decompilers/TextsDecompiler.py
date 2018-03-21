@@ -93,8 +93,8 @@ class TextsDecompiler(CommonDecompiler):
 							data_linktable_content_piece.data.foo = ""
 
 						elif data_linktable_content_piece.mode == 12:
-							data_linktable_content_piece.data.foo_1 = linktable_content_piece.data.foo_1
-							data_linktable_content_piece.data.foo_2 = linktable_content_piece.data.foo_2
+							data_linktable_content_piece.data.id = linktable_content_piece.data.id
+							data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
 
 						elif data_linktable_content_piece.mode == 13:
 							data_linktable_content_piece.data.id = linktable_content_piece.data.id
@@ -104,6 +104,9 @@ class TextsDecompiler(CommonDecompiler):
 						elif data_linktable_content_piece.mode == 14:
 							data_linktable_content_piece.data.id = linktable_content_piece.data.id
 							data_linktable_content_piece.data.value = linktable_content_piece.data.value
+
+						elif data_linktable_content_piece.mode == 65535:
+							data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
 
 						data_linktable.content.pieces[str(linktable_content_piece_index)] = data_linktable_content_piece
 
