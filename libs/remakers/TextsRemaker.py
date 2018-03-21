@@ -33,10 +33,14 @@ class TextsRemaker(CommonRemaker):
 
 
 
-
 	def export_assets(self):
-		if self.source.version == 1:
-			for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+		print "Export assets begin"
+
+		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+			if self.source.version == 1 or text.content:
+				if self.source.version > 1:
+					text = text.content
+
 				self.items_total += 1
 				status = True
 
@@ -188,12 +192,20 @@ class TextsRemaker(CommonRemaker):
 
 		self.meta_remaked.texts = ObjDict()
 
-		if self.source.version == 1:
-			for text_index, text in self.meta_decompiled.data.texts.iteritems():
+		for text_index, text in self.meta_decompiled.data.texts.iteritems():
+			if self.source.version == 1 or text.content:
+				if self.source.version > 1:
+					text = text.content
+
 				path_text = self.PATTERN_PATH_TEXT % int(text_index)
 
 				data_text = ObjDict()
-				data_text.name = self.meta_decompiled.fat[str(text_index)].name
+
+				if self.source.version == 1:
+					data_text.name = self.meta_decompiled.fat[str(text_index)].name
+				else:
+					data_text.name = self.meta_decompiled.fat.offsets[str(text_index)].name
+
 				data_text.variants = ObjDict()
 
 				text_variant = 0
@@ -239,6 +251,13 @@ class TextsRemaker(CommonRemaker):
 							#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
 							data_action.params.foo = ""
 
+						elif data_action.type == 9:
+							#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+							data_action.params.foo = ""
+
+						elif data_action.type == 11:
+							data_action.params.foo = action.data.foo
+
 						elif data_action.type == 12:
 							data_action.params.id = action.data.id
 							data_action.params.foo = action.data.foo
@@ -250,6 +269,10 @@ class TextsRemaker(CommonRemaker):
 						elif data_action.type == 14:
 							data_action.params.id = action.data.id
 							data_action.params.value = action.data.value
+
+						elif data_action.type == 20:
+							data_action.params.content = action.data.textfile
+							data_action.params.foo = action.data.foo
 
 						elif data_action.type == 65535:
 							data_action.params.foo = action.data.foo
