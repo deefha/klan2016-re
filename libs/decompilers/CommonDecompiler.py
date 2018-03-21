@@ -20,6 +20,8 @@ from structs.klan_music_v1 import KlanMusicV1
 from structs.klan_music_v2 import KlanMusicV2
 from structs.klan_texts_v1 import KlanTextsV1
 from structs.klan_texts_v2 import KlanTextsV2
+from structs.klan_texts_v3 import KlanTextsV3
+from structs.klan_texts_v4 import KlanTextsV4
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -111,6 +113,10 @@ class CommonDecompiler(object):
 					self.library = KlanTextsV1.from_io(self.iso_content)
 				elif self.source.version == 2:
 					self.library = KlanTextsV2.from_io(self.iso_content)
+				elif self.source.version == 3:
+					self.library = KlanTextsV3.from_io(self.iso_content)
+				elif self.source.version == 4:
+					self.library = KlanTextsV4.from_io(self.iso_content)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()
