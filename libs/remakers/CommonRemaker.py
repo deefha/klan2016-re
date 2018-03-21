@@ -57,7 +57,9 @@ class CommonRemaker(object):
 	def fill_meta(self):
 		self.meta_remaked.header = ObjDict()
 		self.meta_remaked.header.issue = self.issue.number
+		self.meta_remaked.header.path = self.source.path
 		self.meta_remaked.header.library = self.source.library
+		self.meta_remaked.header.version = self.source.version
 		self.meta_remaked.header.index = self.source_index
 
 		if hasattr(self.meta_decompiled.header, "filedate") and hasattr(self.meta_decompiled.header, "filetime"):
@@ -69,10 +71,10 @@ class CommonRemaker(object):
 			sec = (self.meta_decompiled.header.filetime & 0b0000000000011111) * 2
 
 			self.meta_remaked.header.created = datetime.datetime(year, month, day, hour, minute, sec).isoformat()
-			self.meta_remaked.header.remaked = datetime.datetime.now().isoformat()
 		else:
 			self.meta_remaked.header.created = ""
-			self.meta_remaked.header.remaked = ""
+
+			self.meta_remaked.header.remaked = datetime.datetime.now().isoformat()
 
 
 
