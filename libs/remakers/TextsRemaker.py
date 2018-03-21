@@ -202,6 +202,66 @@ class TextsRemaker(CommonRemaker):
 				data_variant.asset = (self.PATTERN_FILE_TEXT_ASSET % (path_text, text_variant)).replace(self.PATH_PHASE_REMAKED, "remaked://")
 				data_variant.plain = (self.PATTERN_FILE_TEXT_PLAIN % (path_text, text_variant)).replace(self.PATH_PHASE_REMAKED, "remaked://")
 
+				data_variant.links = ObjDict()
+
+				for link_index, link in text.linktable_meta.iteritems():
+					linktable = text.linktable[str(link_index)]
+
+					data_link = ObjDict()
+					data_link.area = ObjDict()
+					data_link.actions = ObjDict()
+
+					data_link.area.topleft_x = link.content.topleft_x
+					data_link.area.topleft_y = link.content.topleft_y
+					data_link.area.bottomright_x = link.content.bottomright_x
+					data_link.area.bottomright_y = link.content.bottomright_y
+
+					for action_index, action in linktable.content.pieces.iteritems():
+						data_action = ObjDict()
+
+						data_action.type = action.mode
+						data_action.params = ObjDict()
+
+						if data_action.type == 4:
+							data_action.params.content = action.data.textfile
+							data_action.params.area = ObjDict()
+							data_action.params.slider = ObjDict()
+
+							data_action.params.area.topleft_x = action.data.topleft_x
+							data_action.params.area.topleft_y = action.data.topleft_y
+							data_action.params.area.width = action.data.width
+							data_action.params.area.height = action.data.height
+
+							data_action.params.slider.topleft_x = action.data.slider_topleft_x
+							data_action.params.slider.topleft_y = action.data.slider_topleft_y
+
+						elif data_action.type == 6:
+							#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+							data_action.params.foo = ""
+
+						elif data_action.type == 12:
+							data_action.params.id = action.data.id
+							data_action.params.foo = action.data.foo
+
+						elif data_action.type == 13:
+							data_action.params.id = action.data.id
+							data_action.params.content = action.data.textfile
+
+						elif data_action.type == 14:
+							data_action.params.id = action.data.id
+							data_action.params.value = action.data.value
+
+						elif data_action.type == 65535:
+							data_action.params.foo = action.data.foo
+
+						else:
+							print "Unknown action type: %s (text_index=%s, link_index=%s)" % (action.mode, text_index, link_index)
+							sys.exit()
+
+						data_link.actions[str(action_index)] = data_action
+
+					data_variant.links[str(link_index)] = data_link
+
 				data_text.variants[str(text_variant)] = data_variant
 
 				self.meta_remaked.texts[str(text_index)] = data_text
