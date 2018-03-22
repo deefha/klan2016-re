@@ -134,6 +134,9 @@ types:
         repeat: expr
         repeat-expr: count_linetable_meta
         if: count_linetable_meta != 0
+      title:
+        pos: 0
+        size: 256
 
   t_linktable_meta:
     params:

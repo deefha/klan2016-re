@@ -554,6 +554,17 @@ class KlanTextsV4(KaitaiStruct):
 
             return self._m_linktable if hasattr(self, '_m_linktable') else None
 
+        @property
+        def title(self):
+            if hasattr(self, '_m_title'):
+                return self._m_title if hasattr(self, '_m_title') else None
+
+            _pos = self._io.pos()
+            self._io.seek(0)
+            self._m_title = self._io.read_bytes(256)
+            self._io.seek(_pos)
+            return self._m_title if hasattr(self, '_m_title') else None
+
 
     class TPalettetable(KaitaiStruct):
         def __init__(self, param_offset, _io, _parent=None, _root=None):

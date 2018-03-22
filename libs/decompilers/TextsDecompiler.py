@@ -16,22 +16,22 @@ from mem_top import mem_top
 
 class TextsDecompiler(CommonDecompiler):
 
-
-
-
 	def __init__(self, issue, source, source_index):
 		super(TextsDecompiler, self).__init__(issue, source, source_index)
 
 		self.PATTERN_PATH_PALETTETABLE = "%s%03d/%d/palettetable/%04d/"
 		self.PATTERN_PATH_ROW = "%s%03d/%d/linetable/%04d/pieces/%04d/rows/"
+		self.PATTERN_PATH_TITLE = "%s%03d/%d/title/"
 
 		self.PATTERN_FILE_DATA = "%s%03d.json"
 		self.PATTERN_FILE_PALETTETABLE = "%s%03d/%d/palettetable/%04d/content.bin"
 		self.PATTERN_FILE_ROW = "%s%03d/%d/linetable/%04d/pieces/%04d/rows/%02d.bin"
+		self.PATTERN_FILE_TITLE = "%s%03d/%d/title/content.bin"
 
 		self.PATTERN_DECOMPILED_DATA = "decompiled://%s/%s/%s/%03d.json"
 		self.PATTERN_DECOMPILED_PALETTETABLE = "decompiled://%s/%s/%s/%03d/%d/palettetable/%04d/content.bin"
 		self.PATTERN_DECOMPILED_ROW = "decompiled://%s/%s/%s/%03d/%d/linetable/%04d/pieces/%04d/rows/%02d.bin"
+		self.PATTERN_DECOMPILED_TITLE = "decompiled://%s/%s/%s/%03d/%d/title/content.bin"
 
 
 
@@ -48,6 +48,7 @@ class TextsDecompiler(CommonDecompiler):
 		self.data_variant.content.offset_palettetable = self.variant_content.offset_palettetable
 		self.data_variant.content.palettetable = ObjDict()
 		self.data_variant.content.linetable = ObjDict()
+		self.data_variant.content.title = ""
 
 
 
@@ -203,7 +204,7 @@ class TextsDecompiler(CommonDecompiler):
 							for row_index, row in enumerate(linetable_content_piece.data.rows):
 								file_row = self.PATTERN_FILE_ROW % (self.PATH_DATA, self.text_index, self.variant_index, linetable_index, linetable_content_piece_index, row_index)
 
-								path_row = self.PATTERN_PATH_ROW % (self.PATH_DATA, self.text_index, self.variant_index,linetable_index, linetable_content_piece_index)
+								path_row = self.PATTERN_PATH_ROW % (self.PATH_DATA, self.text_index, self.variant_index, linetable_index, linetable_content_piece_index)
 
 								if not os.path.exists(path_row):
 									os.makedirs(path_row)
@@ -231,6 +232,21 @@ class TextsDecompiler(CommonDecompiler):
 
 
 
+	#@profile
+	def _variant_content_title(self):
+		if self.source.version > 3:
+			file_title = self.PATTERN_FILE_TITLE % (self.PATH_DATA, self.text_index, self.variant_index)
+			path_title = self.PATTERN_PATH_TITLE % (self.PATH_DATA, self.text_index, self.variant_index)
+			if not os.path.exists(path_title):
+				os.makedirs(path_title)
+
+			self.data_variant.content.title = self.PATTERN_DECOMPILED_TITLE % (self.issue.number, self.source.library, self.source_index, self.text_index, self.variant_index)
+
+			with open(file_title, "wb") as f:
+				f.write(self.variant_content.title)
+
+
+
 	def fill_meta_data(self):
 		if self.source.version == 1:
 			if not hasattr(self.meta, "data"):
@@ -255,6 +271,7 @@ class TextsDecompiler(CommonDecompiler):
 			self._variant_content_linetable_meta()
 			self._variant_content_palettetable()
 			self._variant_content_linetable()
+			self._variant_content_title()
 
 			with open(self.PATTERN_FILE_DATA % (self.PATH_DATA, self.text_index), "w") as f:
 				f.write(self.data_variant.content.dumps())
@@ -290,6 +307,7 @@ class TextsDecompiler(CommonDecompiler):
 						self._variant_content_linetable_meta()
 						self._variant_content_palettetable()
 						self._variant_content_linetable()
+						self._variant_content_title()
 
 						data_text.variants[str(variant_index)] = self.data_variant
 
