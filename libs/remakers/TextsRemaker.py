@@ -41,13 +41,19 @@ class TextsRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="export_assets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+			with open(text.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "r") as f:
+				#content = f.read()
+				lines = f.readlines() # TODO
+				content = ''.join(lines) # TODO
+				text_content = ObjDict(content)
+
 			if self.source.version == 1:
 				text_variants = ObjDict()
 				text_variants["0"] = ObjDict()
-				text_variants["0"].content = text
+				text_variants["0"].content = text_content
 			else:
-				text_variants = text.variants
+				text_variants = text_content.variants
 
 			for variant_index, variant in text_variants.iteritems():
 				self.items_total += 1
@@ -200,13 +206,19 @@ class TextsRemaker(CommonRemaker):
 
 		self.meta_remaked.texts = ObjDict()
 
-		for text_index, text in self.meta_decompiled.data.texts.iteritems():
+		for text_index, text in tqdm(self.meta_decompiled.data.texts.iteritems(), total=len(self.meta_decompiled.data.texts), desc="fill_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+			with open(text.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "r") as f:
+				#content = f.read()
+				lines = f.readlines() # TODO
+				content = ''.join(lines) # TODO
+				text_content = ObjDict(content)
+
 			if self.source.version == 1:
 				text_variants = ObjDict()
 				text_variants["0"] = ObjDict()
-				text_variants["0"].content = text
+				text_variants["0"].content = text_content
 			else:
-				text_variants = text.variants
+				text_variants = text_content.variants
 
 			data_text = ObjDict()
 			data_text.variants = ObjDict()
