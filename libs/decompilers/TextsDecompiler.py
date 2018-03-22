@@ -7,7 +7,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-import re, string, struct
+import humanize, psutil, re, string, struct
 from CommonDecompiler import CommonDecompiler
 
 
@@ -17,9 +17,11 @@ class TextsDecompiler(CommonDecompiler):
 	PATTERN_PATH_PALETTETABLE = "%s%03d/%d/palettetable/%04d/"
 	PATTERN_PATH_ROW = "%s%03d/%d/linetable/%04d/pieces/%04d/rows/"
 
+	PATTERN_FILE_DATA = "%s%03d.json"
 	PATTERN_FILE_PALETTETABLE = "%s%03d/%d/palettetable/%04d/content.bin"
 	PATTERN_FILE_ROW = "%s%03d/%d/linetable/%04d/pieces/%04d/rows/%02d.bin"
 
+	PATTERN_DECOMPILED_DATA = "decompiled://%s/%s/%s/%03d.json"
 	PATTERN_DECOMPILED_PALETTETABLE = "decompiled://%s/%s/%s/%03d/%d/palettetable/%04d/content.bin"
 	PATTERN_DECOMPILED_ROW = "decompiled://%s/%s/%s/%03d/%d/linetable/%04d/pieces/%04d/rows/%02d.bin"
 
@@ -200,7 +202,13 @@ class TextsDecompiler(CommonDecompiler):
 
 					data_text.linetable[str(linetable_index)] = data_linetable
 
-			self.meta.data.texts[str(self.iso_path_index)] = data_text
+			with open(self.PATTERN_FILE_DATA % (self.PATH_DATA, self.iso_path_index), "w") as f:
+				f.write(data_text.dumps())
+
+			self.meta.data.texts[str(self.iso_path_index)] = self.PATTERN_DECOMPILED_DATA % (self.issue.number, self.source.library, self.source_index, self.iso_path_index)
+
+			process = psutil.Process(os.getpid())
+			print "MEM: %s" % humanize.naturalsize(process.memory_info().rss)
 
 		else:
 			for text_index, text in enumerate(tqdm(self.library.data.texts, desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -396,7 +404,13 @@ class TextsDecompiler(CommonDecompiler):
 
 						data_text.variants[str(variant_index)] = data_variant
 
-				self.meta.data.texts[str(text_index)] = data_text
+				with open(self.PATTERN_FILE_DATA % (self.PATH_DATA, text_index), "w") as f:
+					f.write(data_text.dumps())
+
+				self.meta.data.texts[str(text_index)] = self.PATTERN_DECOMPILED_DATA % (self.issue.number, self.source.library, self.source_index, text_index)
+
+				process = psutil.Process(os.getpid())
+				print "MEM: %s" % humanize.naturalsize(process.memory_info().rss)
 
 
 
