@@ -25,8 +25,9 @@ from structs.klan_texts_v4 import KlanTextsV4
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
-PATH_PHASE = "%s/decompiled/" % ROOT_DATA
-PATH_ORIGINS = "%s/initialized/" % ROOT_DATA
+PATH_PHASE = "%sdecompiled/" % ROOT_DATA
+PATH_ORIGINS = "%sinitialized/" % ROOT_DATA
+PATH_TEMP = "%stemp/" % ROOT_DATA
 
 PATTERN_FILE_ORIGIN = "%s%%s.iso" % PATH_ORIGINS
 
@@ -84,6 +85,7 @@ class CommonDecompiler(object):
 			self.iso_content = BytesIO()
 			self.iso.get_file_from_iso_fp(self.iso_content, iso_path=self.iso_path)
 			self.iso_content.seek(0)
+			#self.iso.get_file_from_iso("%stempfile.bin" % PATH_TEMP, iso_path=self.iso_path)
 
 			if self.source.library == "audio":
 				if self.source.version == 1:
@@ -111,12 +113,16 @@ class CommonDecompiler(object):
 			elif self.source.library == "texts":
 				if self.source.version == 1:
 					self.library = KlanTextsV1.from_io(self.iso_content)
+					#self.library = KlanTextsV1.from_file("%stempfile.bin" % PATH_TEMP)
 				elif self.source.version == 2:
 					self.library = KlanTextsV2.from_io(self.iso_content)
+					#self.library = KlanTextsV2.from_file("%stempfile.bin" % PATH_TEMP)
 				elif self.source.version == 3:
 					self.library = KlanTextsV3.from_io(self.iso_content)
+					#self.library = KlanTextsV3.from_file("%stempfile.bin" % PATH_TEMP)
 				elif self.source.version == 4:
 					self.library = KlanTextsV4.from_io(self.iso_content)
+					#self.library = KlanTextsV4.from_file("%stempfile.bin" % PATH_TEMP)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()
