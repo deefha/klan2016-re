@@ -20,18 +20,19 @@ class TextsRemaker(CommonRemaker):
 		self.CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™"
 		self.fonts = ObjDict()
 
-		with open("%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", 0), "r") as f:
-			#content = f.read()
-			lines = f.readlines() # TODO
-			content = ''.join(lines) # TODO
-			self.fonts["0"] = ObjDict(content)
+		for index in range(0, 1):
+			if index == 0 or self.source.version > 1:
+				with open("%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", index), "r") as f:
+					#content = f.read()
+					lines = f.readlines() # TODO
+					content = ''.join(lines) # TODO
+					self.fonts[str(index)] = ObjDict(content)
 
-		if self.source.version > 1:
-			with open("%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", 1), "r") as f:
-				#content = f.read()
-				lines = f.readlines() # TODO
-				content = ''.join(lines) # TODO
-				self.fonts["1"] = ObjDict(content)
+				for font_index, font in self.fonts[str(index)].fonts.iteritems():
+					for font_variant_index, font_variant in font.iteritems():
+						for character_index, character in font_variant.characters.iteritems():
+							with Image.open(character.asset.replace("remaked://", self.PATH_PHASE_REMAKED)) as i:
+								character.image = i.copy()
 
 		self.PATTERN_PATH_TEXT = "%s%s" % (self.PATH_DATA_REMAKED, "%03d/")
 
@@ -160,7 +161,8 @@ class TextsRemaker(CommonRemaker):
 											if flag_link:
 												font_variant += "_link"
 
-											i_piece = Image.open(self.fonts[str(variant_index)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].asset.replace("remaked://", self.PATH_PHASE_REMAKED))
+											i_piece = self.fonts[str(variant_index)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].image
+											#i_piece = Image.open(self.fonts[str(variant_index)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].asset.replace("remaked://", self.PATH_PHASE_REMAKED))
 											i_piece_width, i_piece_height = i_piece.size
 											line_width += i_piece_width
 											line_pieces.append(i_piece)
