@@ -20,7 +20,9 @@ class TextsRemaker(CommonRemaker):
 		self.CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™"
 		self.fonts = ObjDict()
 
-		for index in range(0, 1):
+		print "Loading fonts..."
+
+		for index in range(0, 2):
 			if index == 0 or self.source.version > 1:
 				with open("%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", index), "r") as f:
 					#content = f.read()
