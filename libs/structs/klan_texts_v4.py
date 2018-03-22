@@ -94,7 +94,7 @@ class KlanTextsV4(KaitaiStruct):
 
             self._m_texts = [None] * (500)
             for i in range(500):
-                self._m_texts[i] = self._root.TText(self._parent.fat.offsets[i].offset_1, (self._parent.fat.offsets[i].offset_2 - self._parent.fat.offsets[i].offset_1), self._io, self, self._root)
+                self._m_texts[i] = self._root.TText(self._parent.fat.offsets[i].offset_1, self._parent.fat.offsets[i].offset_2, self._parent.fat.offsets[i].offset_3, self._parent.fat.offsets[i].offset_4, self._io, self, self._root)
 
             return self._m_texts if hasattr(self, '_m_texts') else None
 
@@ -122,6 +122,34 @@ class KlanTextsV4(KaitaiStruct):
             io = KaitaiStream(BytesIO(self._raw__m_content))
             self._m_content = self._root.TLinktableContent(io, self, self._root)
             self._io.seek(_pos)
+            return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TTextVariant(KaitaiStruct):
+        def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_offset = param_offset
+            self.param_length = param_length
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def content(self):
+            if hasattr(self, '_m_content'):
+                return self._m_content if hasattr(self, '_m_content') else None
+
+            if self.param_offset != 0:
+                _pos = self._io.pos()
+                self._io.seek(self.param_offset)
+                self._raw__m_content = self._io.read_bytes(self.param_length)
+                io = KaitaiStream(BytesIO(self._raw__m_content))
+                self._m_content = self._root.TTextContent(io, self, self._root)
+                self._io.seek(_pos)
+
             return self._m_content if hasattr(self, '_m_content') else None
 
 
@@ -265,31 +293,33 @@ class KlanTextsV4(KaitaiStruct):
 
 
     class TText(KaitaiStruct):
-        def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
+        def __init__(self, param_offset_1, param_offset_2, param_offset_3, param_offset_4, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.param_offset = param_offset
-            self.param_length = param_length
+            self.param_offset_1 = param_offset_1
+            self.param_offset_2 = param_offset_2
+            self.param_offset_3 = param_offset_3
+            self.param_offset_4 = param_offset_4
             self._read()
 
         def _read(self):
             pass
 
         @property
-        def content(self):
-            if hasattr(self, '_m_content'):
-                return self._m_content if hasattr(self, '_m_content') else None
+        def variants(self):
+            if hasattr(self, '_m_variants'):
+                return self._m_variants if hasattr(self, '_m_variants') else None
 
-            if self.param_offset != 0:
-                _pos = self._io.pos()
-                self._io.seek(self.param_offset)
-                self._raw__m_content = self._io.read_bytes(self.param_length)
-                io = KaitaiStream(BytesIO(self._raw__m_content))
-                self._m_content = self._root.TTextContent(io, self, self._root)
-                self._io.seek(_pos)
+            self._m_variants = [None] * (2)
+            for i in range(2):
+                _on = i
+                if _on == 0:
+                    self._m_variants[i] = self._root.TTextVariant(self.param_offset_1, (self.param_offset_2 - self.param_offset_1), self._io, self, self._root)
+                elif _on == 1:
+                    self._m_variants[i] = self._root.TTextVariant(self.param_offset_2, (self.param_offset_3 - self.param_offset_2), self._io, self, self._root)
 
-            return self._m_content if hasattr(self, '_m_content') else None
+            return self._m_variants if hasattr(self, '_m_variants') else None
 
 
     class TLinktableContentPiece6(KaitaiStruct):

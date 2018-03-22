@@ -44,11 +44,31 @@ types:
   t_data:
     instances:
       texts:
-        type: t_text(_parent.fat.offsets[_index].offset_1, _parent.fat.offsets[_index].offset_2 - _parent.fat.offsets[_index].offset_1)
+        type: t_text(_parent.fat.offsets[_index].offset_1, _parent.fat.offsets[_index].offset_2, _parent.fat.offsets[_index].offset_3, _parent.fat.offsets[_index].offset_4)
         repeat: expr
         repeat-expr: 250
 
   t_text:
+    params:
+      - id: param_offset_1
+        type: u4
+      - id: param_offset_2
+        type: u4
+      - id: param_offset_3
+        type: u4
+      - id: param_offset_4
+        type: u4
+    instances:
+      variants:
+        type:
+          switch-on: _index
+          cases:
+            0: t_text_variant(param_offset_1, param_offset_2 - param_offset_1)
+            1: t_text_variant(param_offset_2, param_offset_3 - param_offset_2)
+        repeat: expr
+        repeat-expr: 2
+
+  t_text_variant:
     params:
       - id: param_offset
         type: u4
