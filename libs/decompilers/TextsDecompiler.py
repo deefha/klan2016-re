@@ -48,7 +48,6 @@ class TextsDecompiler(CommonDecompiler):
 		self.data_variant.content.offset_palettetable = self.variant_content.offset_palettetable
 		self.data_variant.content.palettetable = ObjDict()
 		self.data_variant.content.linetable = ObjDict()
-		self.data_variant.content.title = ""
 
 
 
