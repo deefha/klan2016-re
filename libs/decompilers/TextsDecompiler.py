@@ -22,16 +22,19 @@ class TextsDecompiler(CommonDecompiler):
 		self.PATTERN_PATH_PALETTETABLE = "%s%03d/%d/palettetable/%04d/"
 		self.PATTERN_PATH_ROW = "%s%03d/%d/linetable/%04d/pieces/%04d/rows/"
 		self.PATTERN_PATH_TITLE = "%s%03d/%d/title/"
+		self.PATTERN_PATH_CONTENT = "%s%03d/%d/"
 
-		self.PATTERN_FILE_DATA = "%s%03d.json"
 		self.PATTERN_FILE_PALETTETABLE = "%s%03d/%d/palettetable/%04d/content.bin"
 		self.PATTERN_FILE_ROW = "%s%03d/%d/linetable/%04d/pieces/%04d/rows/%02d.bin"
 		self.PATTERN_FILE_TITLE = "%s%03d/%d/title/content.bin"
+		self.PATTERN_FILE_DATA = "%s%03d/%d/content.bin"
+		self.PATTERN_FILE_TEXT = "%s%03d.json"
 
-		self.PATTERN_DECOMPILED_DATA = "decompiled://%s/%s/%s/%03d.json"
 		self.PATTERN_DECOMPILED_PALETTETABLE = "decompiled://%s/%s/%s/%03d/%d/palettetable/%04d/content.bin"
 		self.PATTERN_DECOMPILED_ROW = "decompiled://%s/%s/%s/%03d/%d/linetable/%04d/pieces/%04d/rows/%02d.bin"
 		self.PATTERN_DECOMPILED_TITLE = "decompiled://%s/%s/%s/%03d/%d/title/content.bin"
+		self.PATTERN_DECOMPILED_DATA = "decompiled://%s/%s/%s/%03d/%d/content.bin"
+		self.PATTERN_DECOMPILED_TEXT = "decompiled://%s/%s/%s/%03d.json"
 
 
 
@@ -246,6 +249,20 @@ class TextsDecompiler(CommonDecompiler):
 
 
 
+	#@profile
+	def _variant_content_data(self):
+		file_data = self.PATTERN_FILE_DATA % (self.PATH_DATA, self.text_index, self.variant_index)
+		path_data = self.PATTERN_PATH_CONTENT % (self.PATH_DATA, self.text_index, self.variant_index)
+		if not os.path.exists(path_data):
+			os.makedirs(path_data)
+
+		self.data_variant.content.data = self.PATTERN_DECOMPILED_DATA % (self.issue.number, self.source.library, self.source_index, self.text_index, self.variant_index)
+
+		with open(file_data, "wb") as f:
+			f.write(self.variant_content.data)
+
+
+
 	def fill_meta_data(self):
 		if self.source.version == 1:
 			if not hasattr(self.meta, "data"):
@@ -272,10 +289,10 @@ class TextsDecompiler(CommonDecompiler):
 			self._variant_content_linetable()
 			self._variant_content_title()
 
-			with open(self.PATTERN_FILE_DATA % (self.PATH_DATA, self.text_index), "w") as f:
+			with open(self.PATTERN_FILE_TEXT % (self.PATH_DATA, self.text_index), "w") as f:
 				f.write(self.data_variant.content.dumps())
 
-			self.meta.data.texts[str(self.text_index)] = self.PATTERN_DECOMPILED_DATA % (self.issue.number, self.source.library, self.source_index, self.text_index)
+			self.meta.data.texts[str(self.text_index)] = self.PATTERN_DECOMPILED_TEXT % (self.issue.number, self.source.library, self.source_index, self.text_index)
 
 			#process = psutil.Process(os.getpid())
 			#print "MEM: %s" % humanize.naturalsize(process.memory_info().rss)
@@ -300,24 +317,23 @@ class TextsDecompiler(CommonDecompiler):
 						self.variant_content = variant.content
 						self.variant_index = variant_index
 
-						self._variant_content_init()
-						self._variant_content_linktable_meta()
-						self._variant_content_linktable()
-						self._variant_content_linetable_meta()
-						self._variant_content_palettetable()
-						self._variant_content_linetable()
-						self._variant_content_title()
+						if variant_index == 0 or variant_index == 1:
+							self._variant_content_init()
+							self._variant_content_linktable_meta()
+							self._variant_content_linktable()
+							self._variant_content_linetable_meta()
+							self._variant_content_palettetable()
+							self._variant_content_linetable()
+							self._variant_content_title()
+						else:
+							self._variant_content_data()
 
 						data_text.variants[str(variant_index)] = self.data_variant
 
-				#if text_index == 21:
-					#print data_text
-					#print data_text.dumps()
-
-				with open(self.PATTERN_FILE_DATA % (self.PATH_DATA, text_index), "w") as f:
+				with open(self.PATTERN_FILE_TEXT % (self.PATH_DATA, text_index), "w") as f:
 					f.write(data_text.dumps())
 
-				self.meta.data.texts[str(text_index)] = self.PATTERN_DECOMPILED_DATA % (self.issue.number, self.source.library, self.source_index, text_index)
+				self.meta.data.texts[str(text_index)] = self.PATTERN_DECOMPILED_TEXT % (self.issue.number, self.source.library, self.source_index, text_index)
 
 				#process = psutil.Process(os.getpid())
 				#print "MEM: %s" % humanize.naturalsize(process.memory_info().rss)

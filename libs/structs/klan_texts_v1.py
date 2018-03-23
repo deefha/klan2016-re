@@ -35,7 +35,7 @@ class KlanTextsV1(KaitaiStruct):
             if self.height != 0:
                 self.rows = [None] * (self.height)
                 for i in range(self.height):
-                    self.rows[i] = self._root.TLinktableContentPiece8Row(self._io, self, self._root)
+                    self.rows[i] = self._root.TLinetableContentPiece8Row(self._io, self, self._root)
 
 
 
@@ -100,6 +100,20 @@ class KlanTextsV1(KaitaiStruct):
             return self._m_content if hasattr(self, '_m_content') else None
 
 
+    class TLinetableContentPiece8RowData(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.data = self._io.read_u1()
+            if self.data > 192:
+                self.addon = self._io.read_u1()
+
+
+
     class TLinetable(KaitaiStruct):
         def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
             self._io = _io
@@ -151,38 +165,6 @@ class KlanTextsV1(KaitaiStruct):
             self.foo = self._io.read_bytes(10)
 
 
-    class TLinktableContentPiece8RowData(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.data = self._io.read_u1()
-            if self.data > 192:
-                self.addon = self._io.read_u1()
-
-
-
-    class TLinktableContentPiece8Row(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.content = []
-            i = 0
-            while True:
-                _ = self._root.TLinktableContentPiece8RowData(self._io, self, self._root)
-                self.content.append(_)
-                if _.data == 192:
-                    break
-                i += 1
-
-
     class TLinktableContentPiece(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -220,6 +202,24 @@ class KlanTextsV1(KaitaiStruct):
             self.bottomright_x = self._io.read_u4le()
             self.bottomright_y = self._io.read_u4le()
             self.offset = self._io.read_u4le()
+
+
+    class TLinetableContentPiece8Row(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.content = []
+            i = 0
+            while True:
+                _ = self._root.TLinetableContentPiece8RowData(self._io, self, self._root)
+                self.content.append(_)
+                if _.data == 192:
+                    break
+                i += 1
 
 
     class TLinktableContentPiece6(KaitaiStruct):

@@ -248,19 +248,19 @@ types:
       - id: height
         type: u1
       - id: rows
-        type: t_linktable_content_piece_8_row
+        type: t_linetable_content_piece_8_row
         repeat: expr
         repeat-expr: height
         if: height != 0
 
-  t_linktable_content_piece_8_row:
+  t_linetable_content_piece_8_row:
     seq:
       - id: content
-        type: t_linktable_content_piece_8_row_data
+        type: t_linetable_content_piece_8_row_data
         repeat: until
         repeat-until: _.data == 192
 
-  t_linktable_content_piece_8_row_data:
+  t_linetable_content_piece_8_row_data:
     seq:
       - id: data
         type: u1

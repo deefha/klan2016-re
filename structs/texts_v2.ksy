@@ -63,12 +63,13 @@ types:
         type:
           switch-on: _index
           cases:
-            0: t_text_variant(param_offset_1, param_offset_2 - param_offset_1)
-            1: t_text_variant(param_offset_2, param_offset_3 - param_offset_2)
+            0: t_text_variant_full(param_offset_1, param_offset_2 - param_offset_1)
+            1: t_text_variant_full(param_offset_2, param_offset_3 - param_offset_2)
+            2: t_text_variant_plain(param_offset_3, param_offset_4 - param_offset_3)
         repeat: expr
-        repeat-expr: 2
+        repeat-expr: 3
 
-  t_text_variant:
+  t_text_variant_full:
     params:
       - id: param_offset
         type: u4
@@ -76,12 +77,25 @@ types:
         type: u4
     instances:
       content:
-        type: t_text_content
+        type: t_text_content_full
         pos: param_offset
         size: param_length
         if: param_offset != 0
 
-  t_text_content:
+  t_text_variant_plain:
+    params:
+      - id: param_offset
+        type: u4
+      - id: param_length
+        type: u4
+    instances:
+      content:
+        type: t_text_content_plain
+        pos: param_offset
+        size: param_length
+        if: param_offset != 0
+
+  t_text_content_full:
     instances:
       offset_linktable:
         pos: _io.size - 4
@@ -134,6 +148,11 @@ types:
         repeat: expr
         repeat-expr: count_linetable_meta
         if: count_linetable_meta != 0
+
+  t_text_content_plain:
+    seq:
+      - id: data
+        size: _io.size
 
   t_linktable_meta:
     params:
@@ -343,19 +362,19 @@ types:
       - id: height
         type: u1
       - id: rows
-        type: t_linktable_content_piece_8_row
+        type: t_linetable_content_piece_8_row
         repeat: expr
         repeat-expr: height
         if: height != 0
 
-  t_linktable_content_piece_8_row:
+  t_linetable_content_piece_8_row:
     seq:
       - id: content
-        type: t_linktable_content_piece_8_row_data
+        type: t_linetable_content_piece_8_row_data
         repeat: until
         repeat-until: _.data == 192
 
-  t_linktable_content_piece_8_row_data:
+  t_linetable_content_piece_8_row_data:
     seq:
       - id: data
         type: u1

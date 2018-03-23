@@ -38,7 +38,7 @@ class KlanTextsV4(KaitaiStruct):
             if self.height != 0:
                 self.rows = [None] * (self.height)
                 for i in range(self.height):
-                    self.rows[i] = self._root.TLinktableContentPiece8Row(self._io, self, self._root)
+                    self.rows[i] = self._root.TLinetableContentPiece8Row(self._io, self, self._root)
 
 
 
@@ -125,32 +125,18 @@ class KlanTextsV4(KaitaiStruct):
             return self._m_content if hasattr(self, '_m_content') else None
 
 
-    class TTextVariant(KaitaiStruct):
-        def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
+    class TLinetableContentPiece8RowData(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
             self._root = _root if _root else self
-            self.param_offset = param_offset
-            self.param_length = param_length
             self._read()
 
         def _read(self):
-            pass
+            self.data = self._io.read_u1()
+            if self.data > 192:
+                self.addon = self._io.read_u1()
 
-        @property
-        def content(self):
-            if hasattr(self, '_m_content'):
-                return self._m_content if hasattr(self, '_m_content') else None
-
-            if self.param_offset != 0:
-                _pos = self._io.pos()
-                self._io.seek(self.param_offset)
-                self._raw__m_content = self._io.read_bytes(self.param_length)
-                io = KaitaiStream(BytesIO(self._raw__m_content))
-                self._m_content = self._root.TTextContent(io, self, self._root)
-                self._io.seek(_pos)
-
-            return self._m_content if hasattr(self, '_m_content') else None
 
 
     class TLinetable(KaitaiStruct):
@@ -204,20 +190,6 @@ class KlanTextsV4(KaitaiStruct):
             self.foo = self._io.read_bytes(10)
 
 
-    class TLinktableContentPiece8RowData(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.data = self._io.read_u1()
-            if self.data > 192:
-                self.addon = self._io.read_u1()
-
-
-
     class TLinktableContentPiece11(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -227,24 +199,6 @@ class KlanTextsV4(KaitaiStruct):
 
         def _read(self):
             self.foo = self._io.read_u2le()
-
-
-    class TLinktableContentPiece8Row(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.content = []
-            i = 0
-            while True:
-                _ = self._root.TLinktableContentPiece8RowData(self._io, self, self._root)
-                self.content.append(_)
-                if _.data == 192:
-                    break
-                i += 1
 
 
     class TLinktableContentPiece(KaitaiStruct):
@@ -275,6 +229,17 @@ class KlanTextsV4(KaitaiStruct):
                 self.data = self._root.TLinktableContentPiece65535(self._io, self, self._root)
             elif _on == 9:
                 self.data = self._root.TLinktableContentPiece9(self._io, self, self._root)
+
+
+    class TTextContentPlain(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.data = self._io.read_bytes(self._io.size())
 
 
     class TLinktableMetaContent(KaitaiStruct):
@@ -311,15 +276,35 @@ class KlanTextsV4(KaitaiStruct):
             if hasattr(self, '_m_variants'):
                 return self._m_variants if hasattr(self, '_m_variants') else None
 
-            self._m_variants = [None] * (2)
-            for i in range(2):
+            self._m_variants = [None] * (3)
+            for i in range(3):
                 _on = i
                 if _on == 0:
-                    self._m_variants[i] = self._root.TTextVariant(self.param_offset_1, (self.param_offset_2 - self.param_offset_1), self._io, self, self._root)
+                    self._m_variants[i] = self._root.TTextVariantFull(self.param_offset_1, (self.param_offset_2 - self.param_offset_1), self._io, self, self._root)
                 elif _on == 1:
-                    self._m_variants[i] = self._root.TTextVariant(self.param_offset_2, (self.param_offset_3 - self.param_offset_2), self._io, self, self._root)
+                    self._m_variants[i] = self._root.TTextVariantFull(self.param_offset_2, (self.param_offset_3 - self.param_offset_2), self._io, self, self._root)
+                elif _on == 2:
+                    self._m_variants[i] = self._root.TTextVariantPlain(self.param_offset_3, (self.param_offset_4 - self.param_offset_3), self._io, self, self._root)
 
             return self._m_variants if hasattr(self, '_m_variants') else None
+
+
+    class TLinetableContentPiece8Row(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.content = []
+            i = 0
+            while True:
+                _ = self._root.TLinetableContentPiece8RowData(self._io, self, self._root)
+                self.content.append(_)
+                if _.data == 192:
+                    break
+                i += 1
 
 
     class TLinktableContentPiece6(KaitaiStruct):
@@ -350,6 +335,62 @@ class KlanTextsV4(KaitaiStruct):
             self.slider_height = self._io.read_u2le()
             self.textfile_length = self._io.read_u1()
             self.textfile = self._io.read_bytes(self.textfile_length)
+
+
+    class TTextVariantFull(KaitaiStruct):
+        def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_offset = param_offset
+            self.param_length = param_length
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def content(self):
+            if hasattr(self, '_m_content'):
+                return self._m_content if hasattr(self, '_m_content') else None
+
+            if self.param_offset != 0:
+                _pos = self._io.pos()
+                self._io.seek(self.param_offset)
+                self._raw__m_content = self._io.read_bytes(self.param_length)
+                io = KaitaiStream(BytesIO(self._raw__m_content))
+                self._m_content = self._root.TTextContentFull(io, self, self._root)
+                self._io.seek(_pos)
+
+            return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TTextVariantPlain(KaitaiStruct):
+        def __init__(self, param_offset, param_length, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_offset = param_offset
+            self.param_length = param_length
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def content(self):
+            if hasattr(self, '_m_content'):
+                return self._m_content if hasattr(self, '_m_content') else None
+
+            if self.param_offset != 0:
+                _pos = self._io.pos()
+                self._io.seek(self.param_offset)
+                self._raw__m_content = self._io.read_bytes(self.param_length)
+                io = KaitaiStream(BytesIO(self._raw__m_content))
+                self._m_content = self._root.TTextContentPlain(io, self, self._root)
+                self._io.seek(_pos)
+
+            return self._m_content if hasattr(self, '_m_content') else None
 
 
     class TLinetableMeta(KaitaiStruct):
@@ -403,7 +444,64 @@ class KlanTextsV4(KaitaiStruct):
 
 
 
-    class TTextContent(KaitaiStruct):
+    class TPalettetable(KaitaiStruct):
+        def __init__(self, param_offset, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_offset = param_offset
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def content(self):
+            if hasattr(self, '_m_content'):
+                return self._m_content if hasattr(self, '_m_content') else None
+
+            _pos = self._io.pos()
+            self._io.seek(self.param_offset)
+            self._m_content = self._io.read_bytes(768)
+            self._io.seek(_pos)
+            return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TLinktableContentPiece9(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes(27)
+
+
+    class TLinktableMeta(KaitaiStruct):
+        def __init__(self, param_offset, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self.param_offset = param_offset
+            self._read()
+
+        def _read(self):
+            pass
+
+        @property
+        def content(self):
+            if hasattr(self, '_m_content'):
+                return self._m_content if hasattr(self, '_m_content') else None
+
+            _pos = self._io.pos()
+            self._io.seek(self.param_offset)
+            self._m_content = self._root.TLinktableMetaContent(self._io, self, self._root)
+            self._io.seek(_pos)
+            return self._m_content if hasattr(self, '_m_content') else None
+
+
+    class TTextContentFull(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
@@ -564,63 +662,6 @@ class KlanTextsV4(KaitaiStruct):
             self._m_title = self._io.read_bytes(256)
             self._io.seek(_pos)
             return self._m_title if hasattr(self, '_m_title') else None
-
-
-    class TPalettetable(KaitaiStruct):
-        def __init__(self, param_offset, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self.param_offset = param_offset
-            self._read()
-
-        def _read(self):
-            pass
-
-        @property
-        def content(self):
-            if hasattr(self, '_m_content'):
-                return self._m_content if hasattr(self, '_m_content') else None
-
-            _pos = self._io.pos()
-            self._io.seek(self.param_offset)
-            self._m_content = self._io.read_bytes(768)
-            self._io.seek(_pos)
-            return self._m_content if hasattr(self, '_m_content') else None
-
-
-    class TLinktableContentPiece9(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.foo = self._io.read_bytes(27)
-
-
-    class TLinktableMeta(KaitaiStruct):
-        def __init__(self, param_offset, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self.param_offset = param_offset
-            self._read()
-
-        def _read(self):
-            pass
-
-        @property
-        def content(self):
-            if hasattr(self, '_m_content'):
-                return self._m_content if hasattr(self, '_m_content') else None
-
-            _pos = self._io.pos()
-            self._io.seek(self.param_offset)
-            self._m_content = self._root.TLinktableMetaContent(self._io, self, self._root)
-            self._io.seek(_pos)
-            return self._m_content if hasattr(self, '_m_content') else None
 
 
     class TLinktableContentPiece65535(KaitaiStruct):
