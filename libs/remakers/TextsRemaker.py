@@ -7,6 +7,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
+import string
 from PIL import Image
 from CommonRemaker import CommonRemaker
 
@@ -17,7 +18,7 @@ class TextsRemaker(CommonRemaker):
 	def __init__(self, issue, source, source_index):
 		super(TextsRemaker, self).__init__(issue, source, source_index)
 
-		self.CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™"
+		self.CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™   "
 		self.fonts = ObjDict()
 
 		print "Loading fonts..."
@@ -311,6 +312,20 @@ class TextsRemaker(CommonRemaker):
 							data_link.actions[str(action_index)] = data_action
 
 						data_variant.links[str(link_index)] = data_link
+
+					if self.source.version > 3:
+						with open(variant.content.title.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
+							variant_title = f.read()
+
+						all_bytes = string.maketrans("", "")
+						variant_title = variant_title.translate(all_bytes, all_bytes[:32])
+						data_variant.title = ""
+
+						for char_index, char in enumerate(variant_title):
+							if ord(char) < 128:
+								data_variant.title += char
+							else:
+								data_variant.title += self.CHARTABLE[ord(char) - 128]
 
 					data_text.variants[str(variant_index)] = data_variant
 
