@@ -227,6 +227,8 @@ class KlanTextsV4(KaitaiStruct):
                 self.data = self._root.TLinktableContentPiece12(self._io, self, self._root)
             elif _on == 65535:
                 self.data = self._root.TLinktableContentPiece65535(self._io, self, self._root)
+            elif _on == 99:
+                self.data = self._root.TLinktableContentPiece99(self._io, self, self._root)
             elif _on == 9:
                 self.data = self._root.TLinktableContentPiece9(self._io, self, self._root)
 
@@ -662,6 +664,18 @@ class KlanTextsV4(KaitaiStruct):
             self._m_title = self._io.read_bytes(256)
             self._io.seek(_pos)
             return self._m_title if hasattr(self, '_m_title') else None
+
+
+    class TLinktableContentPiece99(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.length = self._io.read_u2le()
+            self.foo = self._io.read_bytes((self.length - 2))
 
 
     class TLinktableContentPiece65535(KaitaiStruct):

@@ -213,6 +213,7 @@ types:
             13: t_linktable_content_piece_13
             14: t_linktable_content_piece_14
             20: t_linktable_content_piece_20
+            99: t_linktable_content_piece_99
             65535: t_linktable_content_piece_65535
 
   t_linktable_content_piece_4:
@@ -282,6 +283,13 @@ types:
         size: textfile_length
       - id: foo
         type: u1
+
+  t_linktable_content_piece_99:
+    seq:
+      - id: length
+        type: u2
+      - id: foo
+        size: length - 2
 
   t_linktable_content_piece_65535:
     seq:

@@ -126,6 +126,11 @@ class TextsDecompiler(CommonDecompiler):
 						data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
 						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
 
+					elif data_linktable_content_piece.mode == 99:
+						data_linktable_content_piece.data.length = linktable_content_piece.data.length
+						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+						data_linktable_content_piece.data.foo = ""
+
 					elif data_linktable_content_piece.mode == 65535:
 						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
 
