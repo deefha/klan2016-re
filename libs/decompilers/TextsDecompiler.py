@@ -129,6 +129,10 @@ class TextsDecompiler(CommonDecompiler):
 					elif data_linktable_content_piece.mode == 65535:
 						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
 
+					else:
+						print "Unknown mode: %s (text %s, variant %s)" % (data_linktable_content_piece.mode, self.text_index, self.variant_index)
+						sys.exit()
+
 					data_linktable.content.pieces[str(linktable_content_piece_index)] = data_linktable_content_piece
 
 				self.data_variant.content.linktable[str(linktable_index)] = data_linktable
