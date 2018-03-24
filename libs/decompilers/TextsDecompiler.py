@@ -137,6 +137,10 @@ class TextsDecompiler(CommonDecompiler):
 						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
 						data_linktable_content_piece.data.foo = ""
 
+					elif data_linktable_content_piece.mode == 16717:
+						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+						data_linktable_content_piece.data.foo = ""
+
 					elif data_linktable_content_piece.mode == 49407:
 						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
 						data_linktable_content_piece.data.foo = ""

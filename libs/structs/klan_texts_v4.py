@@ -224,6 +224,8 @@ class KlanTextsV4(KaitaiStruct):
             _on = self.mode
             if _on == 14:
                 self.data = self._root.TLinktableContentPiece14(self._io, self, self._root)
+            elif _on == 16717:
+                self.data = self._root.TLinktableContentPiece16717(self._io, self, self._root)
             elif _on == 4:
                 self.data = self._root.TLinktableContentPiece4(self._io, self, self._root)
             elif _on == 6:
@@ -336,6 +338,17 @@ class KlanTextsV4(KaitaiStruct):
 
 
     class TLinktableContentPiece49407(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes((self._io.size() - 2))
+
+
+    class TLinktableContentPiece16717(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
