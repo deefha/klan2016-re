@@ -55,6 +55,17 @@ class KlanTextsV4(KaitaiStruct):
             self.foo = self._io.read_u1()
 
 
+    class TLinktableContentPiece240(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes((self._io.size() - 2))
+
+
     class TLinetableContentPiece(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -225,12 +236,16 @@ class KlanTextsV4(KaitaiStruct):
                 self.data = self._root.TLinktableContentPiece11(self._io, self, self._root)
             elif _on == 12:
                 self.data = self._root.TLinktableContentPiece12(self._io, self, self._root)
+            elif _on == 49407:
+                self.data = self._root.TLinktableContentPiece49407(self._io, self, self._root)
             elif _on == 65535:
                 self.data = self._root.TLinktableContentPiece65535(self._io, self, self._root)
             elif _on == 99:
                 self.data = self._root.TLinktableContentPiece99(self._io, self, self._root)
             elif _on == 9:
                 self.data = self._root.TLinktableContentPiece9(self._io, self, self._root)
+            elif _on == 240:
+                self.data = self._root.TLinktableContentPiece240(self._io, self, self._root)
 
 
     class TTextContentPlain(KaitaiStruct):
@@ -318,6 +333,17 @@ class KlanTextsV4(KaitaiStruct):
 
         def _read(self):
             self.foo = self._io.read_bytes(71)
+
+
+    class TLinktableContentPiece49407(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes((self._io.size() - 2))
 
 
     class TLinktableContentPiece4(KaitaiStruct):

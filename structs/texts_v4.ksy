@@ -214,6 +214,8 @@ types:
             14: t_linktable_content_piece_14
             20: t_linktable_content_piece_20
             99: t_linktable_content_piece_99
+            240: t_linktable_content_piece_240
+            49407: t_linktable_content_piece_49407
             65535: t_linktable_content_piece_65535
 
   t_linktable_content_piece_4:
@@ -290,6 +292,16 @@ types:
         type: u2
       - id: foo
         size: length - 2
+
+  t_linktable_content_piece_240:
+    seq:
+      - id: foo
+        size: _io.size - 2
+
+  t_linktable_content_piece_49407:
+    seq:
+      - id: foo
+        size: _io.size - 2
 
   t_linktable_content_piece_65535:
     seq:

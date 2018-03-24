@@ -319,6 +319,14 @@ class TextsRemaker(CommonRemaker):
 									#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
 									data_action.params.foo = ""
 
+								elif data_action.type == 240:
+									#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+									data_action.params.foo = ""
+
+								elif data_action.type == 49407:
+									#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+									data_action.params.foo = ""
+
 								elif data_action.type == 65535:
 									data_action.params.foo = action.data.foo
 

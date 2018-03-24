@@ -87,6 +87,8 @@ class TextsDecompiler(CommonDecompiler):
 					data_linktable_content_piece.mode = linktable_content_piece.mode
 					data_linktable_content_piece.data = ObjDict()
 
+					print "Text %s, variant %s, linktable %s, piece %s" % (self.text_index, self.variant_index, linktable_index, linktable_content_piece_index)
+
 					if data_linktable_content_piece.mode == 4:
 						data_linktable_content_piece.data.topleft_x = linktable_content_piece.data.topleft_x
 						data_linktable_content_piece.data.topleft_y = linktable_content_piece.data.topleft_y
@@ -128,6 +130,14 @@ class TextsDecompiler(CommonDecompiler):
 
 					elif data_linktable_content_piece.mode == 99:
 						data_linktable_content_piece.data.length = linktable_content_piece.data.length
+						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+						data_linktable_content_piece.data.foo = ""
+
+					elif data_linktable_content_piece.mode == 240:
+						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
+						data_linktable_content_piece.data.foo = ""
+
+					elif data_linktable_content_piece.mode == 49407:
 						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
 						data_linktable_content_piece.data.foo = ""
 
