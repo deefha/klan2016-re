@@ -251,7 +251,7 @@ typedef struct {
             } while (area[counter - 1].type != 0x000b);
             break;
 
-        // odkazy
+        // akce
         // issue 00: screen 14-16
         case 0x04000001:
             mScreenHeaderType2 header;
@@ -262,7 +262,7 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy
+        // akce
         // issue 00: screen 17-19
         case 0x05000001:
             mScreenHeaderType3 header;
@@ -273,7 +273,7 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy
+        // akce
         // issue 00: screen 20
         case 0x0a000001:
             mScreenHeaderType4 header;
@@ -284,13 +284,13 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy
+        // akce
         // issue 00: screen 21
         case 0x0b000001:
             mScreenHeaderType5 header;
             break;
 
-        // odkazy
+        // akce
         // issue 00: screen 22-35
         case 0x0e000001:
             mScreenHeaderType6 header;
@@ -341,17 +341,17 @@ typedef struct {
             } while (area[counter - 1].type != 0x000b);
             break;
 
-        // oblasti
+        // oblasti + akce
         // issue 01: screen 13, 199
         // issue 02: screen 13, 199
         // issue 03: screen 13, 199
         // issue 04: screen 13, 199
         // issue 05: screen 13, 199
         // issue 06: screen 13, 199
-        // issue 07: screen 13, 199, 252
-        // issue 08: screen 13, 199, 252
-        // issue 09: screen 13, 199, 252
-        // issue 10: screen 13, 199, 252
+        // issue 07: screen 13, 199, 252 <<< !!!
+        // issue 08: screen 13, 199, 252 <<< !!!
+        // issue 09: screen 13, 199, 252 <<< !!!
+        // issue 10: screen 13, 199, 252 <<< !!!
         case 0x00330100:
             mScreenHeaderType9 header;
             local int counter = 0;
@@ -366,7 +366,7 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy
+        // odkazy / odkazy + akce ???
         // issue 01: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
         // issue 02: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
         // issue 03: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
@@ -395,7 +395,7 @@ typedef struct {
             }
             break;
 
-        // odkazy
+        // akce
         // issue 01: screen 48
         // issue 02: screen 48
         // issue 03: screen 48
@@ -415,7 +415,7 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy
+        // odkazy ??? akce ???
         // issue 01: screen 198, 200-208, 219
         // issue 02: screen 198, 200-208, 219, 247
         // issue 03: screen 198, 200-208, 219, 247, 248
@@ -457,9 +457,6 @@ UINT foo_1 <format=hex, bgcolor=cLtRed>;
 
 // issue 0-10
 UINT screenOffsets[255] <format=hex, bgcolor=cLtPurple>;
-
-// issue 11+
-//UINT screenOffsets[1023] <format=hex, bgcolor=cLtPurple>;
 
 local UINT offsetIndex;
 local UINT offset;
