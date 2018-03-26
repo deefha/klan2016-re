@@ -87,7 +87,7 @@ class TextsDecompiler(CommonDecompiler):
 					data_linktable_content_piece.mode = linktable_content_piece.mode
 					data_linktable_content_piece.data = ObjDict()
 
-					print "Text %s, variant %s, linktable %s, piece %s" % (self.text_index, self.variant_index, linktable_index, linktable_content_piece_index)
+					#print "Text %s, variant %s, linktable %s, piece %s" % (self.text_index, self.variant_index, linktable_index, linktable_content_piece_index)
 
 					if data_linktable_content_piece.mode == 4:
 						data_linktable_content_piece.data.topleft_x = linktable_content_piece.data.topleft_x
