@@ -1,3 +1,6 @@
+typedef struct {
+} mBlank;
+
 // screen header
 // screen.type == 0x0e000000
 typedef struct {
@@ -237,7 +240,8 @@ typedef struct {
     UINT type <format=hex>;
     switch (type) {
 
-        // oblasti - issue 0
+        // oblasti
+        // issue 00: screen 0-13
         case 0x0e000000:
             mScreenHeaderType1 header;
             local int counter = 0;
@@ -247,7 +251,8 @@ typedef struct {
             } while (area[counter - 1].type != 0x000b);
             break;
 
-        // odkazy - issue 0
+        // odkazy
+        // issue 00: screen 14-16
         case 0x04000001:
             mScreenHeaderType2 header;
             local int counter = 0;
@@ -257,7 +262,8 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy - issue 0
+        // odkazy
+        // issue 00: screen 17-19
         case 0x05000001:
             mScreenHeaderType3 header;
             local int counter = 0;
@@ -267,7 +273,8 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy - issue 0
+        // odkazy
+        // issue 00: screen 20
         case 0x0a000001:
             mScreenHeaderType4 header;
             local int counter = 0;
@@ -277,12 +284,14 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy - issue 0
+        // odkazy
+        // issue 00: screen 21
         case 0x0b000001:
             mScreenHeaderType5 header;
             break;
 
-        // odkazy - issue 0
+        // odkazy
+        // issue 00: screen 22-35
         case 0x0e000001:
             mScreenHeaderType6 header;
             local int counter = 0;
@@ -292,7 +301,17 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // oblasti screen 1 - issue 1
+        // oblasti
+        // issue 01: screen 0
+        // issue 02: screen 0
+        // issue 03: screen 0
+        // issue 04: screen 0
+        // issue 05: screen 0
+        // issue 06: screen 0
+        // issue 07: screen 0
+        // issue 08: screen 0
+        // issue 09: screen 0
+        // issue 10: screen 0
         case 0x00310100:
             mScreenHeaderType7 header;
             local int counter = 0;
@@ -302,7 +321,17 @@ typedef struct {
             } while (area[counter - 1].type != 0x000b);
             break;
 
-        // oblasti screen 1+ - issue 1
+        // oblasti
+        // issue 01: screen 1-12, 209
+        // issue 02: screen 1-12, 209
+        // issue 03: screen 1-12, 209
+        // issue 04: screen 1-12, 209
+        // issue 05: screen 1-12, 209
+        // issue 06: screen 1-12, 209
+        // issue 07: screen 1-12, 209
+        // issue 08: screen 1-12, 209
+        // issue 09: screen 1-12, 209
+        // issue 10: screen 1-12, 209
         case 0x00320100:
             mScreenHeaderType8 header;
             local int counter = 0;
@@ -312,7 +341,17 @@ typedef struct {
             } while (area[counter - 1].type != 0x000b);
             break;
 
-        // oblasti screen 200 - issue 1
+        // oblasti
+        // issue 01: screen 13, 199
+        // issue 02: screen 13, 199
+        // issue 03: screen 13, 199
+        // issue 04: screen 13, 199
+        // issue 05: screen 13, 199
+        // issue 06: screen 13, 199
+        // issue 07: screen 13, 199, 252
+        // issue 08: screen 13, 199, 252
+        // issue 09: screen 13, 199, 252
+        // issue 10: screen 13, 199, 252
         case 0x00330100:
             mScreenHeaderType9 header;
             local int counter = 0;
@@ -327,17 +366,17 @@ typedef struct {
             } while (action[counter - 1].binding != 0xffff);
             break;
 
-        // odkazy screen 1 - issue 1
-        case 0x00310101:
-            mScreenHeaderType10 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // odkazy screen 1+ - issue 1
+        // odkazy
+        // issue 01: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 02: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 03: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 04: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 05: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 06: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 07: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 08: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 09: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
+        // issue 10: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
         case 0x00320101:
             mScreenHeaderType11 header;
             if (offsetIndex < 49) {
@@ -356,7 +395,37 @@ typedef struct {
             }
             break;
 
-        // odkazy screen 200 - issue 1
+        // odkazy
+        // issue 01: screen 48
+        // issue 02: screen 48
+        // issue 03: screen 48
+        // issue 04: screen 48
+        // issue 05: screen 48
+        // issue 06: screen 48
+        // issue 07: screen 48
+        // issue 08: screen 48
+        // issue 09: screen 48
+        // issue 10: screen 48
+        case 0x00310101:
+            mScreenHeaderType10 header;
+            local int counter = 0;
+            do {
+                counter++;
+                mScreenAction action;
+            } while (action[counter - 1].binding != 0xffff);
+            break;
+
+        // odkazy
+        // issue 01: screen 198, 200-208, 219
+        // issue 02: screen 198, 200-208, 219, 247
+        // issue 03: screen 198, 200-208, 219, 247, 248
+        // issue 04: screen 198, 200-208, 219, 247, 248
+        // issue 05: screen 198, 200-208, 219, 247, 248
+        // issue 06: screen 198, 200-208, 219, 247, 248
+        // issue 07: screen 198, 200-208, 218, 219, 246-248
+        // issue 08: screen 198, 200-208, 218, 219, 246-248
+        // issue 09: screen 198, 200-208, 218, 219, 246-248
+        // issue 10: screen 198, 200-208, 218, 219, 246-248
         case 0x00330101:
 //            mScreenHeaderType12 header;
 //            local int counter = 0;
@@ -399,5 +468,8 @@ for (offsetIndex = 0; offsetIndex < 255; offsetIndex++) {
     if (offset < 0xFFFFFFFF) {
         FSeek(offset);
         mScreen screen;
+    }
+    else {
+        mBlank screen;
     }
 }
