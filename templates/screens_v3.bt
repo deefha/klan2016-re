@@ -237,7 +237,9 @@ typedef struct {
 
 typedef struct {
     local UINT thisOffset = offsetIndex;
+
     UINT type <format=hex>;
+
     switch (type) {
 
         // oblasti
@@ -444,8 +446,15 @@ typedef struct {
 
 
 
+typedef struct {
+    local UINT thisOffset = offsetIndex;
+
+    UINT type <format=hex>;
+} mScreenTemp <bgcolor=cGreen, comment=GetScreenTempType>;
+
+
+
 string GetScreenType(mScreen &screen) {
-//    return screen.type;
     string s;
     SPrintf(s, "0x%08x", (int)screen.type);
     return s;
@@ -453,21 +462,26 @@ string GetScreenType(mScreen &screen) {
 
 
 
-UINT foo_1 <format=hex, bgcolor=cLtRed>;
+string GetScreenTempType(mScreenTemp &screen) {
+    string s;
+    SPrintf(s, "0x%08x", (int)screen.type);
+    return s;
+}
 
-// issue 0-10
-UINT screenOffsets[255] <format=hex, bgcolor=cLtPurple>;
 
-// issue 11+
-//UINT screenOffsets[1023] <format=hex, bgcolor=cLtPurple>;
 
 local UINT offsetIndex;
 local UINT offset;
-for (offsetIndex = 0; offsetIndex < 256; offsetIndex++) {
+
+UINT foo_1 <format=hex, bgcolor=cLtRed>;
+UINT screenOffsets[1023] <format=hex, bgcolor=cLtPurple>;
+mBlank screen;
+
+for (offsetIndex = 0; offsetIndex < 1023; offsetIndex++) {
     offset = screenOffsets[offsetIndex];
     if (offset < 0xFFFFFFFF) {
         FSeek(offset);
-        mScreen screen;
+        mScreenTemp screen;
     }
     else {
         mBlank screen;
