@@ -458,9 +458,12 @@ UINT foo_1 <format=hex, bgcolor=cLtRed>;
 // issue 0-10
 UINT screenOffsets[255] <format=hex, bgcolor=cLtPurple>;
 
+// issue 11+
+//UINT screenOffsets[1023] <format=hex, bgcolor=cLtPurple>;
+
 local UINT offsetIndex;
 local UINT offset;
-for (offsetIndex = 0; offsetIndex < 255; offsetIndex++) {
+for (offsetIndex = 0; offsetIndex < 256; offsetIndex++) {
     offset = screenOffsets[offsetIndex];
     if (offset < 0xFFFFFFFF) {
         FSeek(offset);
