@@ -1,108 +1,6 @@
 typedef struct {
 } mBlank;
 
-// screen header
-// screen.type == 0x0e000000
-typedef struct {
-    USHORT foo_1 <format=hex, bgcolor=cLtRed>;
-    USHORT type <bgcolor=cLtGreen>;
-    switch (type) {
-        case 0x0000:
-            UBYTE foo[15] <format=hex, bgcolor=cLtRed>;
-            break;
-        case 0x6400:
-            UBYTE foo[21] <format=hex, bgcolor=cLtRed>;
-            break;
-    }
-    USHORT background <format=hex>;
-} mScreenHeaderType1 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x04000001
-typedef struct {
-    UBYTE foo[27] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType2 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x05000001
-typedef struct {
-    UBYTE foo[59] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType3 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x0a000001
-typedef struct {
-    UBYTE foo[62] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType4 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x0b000001
-typedef struct {
-    UBYTE foo[23] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType5 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x0e000001
-typedef struct {
-    UBYTE foo_1 <format=hex, bgcolor=cLtRed>;
-    USHORT type <format=hex, bgcolor=cLtGreen>;
-    switch (type) {
-        case 0x0001:
-            USHORT parent <format=hex>;
-            UBYTE foo[12] <format=hex, bgcolor=cLtRed>;
-            break;
-        case 0x0012:
-            UBYTE foo[12] <format=hex, bgcolor=cLtRed>;
-            break;
-    }
-} mScreenHeaderType6 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x00310100
-typedef struct {
-    UBYTE foo[38] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType7 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x00320100
-typedef struct {
-    if (offsetIndex < 209) {
-        UBYTE foo[16] <format=hex, bgcolor=cLtRed>;
-    }
-    else {
-        UBYTE foo[10] <format=hex, bgcolor=cLtRed>;
-    }
-} mScreenHeaderType8 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x00330100
-typedef struct {
-    UBYTE foo[44] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType9 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x00310101
-typedef struct {
-    UBYTE foo[18] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType10 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x00320101
-typedef struct {
-    if (offsetIndex < 49) {
-        UBYTE foo[12] <format=hex, bgcolor=cLtRed>;
-    }
-    else {
-        UBYTE foo[10] <format=hex, bgcolor=cLtRed>;
-    }
-} mScreenHeaderType11 <bgcolor=cLtGreen>;
-
-// screen header
-// screen.type == 0x00330101
-typedef struct {
-    UBYTE foo[8] <format=hex, bgcolor=cLtRed>;
-} mScreenHeaderType12 <bgcolor=cLtGreen>;
-
 
 
 // oblasti a promenne
@@ -110,6 +8,11 @@ typedef struct {
     USHORT type <format=hex, bgcolor=cBlue, fgcolor=cWhite>;
 
     switch (type) {
+
+        // doit
+        case 0x0001:
+            USHORT id;
+            break;
 
         // text
         case 0x0004:
@@ -122,7 +25,6 @@ typedef struct {
             USHORT slider_height;
             UBYTE textfile_length;
             CHAR textfile[textfile_length];
-//            USHORT foo <format=hex, bgcolor=cLtRed>;
             break;
 
         // video
@@ -183,6 +85,19 @@ typedef struct {
             USHORT id;
             break;
 
+        // gotopage
+        case 0x000c:
+            USHORT id;
+            UBYTE foo;
+            break;
+
+        // svar
+        case 0x000d:
+            USHORT variable;
+            UBYTE value_length;
+            CHAR value[value_length];
+            break;
+
         // ivar / mov
         case 0x000e:
             USHORT variable;
@@ -207,6 +122,17 @@ typedef struct {
             USHORT scancode;
             break;
 
+        // getchar
+        case 0x0012:
+            USHORT id;
+            break;
+
+        // pic
+        case 0x0013:
+            USHORT foo_1;
+            USHORT foo_2;
+            break;
+
         // demo
         case 0x0014:
             UBYTE textfile_length;
@@ -224,262 +150,63 @@ typedef struct {
             USHORT id;
             break;
 
-        // unknown
-//        case 0x0024:
-//            UBYTE foo[4] <format=hex, bgcolor=cLtRed>;
-//            break;
-
-        // unknown - nasleduji akce!
-//        case 0x0041:
-//            UBYTE foo[24] <format=hex, bgcolor=cLtRed>;
-//            break;
-
-        // if
-        case 0x0063:
-            UBYTE foo_1[4] <format=hex, bgcolor=cLtRed>;
-            USHORT flag <format=hex>;
-            UBYTE foo_2[2] <format=hex, bgcolor=cLtRed>;
-            if (flag == 0x0001) {
-                UBYTE textfile_length;
-                CHAR textfile[textfile_length];
-                UBYTE foo_3[3] <format=hex, bgcolor=cLtRed>;
-            }
-            else {
-                UBYTE foo_3[6] <format=hex, bgcolor=cLtRed>;
-            }
+        // keyevent
+        case 0x0016:
+            USHORT foo_1;
+            USHORT foo_2;
+            UBYTE foo_3;
             break;
 
-        // unknown
-//        case 0x07d2:
-//            UBYTE foo[15] <format=hex, bgcolor=cLtRed>;
-//            break;
+        // snap
+        case 0x0017:
+            UBYTE foo;
+            break;
+
+        // playwav
+        case 0x0018:
+            USHORT foo_1;
+            UBYTE foo_2;
+            break;
+
+        // image
+        case 0x0020:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            UBYTE foo_4;
+            break;
+
+        // curhelp
+        case 0x0023:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE text_length;
+            CHAR text[text_length];
+            UBYTE foo_5;
+            break;
+
+        // if TODO
+        case 0x0063:
+            USHORT datalength <bgcolor=cDkAqua>;
+            UBYTE data[datalength - 2];
+            break;
+
     }
 } mScreenArea <bgcolor=cAqua>;
 
 
 
-// akce
+// eventy
 typedef struct {
     USHORT binding <format=hex, bgcolor=cBlue, fgcolor=cWhite>;
+
     if (binding != 0xffff) {
         USHORT datalength <bgcolor=cDkAqua>;
         UBYTE data[datalength - 4];
-//        FSkip(datalength - 4);
-//        switch (type) {
-//            case 0xffff:
-//                break;
-//        }
     }
-} mScreenAction <bgcolor=cAqua>;
-
-
-
-typedef struct {
-    local UINT thisOffset = offsetIndex;
-    UINT type <format=hex>;
-    switch (type) {
-
-        // oblasti
-        // issue 00: screen 0-13
-        case 0x0e000000:
-            mScreenHeaderType1 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenArea area;
-            } while (area[counter - 1].type != 0x000b);
-            break;
-
-        // akce
-        // issue 00: screen 14-16
-        case 0x04000001:
-            mScreenHeaderType2 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // akce
-        // issue 00: screen 17-19
-        case 0x05000001:
-            mScreenHeaderType3 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // akce
-        // issue 00: screen 20
-        case 0x0a000001:
-            mScreenHeaderType4 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // akce
-        // issue 00: screen 21
-        case 0x0b000001:
-            mScreenHeaderType5 header;
-            break;
-
-        // akce
-        // issue 00: screen 22-35
-        case 0x0e000001:
-            mScreenHeaderType6 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // oblasti
-        // issue 01: screen 0
-        // issue 02: screen 0
-        // issue 03: screen 0
-        // issue 04: screen 0
-        // issue 05: screen 0
-        // issue 06: screen 0
-        // issue 07: screen 0
-        // issue 08: screen 0
-        // issue 09: screen 0
-        // issue 10: screen 0
-        case 0x00310100:
-            mScreenHeaderType7 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenArea area;
-            } while (area[counter - 1].type != 0x000b);
-            break;
-
-        // oblasti
-        // issue 01: screen 1-12, 209
-        // issue 02: screen 1-12, 209
-        // issue 03: screen 1-12, 209
-        // issue 04: screen 1-12, 209
-        // issue 05: screen 1-12, 209
-        // issue 06: screen 1-12, 209
-        // issue 07: screen 1-12, 209
-        // issue 08: screen 1-12, 209
-        // issue 09: screen 1-12, 209
-        // issue 10: screen 1-12, 209
-        case 0x00320100:
-            mScreenHeaderType8 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenArea area;
-            } while (area[counter - 1].type != 0x000b);
-            break;
-
-        // oblasti + akce
-        // issue 01: screen 13, 199
-        // issue 02: screen 13, 199
-        // issue 03: screen 13, 199
-        // issue 04: screen 13, 199
-        // issue 05: screen 13, 199
-        // issue 06: screen 13, 199
-        // issue 07: screen 13, 199, 252 <<< !!!
-        // issue 08: screen 13, 199, 252 <<< !!!
-        // issue 09: screen 13, 199, 252 <<< !!!
-        // issue 10: screen 13, 199, 252 <<< !!!
-        case 0x00330100:
-            mScreenHeaderType9 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenArea area;
-            } while (area[counter - 1].type != 0xffff);
-            counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // odkazy / odkazy + akce ???
-        // issue 01: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 02: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 03: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 04: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 05: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 06: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 07: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 08: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 09: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        // issue 10: screen 14, 19-30, 49, 59, 69, 79, 89, 99, 109, 119, 129, 139, 149, 159
-        case 0x00320101:
-            mScreenHeaderType11 header;
-            if (offsetIndex < 49) {
-                local int counter = 0;
-                do {
-                    counter++;
-                    mScreenAction action;
-                } while (action[counter - 1].binding != 0xffff);
-            }
-            else {
-                local int counter = 0;
-                do {
-                    counter++;
-                    mScreenArea area;
-                } while (area[counter - 1].type != 0x000b);
-            }
-            break;
-
-        // akce
-        // issue 01: screen 48
-        // issue 02: screen 48
-        // issue 03: screen 48
-        // issue 04: screen 48
-        // issue 05: screen 48
-        // issue 06: screen 48
-        // issue 07: screen 48
-        // issue 08: screen 48
-        // issue 09: screen 48
-        // issue 10: screen 48
-        case 0x00310101:
-            mScreenHeaderType10 header;
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenAction action;
-            } while (action[counter - 1].binding != 0xffff);
-            break;
-
-        // odkazy ??? akce ???
-        // issue 01: screen 198, 200-208, 219
-        // issue 02: screen 198, 200-208, 219, 247
-        // issue 03: screen 198, 200-208, 219, 247, 248
-        // issue 04: screen 198, 200-208, 219, 247, 248
-        // issue 05: screen 198, 200-208, 219, 247, 248
-        // issue 06: screen 198, 200-208, 219, 247, 248
-        // issue 07: screen 198, 200-208, 218, 219, 246-248
-        // issue 08: screen 198, 200-208, 218, 219, 246-248
-        // issue 09: screen 198, 200-208, 218, 219, 246-248
-        // issue 10: screen 198, 200-208, 218, 219, 246-248
-        case 0x00330101:
-//            mScreenHeaderType12 header;
-//            local int counter = 0;
-//            do {
-//                counter++;
-//                mScreenAction action;
-//            } while (action[counter - 1].binding != 0xffff);
-            local int counter = 0;
-            do {
-                counter++;
-                mScreenArea area;
-            } while (area[counter - 1].type != 0x000b);
-            break;
-    }
-} mScreen <bgcolor=cGreen, comment=GetScreenType>;
+} mScreenEvent <bgcolor=cAqua>;
 
 
 
@@ -494,19 +221,18 @@ typedef struct {
         counter++;
         mScreenArea area;
     } while (area[counter - 1].type != 0xffff);
-} mScreenTemp <bgcolor=cGreen, comment=GetScreenTempType>;
+
+    counter = 0;
+
+    do {
+        counter++;
+        mScreenEvent event;
+    } while (event[counter - 1].binding != 0xffff);
+} mScreen <bgcolor=cGreen, comment=GetScreenType>;
 
 
 
 string GetScreenType(mScreen &screen) {
-    string s;
-    SPrintf(s, "0x%08x", (int)screen.type);
-    return s;
-}
-
-
-
-string GetScreenTempType(mScreenTemp &screen) {
     string s;
     SPrintf(s, "0x%04x", (int)screen.type);
     return s;
@@ -525,7 +251,7 @@ for (offsetIndex = 0; offsetIndex < 255; offsetIndex++) {
     offset = screenOffsets[offsetIndex];
     if (offset < 0xFFFFFFFF) {
         FSeek(offset);
-        mScreenTemp screen;
+        mScreen screen;
     }
     else {
         mBlank screen;
