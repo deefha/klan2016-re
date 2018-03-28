@@ -105,12 +105,13 @@ typedef struct {
 
 
 
-// oblasti
+// oblasti a promenne
 typedef struct {
     USHORT type <format=hex, bgcolor=cBlue, fgcolor=cWhite>;
+
     switch (type) {
 
-        // hlavni oblast
+        // text
         case 0x0004:
             USHORT topleft_x;
             USHORT topleft_y;
@@ -121,10 +122,38 @@ typedef struct {
             USHORT slider_height;
             UBYTE textfile_length;
             CHAR textfile[textfile_length];
-            USHORT foo_1 <format=hex, bgcolor=cLtRed>;
+//            USHORT foo <format=hex, bgcolor=cLtRed>;
             break;
 
-        // tlacitko
+        // video
+        case 0x0005:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            USHORT foo_5;
+            UBYTE foo_6;
+            break;
+
+        // obrazky
+        case 0x0006:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE foo_5;
+            break;
+
+        // zvuk
+        case 0x0007:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE foo_5;
+            break;
+
+        // button
         case 0x0009:
             USHORT id;
             USHORT image;
@@ -139,40 +168,50 @@ typedef struct {
             UBYTE foo_2 <format=hex, bgcolor=cLtRed>;
             break;
 
-        // unknown - issue 1
+        // area
         case 0x000a:
-            UBYTE foo[11] <format=hex, bgcolor=cLtRed>;
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            USHORT foo_6;
+            UBYTE foo_6;
             break;
 
-        // konec sekce
+        // event
         case 0x000b:
-            UBYTE foo[14] <format=hex, bgcolor=cLtRed>;
+            USHORT id;
             break;
 
-        // unknown - issue 1
+        // ivar / mov
         case 0x000e:
-            UBYTE foo_1[6] <format=hex, bgcolor=cLtRed>;
-            UBYTE flag <format=hex>;
-            if (flag == 0x41) {
-                local int counter_foo = 0;
-                do {
-                    counter_foo++;
-                    USHORT foo_2 <format=hex, bgcolor=cLtRed>;
-                } while (foo_2[counter_foo - 1] != 0xffff);
-            }
-            else {
-                CHAR textfile[flag];
-                UBYTE foo_2 <format=hex, bgcolor=cLtRed>;
-            }
+            USHORT variable;
+            USHORT value;
             break;
 
-        // tlacitko slideru
+        // screen
+        case 0x000f:
+            USHORT id;
+            break;
+
+        // woknoshit
+        case 0x0010:
+            break;
+
+        // keybutt
         case 0x0011:
             USHORT topleft_x;
             USHORT topleft_y;
             USHORT image;
             USHORT foo_1 <format=hex, bgcolor=cLtRed>;
             USHORT scancode;
+            break;
+
+        // demo
+        case 0x0014:
+            UBYTE textfile_length;
+            CHAR textfile[textfile_length];
+            UBYTE foo;
             break;
 
         // reklama
@@ -186,16 +225,16 @@ typedef struct {
             break;
 
         // unknown
-        case 0x0024:
-            UBYTE foo[4] <format=hex, bgcolor=cLtRed>;
-            break;
+//        case 0x0024:
+//            UBYTE foo[4] <format=hex, bgcolor=cLtRed>;
+//            break;
 
         // unknown - nasleduji akce!
-        case 0x0041:
-            UBYTE foo[24] <format=hex, bgcolor=cLtRed>;
-            break;
+//        case 0x0041:
+//            UBYTE foo[24] <format=hex, bgcolor=cLtRed>;
+//            break;
 
-        // unknown
+        // if
         case 0x0063:
             UBYTE foo_1[4] <format=hex, bgcolor=cLtRed>;
             USHORT flag <format=hex>;
@@ -211,9 +250,9 @@ typedef struct {
             break;
 
         // unknown
-        case 0x07d2:
-            UBYTE foo[15] <format=hex, bgcolor=cLtRed>;
-            break;
+//        case 0x07d2:
+//            UBYTE foo[15] <format=hex, bgcolor=cLtRed>;
+//            break;
     }
 } mScreenArea <bgcolor=cAqua>;
 
@@ -444,8 +483,22 @@ typedef struct {
 
 
 
+typedef struct {
+    local UINT thisOffset = offsetIndex;
+    local int counter = 0;
+
+    USHORT type <format=hex>;
+    UBYTE foo <format=hex>;
+
+    do {
+        counter++;
+        mScreenArea area;
+    } while (area[counter - 1].type != 0xffff);
+} mScreenTemp <bgcolor=cGreen, comment=GetScreenTempType>;
+
+
+
 string GetScreenType(mScreen &screen) {
-//    return screen.type;
     string s;
     SPrintf(s, "0x%08x", (int)screen.type);
     return s;
@@ -453,21 +506,26 @@ string GetScreenType(mScreen &screen) {
 
 
 
+string GetScreenTempType(mScreenTemp &screen) {
+    string s;
+    SPrintf(s, "0x%04x", (int)screen.type);
+    return s;
+}
+
+
+
 UINT foo_1 <format=hex, bgcolor=cLtRed>;
-
-// issue 0-10
 UINT screenOffsets[255] <format=hex, bgcolor=cLtPurple>;
-
-// issue 11+
-//UINT screenOffsets[1023] <format=hex, bgcolor=cLtPurple>;
+mBlank screen;
 
 local UINT offsetIndex;
 local UINT offset;
-for (offsetIndex = 0; offsetIndex < 256; offsetIndex++) {
+
+for (offsetIndex = 0; offsetIndex < 255; offsetIndex++) {
     offset = screenOffsets[offsetIndex];
     if (offset < 0xFFFFFFFF) {
         FSeek(offset);
-        mScreen screen;
+        mScreenTemp screen;
     }
     else {
         mBlank screen;
