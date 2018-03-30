@@ -9,14 +9,21 @@ meta:
 doc-ref: https://wiki.klan2016.cz
 
 seq:
-  - id: version
-    type: u4
+  - id: header
+    type: t_header
   - id: fat
     type: t_fat
   - id: data
     type: t_data
 
 types:
+  t_header:
+    seq:
+      - id: version
+        type: u2
+      - id: foo
+        type: u2
+
   t_fat:
     seq:
       - id: offsets
@@ -44,7 +51,9 @@ types:
   t_screen_content:
     seq:
       - id: type
-        type: u4
+        type: u2
+      - id: foo
+        type: u2
       - id: data
         type: t_screen_data
 

@@ -19,7 +19,7 @@ class KlanScreensV3(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.version = self._io.read_u4le()
+        self.header = self._root.THeader(self._io, self, self._root)
         self.fat = self._root.TFat(self._io, self, self._root)
         self.data = self._root.TData(self._io, self, self._root)
 
@@ -48,6 +48,18 @@ class KlanScreensV3(KaitaiStruct):
         def _read(self):
             self.foo_1 = self._io.read_u2le()
             self.foo_2 = self._io.read_u1()
+
+
+    class THeader(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.version = self._io.read_u2le()
+            self.foo = self._io.read_u2le()
 
 
     class TScreenDataBranchIf(KaitaiStruct):
@@ -148,7 +160,8 @@ class KlanScreensV3(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.type = self._io.read_u4le()
+            self.type = self._io.read_u2le()
+            self.foo = self._io.read_u2le()
             self.data = self._root.TScreenData(self._io, self, self._root)
 
 

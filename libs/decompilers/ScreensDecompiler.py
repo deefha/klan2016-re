@@ -122,7 +122,7 @@ class ScreensDecompiler(CommonDecompiler):
 			elif command.type == 0x0013:
 				data_command.content.foo_1 = command.content.foo_1
 				data_command.content.foo_2 = command.content.foo_2
-				if self.source.version == 3:
+				if self.source.version > 2:
 					data_command.content.foo_3 = command.content.foo_3
 
 			# demo
@@ -220,9 +220,7 @@ class ScreensDecompiler(CommonDecompiler):
 
 			if screen.content:
 				data_screen.content.type = screen.content.type
-
-				if self.source.version == 1:
-					data_screen.content.foo = screen.content.foo
+				data_screen.content.foo = screen.content.foo
 
 				data_screen.content.data = ObjDict()
 				data_screen.content.data.commands = ObjDict()
@@ -254,6 +252,8 @@ class ScreensDecompiler(CommonDecompiler):
 
 	def fill_meta_header(self):
 		self.meta.header = ObjDict()
+		self.meta.header.version = self.library.header.version
+		self.meta.header.foo = self.library.header.foo
 
 
 
