@@ -73,6 +73,9 @@ def decompile(config, issue, source, source_index):
 	elif source.library == "music":
 		decompiler = MusicDecompiler.MusicDecompiler(issue, source, source_index)
 
+	elif source.library == "screens":
+		decompiler = ScreensDecompiler.ScreensDecompiler(issue, source, source_index)
+
 	elif source.library == "texts":
 		decompiler = TextsDecompiler.TextsDecompiler(issue, source, source_index)
 

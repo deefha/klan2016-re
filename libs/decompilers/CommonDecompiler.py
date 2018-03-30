@@ -18,6 +18,9 @@ from structs.klan_fonts import KlanFonts
 from structs.klan_images import KlanImages
 from structs.klan_music_v1 import KlanMusicV1
 from structs.klan_music_v2 import KlanMusicV2
+from structs.klan_screens_v1 import KlanScreensV1
+from structs.klan_screens_v2 import KlanScreensV2
+from structs.klan_screens_v3 import KlanScreensV3
 from structs.klan_texts_v1 import KlanTextsV1
 from structs.klan_texts_v2 import KlanTextsV2
 from structs.klan_texts_v3 import KlanTextsV3
@@ -27,7 +30,6 @@ ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
 PATH_PHASE = "%sdecompiled/" % ROOT_DATA
 PATH_ORIGINS = "%sinitialized/" % ROOT_DATA
-PATH_TEMP = "%stemp/" % ROOT_DATA
 
 PATTERN_FILE_ORIGIN = "%s%%s.iso" % PATH_ORIGINS
 
@@ -85,7 +87,6 @@ class CommonDecompiler(object):
 			self.iso_content = BytesIO()
 			self.iso.get_file_from_iso_fp(self.iso_content, iso_path=self.iso_path)
 			self.iso_content.seek(0)
-			#self.iso.get_file_from_iso("%stempfile.bin" % PATH_TEMP, iso_path=self.iso_path)
 
 			if self.source.library == "audio":
 				if self.source.version == 1:
@@ -110,19 +111,23 @@ class CommonDecompiler(object):
 				elif self.source.version == 2:
 					self.library = KlanMusicV2.from_io(self.iso_content)
 
+			elif self.source.library == "screens":
+				if self.source.version == 1:
+					self.library = KlanScreensV1.from_io(self.iso_content)
+				elif self.source.version == 2:
+					self.library = KlanScreensV2.from_io(self.iso_content)
+				elif self.source.version == 3:
+					self.library = KlanScreensV3.from_io(self.iso_content)
+
 			elif self.source.library == "texts":
 				if self.source.version == 1:
 					self.library = KlanTextsV1.from_io(self.iso_content)
-					#self.library = KlanTextsV1.from_file("%stempfile.bin" % PATH_TEMP)
 				elif self.source.version == 2:
 					self.library = KlanTextsV2.from_io(self.iso_content)
-					#self.library = KlanTextsV2.from_file("%stempfile.bin" % PATH_TEMP)
 				elif self.source.version == 3:
 					self.library = KlanTextsV3.from_io(self.iso_content)
-					#self.library = KlanTextsV3.from_file("%stempfile.bin" % PATH_TEMP)
 				elif self.source.version == 4:
 					self.library = KlanTextsV4.from_io(self.iso_content)
-					#self.library = KlanTextsV4.from_file("%stempfile.bin" % PATH_TEMP)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()

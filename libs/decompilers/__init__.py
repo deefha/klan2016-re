@@ -1,1 +1,1 @@
-__all__ = [ "AudioDecompiler", "CommonDecompiler", "CursorsDecompiler", "FontsDecompiler", "ImagesDecompiler", "MusicDecompiler", "TextsDecompiler" ]
+__all__ = [ "AudioDecompiler", "CommonDecompiler", "CursorsDecompiler", "FontsDecompiler", "ImagesDecompiler", "MusicDecompiler", "ScreensDecompiler", "TextsDecompiler" ]
