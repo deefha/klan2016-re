@@ -323,10 +323,8 @@ types:
   # playwav
   t_screen_data_command_0018:
     seq:
-      - id: foo_1
+      - id: foo
         type: u2
-      - id: foo_2
-        type: u1
 
   # image
   t_screen_data_command_0020:
@@ -382,16 +380,16 @@ types:
 
   t_screen_data_command_0063_mode_if_else:
     seq:
-      - id: if
+      - id: branch_if
         type: t_screen_data_branch_if
         size: _parent.data_length_2 - 8
-      - id: else
+      - id: branch_else
         type: t_screen_data_branch_else
         size: _parent.data_length_1 - _parent.data_length_2
 
   t_screen_data_command_0063_mode_if_only:
     seq:
-      - id: if
+      - id: branch_if
         type: t_screen_data_branch_if
         size: _parent.data_length_1 - 8
 

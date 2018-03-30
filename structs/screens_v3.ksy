@@ -1,7 +1,7 @@
 meta:
-  id: klan_screens_v1
+  id: klan_screens_v3
   file-extension: z3p
-  title: KLAN screens v1
+  title: KLAN screens v3
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
@@ -44,9 +44,7 @@ types:
   t_screen_content:
     seq:
       - id: type
-        type: u2
-      - id: foo
-        type: u1
+        type: u4
       - id: data
         type: t_screen_data
 
@@ -279,6 +277,8 @@ types:
         type: u2
       - id: foo_2
         type: u2
+      - id: foo_3
+        type: u2
 
   # demo
   t_screen_data_command_0014:
@@ -325,8 +325,10 @@ types:
   # playwav
   t_screen_data_command_0018:
     seq:
-      - id: foo
+      - id: foo_1
         type: u2
+      - id: foo_2
+        type: u1
 
   # image
   t_screen_data_command_0020:
