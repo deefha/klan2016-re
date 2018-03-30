@@ -78,7 +78,7 @@ typedef struct {
             USHORT foo_2;
             USHORT foo_3;
             USHORT foo_4;
-            USHORT foo_6;
+            USHORT foo_5;
             UBYTE foo_6;
             break;
 
