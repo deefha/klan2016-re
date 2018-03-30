@@ -424,7 +424,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -485,7 +485,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -546,7 +546,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -607,7 +607,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
