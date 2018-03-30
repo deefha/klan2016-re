@@ -33,6 +33,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 1
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 1
       screensaver:
       texts:
         - path: TEXTY/*.P
@@ -81,6 +85,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 1
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -128,6 +136,10 @@ issues:
       music:
         - path: MODS.LIB
           library: music
+          version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
           version: 2
       screensaver:
       texts:
@@ -180,6 +192,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -231,6 +247,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 2
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -281,6 +301,10 @@ issues:
       music:
         - path: MODS.LIB
           library: music
+          version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
           version: 2
       screensaver:
       texts:
@@ -335,6 +359,10 @@ issues:
       music:
         - path: MODS.LIB
           library: music
+          version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
           version: 2
       screensaver:
         - path: SCRSVR.LIB
@@ -393,6 +421,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -449,6 +481,10 @@ issues:
       music:
         - path: MODS.LIB
           library: music
+          version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
           version: 2
       screensaver:
         - path: SCRSVR.LIB
@@ -507,6 +543,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -564,6 +604,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -617,6 +661,10 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       music:
         - path: MODS.LIB
           library: music
@@ -678,6 +726,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -735,6 +787,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -792,6 +848,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -849,6 +909,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -906,6 +970,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -963,6 +1031,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1020,6 +1092,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1077,6 +1153,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1134,6 +1214,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1191,6 +1275,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1248,6 +1336,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1305,6 +1397,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1362,6 +1458,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1419,6 +1519,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1476,6 +1580,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1533,6 +1641,10 @@ issues:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1600,6 +1712,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1664,6 +1780,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1728,6 +1848,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1789,6 +1913,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1850,6 +1978,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1911,6 +2043,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1972,6 +2108,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2033,6 +2173,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2094,6 +2238,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2155,6 +2303,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2216,6 +2368,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2277,6 +2433,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2338,6 +2498,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2399,6 +2563,10 @@ issues:
         - path: KLAN/BGM.LIB
           library: music
           version: 2
+      screens:
+        - path: KLAN/VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
