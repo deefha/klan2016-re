@@ -88,7 +88,6 @@ typedef struct {
         // gotopage
         case 0x000c:
             USHORT id;
-            UBYTE foo;
             break;
 
         // svar
