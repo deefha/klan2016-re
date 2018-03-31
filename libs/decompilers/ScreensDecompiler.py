@@ -7,11 +7,19 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
+import collections
 from CommonDecompiler import CommonDecompiler
 
 
 
 class ScreensDecompiler(CommonDecompiler):
+
+	def __init__(self, issue, source, source_index):
+		super(ScreensDecompiler, self).__init__(issue, source, source_index)
+
+		self.counts = ObjDict()
+
+
 
 	def _parse_command(self, command):
 		data_command = ObjDict()
@@ -19,6 +27,12 @@ class ScreensDecompiler(CommonDecompiler):
 
 		if hasattr(command, "content"):
 			data_command.content = ObjDict()
+
+			command_type_hex = "{0:#0{1}x}".format(command.type, 6)
+			if hasattr(self.counts, command_type_hex):
+				self.counts[command_type_hex] += 1
+			else:
+				self.counts[command_type_hex] = 1
 
 			# doit
 			if command.type == 0x0001:
@@ -247,6 +261,9 @@ class ScreensDecompiler(CommonDecompiler):
 					data_screen.content.data.events[str(event_index)] = data_event
 
 			self.meta.data.screens[str(screen_index)] = data_screen
+
+		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
+			print "Type %s: %s" % (count_index, count)
 
 
 
