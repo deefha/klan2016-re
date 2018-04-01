@@ -265,13 +265,15 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.foo_1 = command.content.foo_1
 				data_command.content.foo_2 = command.content.foo_2
 
-			# ???
+			# link?
 			elif command.type == 0x0033:
-				data_command.content.foo_1 = command.content.foo_1
-				data_command.content.foo_2 = command.content.foo_2
-				data_command.content.foo_3 = command.content.foo_3
-				data_command.content.foo_4 = command.content.foo_4
-				data_command.content.foo_5 = command.content.foo_5
+				data_command.content.text_1_length = command.content.text_1_length
+				#data_command.content.text_1 = command.content.text_1
+				data_command.content.text_1 = "" # TODO
+				data_command.content.text_2_length = command.content.text_2_length
+				#data_command.content.text_2 = command.content.text_2
+				data_command.content.text_2 = "" # TODO
+				data_command.content.foo = command.content.foo
 
 			# ???
 			elif command.type == 0x0035:
@@ -328,13 +330,17 @@ class ScreensDecompiler(CommonDecompiler):
 					for self.command_inner_index, self.command_inner in enumerate(command.content.branches.branch_else.commands):
 						data_command_inner = self._parse_command(self.command_inner)
 						data_command.content.branches.branch_else.commands[str(self.command_inner_index)] = data_command_inner
+			# nokeys
+			elif command.type == 0x4f4e:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
 
 			else:
 				print "Unknown command type: %s" % (command.type)
 				sys.exit()
 
 		else:
-			if command.type != 0x0010 and command.type != 0x002a and command.type != 0xffff:
+			if command.type != 0x0010 and command.type != 0x002a and command.type != 0x003a and command.type != 0xffff:
 				print "Command without content: %s (%s), screen %s, command %s" % (command.type, command_type_hex, self.screen_index, self.command_index)
 
 		return data_command
