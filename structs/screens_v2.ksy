@@ -50,10 +50,16 @@ types:
 
   t_screen_content:
     seq:
-      - id: type
-        type: u2
+      - id: type_1
+        type: u1
+      - id: type_2
+        type: u1
       - id: foo
-        type: u2
+        type:
+          switch-on: type_2
+          cases:
+            1: u2
+            _: u1
       - id: data
         type: t_screen_data
 
@@ -98,7 +104,21 @@ types:
             0x0017: t_screen_data_command_0017 # snap
             0x0018: t_screen_data_command_0018 # playwav
             0x0020: t_screen_data_command_0020 # image
+            0x0021: t_screen_data_command_0021 # ???
+            0x0022: t_screen_data_command_0022 # ???
             0x0023: t_screen_data_command_0023 # curhelp
+            0x0024: t_screen_data_command_0024 # ???
+            0x0025: t_screen_data_command_0025 # ???
+            0x0026: t_screen_data_command_0026 # ???
+            0x0027: t_screen_data_command_0027 # ???
+            0x0028: t_screen_data_command_0028 # ???
+            #0x002a: t_screen_data_command_002a # ??? (no content)
+            0x002b: t_screen_data_command_002b # ???
+            0x002c: t_screen_data_command_002c # ???
+            0x002d: t_screen_data_command_002d # ???
+            0x0035: t_screen_data_command_0035 # ???
+            0x0036: t_screen_data_command_0036 # ???
+            0x0038: t_screen_data_command_0038 # ???
             0x0063: t_screen_data_command_0063 # if
 
   t_screen_data_event:
@@ -286,6 +306,8 @@ types:
         type: u2
       - id: foo_2
         type: u2
+      - id: foo_3
+        type: u2
 
   # demo
   t_screen_data_command_0014:
@@ -332,8 +354,10 @@ types:
   # playwav
   t_screen_data_command_0018:
     seq:
-      - id: foo
+      - id: foo_1
         type: u2
+      - id: foo_2
+        type: u1
 
   # image
   t_screen_data_command_0020:
@@ -345,6 +369,30 @@ types:
       - id: foo_3
         type: u2
       - id: foo_4
+        type: u1
+
+  # ???
+  t_screen_data_command_0021:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+
+  # ???
+  t_screen_data_command_0022:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+      - id: foo_4
+        type: u2
+      - id: foo_5
         type: u1
 
   # curhelp
@@ -364,6 +412,120 @@ types:
         size: text_length
       - id: foo_5
         type: u1
+
+  # ???
+  t_screen_data_command_0024:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+
+  # ???
+  t_screen_data_command_0025:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+
+  # ???
+  t_screen_data_command_0026:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+
+  # ???
+  t_screen_data_command_0027:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+
+  # ???
+  t_screen_data_command_0028:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u1
+
+  # ???
+  t_screen_data_command_002b:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+      - id: foo_4
+        type: u2
+      - id: foo_5
+        type: u2
+      - id: foo_6
+        type: u2
+      - id: foo_7
+        type: u1
+
+  # ???
+  t_screen_data_command_002c:
+    seq:
+      - id: foo
+        type: u2
+      - id: textfile_length
+        type: u1
+      - id: textfile
+        size: textfile_length
+
+  # ???
+  t_screen_data_command_002d:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u1
+
+  # ???
+  t_screen_data_command_0035:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+      - id: foo_4
+        type: u2
+      - id: foo_5
+        type: u2
+      - id: foo_6
+        type: u2
+      - id: foo_7
+        type: u2
+      - id: foo_8
+        type: u1
+
+  # ???
+  t_screen_data_command_0036:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u1
+
+  # ???
+  t_screen_data_command_0038:
+    seq:
+      - id: foo
+        type: u2
 
   # if
   t_screen_data_command_0063:
@@ -390,7 +552,7 @@ types:
   t_screen_data_command_0063_mode_if_else:
     seq:
       - id: branch_if
-        type: t_screen_data_branch_if
+        type: t_screen_data_branch_if(_parent.foo_1)
         size: _parent.data_length_2 - 8
       - id: branch_else
         type: t_screen_data_branch_else
@@ -399,10 +561,13 @@ types:
   t_screen_data_command_0063_mode_if_only:
     seq:
       - id: branch_if
-        type: t_screen_data_branch_if
+        type: t_screen_data_branch_if(_parent.foo_1)
         size: _parent.data_length_1 - 8
 
   t_screen_data_branch_if:
+    params:
+      - id: param_foo_1
+        type: u4
     seq:
       - id: value_1
         type: u2
@@ -410,6 +575,9 @@ types:
         type: u2
       - id: value_2
         type: u2
+      - id: foo
+        type: u1
+        if: param_foo_1 == 1
       - id: commands
         type: t_screen_data_command
         repeat: eos

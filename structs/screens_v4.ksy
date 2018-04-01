@@ -1,7 +1,7 @@
 meta:
-  id: klan_screens_v3
+  id: klan_screens_v4
   file-extension: z3p
-  title: KLAN screens v3
+  title: KLAN screens v4
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
@@ -112,12 +112,15 @@ types:
             0x0026: t_screen_data_command_0026 # ???
             0x0027: t_screen_data_command_0027 # ???
             0x0028: t_screen_data_command_0028 # ???
+            0x0029: t_screen_data_command_0029 # ???
             #0x002a: t_screen_data_command_002a # ??? (no content)
             0x002b: t_screen_data_command_002b # ???
             0x002c: t_screen_data_command_002c # ???
             0x002d: t_screen_data_command_002d # ???
+            0x0033: t_screen_data_command_0033 # ???
             0x0035: t_screen_data_command_0035 # ???
             0x0036: t_screen_data_command_0036 # ???
+            0x0037: t_screen_data_command_0037 # ???
             0x0038: t_screen_data_command_0038 # ???
             0x0063: t_screen_data_command_0063 # if
 
@@ -373,6 +376,8 @@ types:
       - id: foo_3
         type: u2
       - id: foo_4
+        type: u2
+      - id: foo_5
         type: u1
 
   # ???
@@ -460,6 +465,12 @@ types:
         type: u1
 
   # ???
+  t_screen_data_command_0029:
+    seq:
+      - id: foo
+        type: u2
+
+  # ???
   t_screen_data_command_002b:
     seq:
       - id: foo_1
@@ -496,6 +507,20 @@ types:
         type: u1
 
   # ???
+  t_screen_data_command_0033:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+      - id: foo_4
+        type: u2
+      - id: foo_5
+        type: u1
+
+  # ???
   t_screen_data_command_0035:
     seq:
       - id: foo_1
@@ -524,6 +549,18 @@ types:
         type: u2
       - id: foo_3
         type: u1
+
+  # ???
+  t_screen_data_command_0037:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+      - id: foo_4
+        type: u2
 
   # ???
   t_screen_data_command_0038:

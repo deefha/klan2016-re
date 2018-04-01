@@ -1,0 +1,285 @@
+typedef struct {
+} mBlank;
+
+
+
+// oblasti a promenne
+typedef struct {
+    USHORT type <format=hex, bgcolor=cBlue, fgcolor=cWhite>;
+
+    switch (type) {
+
+        // doit
+        case 0x0001:
+            USHORT id;
+            break;
+
+        // text
+        case 0x0004:
+            USHORT topleft_x;
+            USHORT topleft_y;
+            USHORT width;
+            USHORT height;
+            USHORT slider_topleft_x;
+            USHORT slider_topleft_y;
+            USHORT slider_height;
+            UBYTE textfile_length;
+            CHAR textfile[textfile_length];
+            UBYTE foo;
+            break;
+
+        // video
+        case 0x0005:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            USHORT foo_5;
+            UBYTE foo_6;
+            break;
+
+        // obrazky
+        case 0x0006:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE foo_5;
+            break;
+
+        // zvuk
+        case 0x0007:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE foo_5;
+            break;
+
+        // button
+        case 0x0009:
+            USHORT id;
+            USHORT image;
+            USHORT foo_1 <format=hex, bgcolor=cLtRed>;
+            USHORT topleft_x;
+            USHORT topleft_y;
+            USHORT scancode;
+            USHORT hover_topleft_x;
+            USHORT hover_topleft_y;
+            USHORT hover_bottomright_x;
+            USHORT hover_bottomright_y;
+            USHORT foo_2;
+            UBYTE foo_3 <format=hex, bgcolor=cLtRed>;
+            break;
+
+        // area
+        case 0x000a:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            USHORT foo_5;
+            UBYTE foo_6;
+            break;
+
+        // event
+        case 0x000b:
+            USHORT id;
+            break;
+
+        // gotopage
+        case 0x000c:
+            USHORT id;
+            UBYTE foo;
+            break;
+
+        // svar
+        case 0x000d:
+            USHORT variable;
+            UBYTE value_length;
+            CHAR value[value_length];
+            break;
+
+        // ivar / mov
+        case 0x000e:
+            USHORT variable;
+            USHORT value;
+            break;
+
+        // screen
+        case 0x000f:
+            USHORT id;
+            break;
+
+        // woknoshit
+        case 0x0010:
+            break;
+
+        // keybutt
+        case 0x0011:
+            USHORT topleft_x;
+            USHORT topleft_y;
+            USHORT image;
+            USHORT foo_1 <format=hex, bgcolor=cLtRed>;
+            USHORT scancode;
+            break;
+
+        // getchar
+        case 0x0012:
+            USHORT id;
+            break;
+
+        // pic
+        case 0x0013:
+            USHORT foo_1;
+            USHORT foo_2;
+            break;
+
+        // demo
+        case 0x0014:
+            UBYTE textfile_length;
+            CHAR textfile[textfile_length];
+            UBYTE foo;
+            break;
+
+        // reklama
+        case 0x0015:
+            USHORT topleft_x;
+            USHORT topleft_y;
+            USHORT bottomright_x;
+            USHORT bottomright_y;
+            USHORT image;
+            USHORT id;
+            break;
+
+        // keyevent
+        case 0x0016:
+            USHORT foo_1;
+            USHORT foo_2;
+            UBYTE foo_3;
+            break;
+
+        // snap
+        case 0x0017:
+            UBYTE foo;
+            break;
+
+        // playwav
+        case 0x0018:
+            USHORT foo_1;
+            UBYTE foo_2;
+            break;
+
+        // image
+        case 0x0020:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            UBYTE foo_4;
+            break;
+
+        // ???
+        case 0x0022:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE foo_5;
+            break;
+
+        // curhelp
+        case 0x0023:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            UBYTE text_length;
+            CHAR text[text_length];
+            UBYTE foo_5;
+            break;
+
+        // ???
+        case 0x0024:
+            USHORT foo_1;
+            USHORT foo_2;
+            USHORT foo_3;
+            USHORT foo_4;
+            USHORT foo_5;
+            break;
+
+        // if TODO
+        case 0x0063:
+            USHORT datalength <bgcolor=cDkAqua>;
+            UBYTE data[datalength - 2];
+            break;
+
+    }
+} mScreenArea <bgcolor=cAqua>;
+
+
+
+// eventy
+typedef struct {
+    USHORT binding <format=hex, bgcolor=cBlue, fgcolor=cWhite>;
+
+    if (binding != 0xffff) {
+        USHORT datalength <bgcolor=cDkAqua>;
+        UBYTE data[datalength - 4];
+    }
+} mScreenEvent <bgcolor=cAqua>;
+
+
+
+typedef struct {
+    local UINT thisOffset = offsetIndex;
+    local int counter = 0;
+
+    USHORT type <format=hex>;
+
+    if (type == 0x0000) {
+        UBYTE foo <format=hex>;
+    }
+    else {
+        USHORT foo <format=hex>;
+    }
+
+    do {
+        counter++;
+        mScreenArea area;
+    } while (area[counter - 1].type != 0xffff);
+
+    counter = 0;
+
+    do {
+        counter++;
+        mScreenEvent event;
+    } while (event[counter - 1].binding != 0xffff);
+} mScreen <bgcolor=cGreen, comment=GetScreenType>;
+
+
+
+string GetScreenType(mScreen &screen) {
+    string s;
+    SPrintf(s, "0x%04x", (int)screen.type);
+    return s;
+}
+
+
+
+UINT foo_1 <format=hex, bgcolor=cLtRed>;
+UINT screenOffsets[1023] <format=hex, bgcolor=cLtPurple>;
+mBlank screen;
+
+local UINT offsetIndex;
+local UINT offset;
+
+for (offsetIndex = 0; offsetIndex < 1023; offsetIndex++) {
+    offset = screenOffsets[offsetIndex];
+    if (offset < 0xFFFFFFFF) {
+        FSeek(offset);
+        mScreen screen;
+    }
+    else {
+        mBlank screen;
+    }
+}

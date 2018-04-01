@@ -25,14 +25,14 @@ class ScreensDecompiler(CommonDecompiler):
 		data_command = ObjDict()
 		data_command.type = command.type
 
+		command_type_hex = "{0:#0{1}x}".format(command.type, 6)
+		if hasattr(self.counts, command_type_hex):
+			self.counts[command_type_hex] += 1
+		else:
+			self.counts[command_type_hex] = 1
+
 		if hasattr(command, "content"):
 			data_command.content = ObjDict()
-
-			command_type_hex = "{0:#0{1}x}".format(command.type, 6)
-			if hasattr(self.counts, command_type_hex):
-				self.counts[command_type_hex] += 1
-			else:
-				self.counts[command_type_hex] = 1
 
 			# doit
 			if command.type == 0x0001:
@@ -48,6 +48,8 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.slider_topleft_y = command.content.slider_topleft_y
 				data_command.content.textfile_length = command.content.textfile_length
 				data_command.content.textfile = command.content.textfile
+				if self.source.version >= 3:
+					data_command.content.foo = command.content.foo
 
 			# video
 			elif command.type == 0x0005:
@@ -87,6 +89,8 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.hover_bottomright_x = command.content.hover_bottomright_x
 				data_command.content.hover_bottomright_y = command.content.hover_bottomright_y
 				data_command.content.foo_2 = command.content.foo_2
+				if self.source.version >= 3:
+					data_command.content.foo_3 = command.content.foo_3
 
 			# area
 			elif command.type == 0x000a:
@@ -104,12 +108,15 @@ class ScreensDecompiler(CommonDecompiler):
 			# gotopage
 			elif command.type == 0x000c:
 				data_command.content.id = command.content.id
+				if self.source.version >= 3:
+					data_command.content.foo = command.content.foo
 
 			# svar
 			elif command.type == 0x000d:
 				data_command.content.variable = command.content.variable
 				data_command.content.value_length = command.content.value_length
-				data_command.content.value = command.content.value
+				#data_command.content.value = command.content.value
+				data_command.content.value = ""
 
 			# ivar / mov
 			elif command.type == 0x000e:
@@ -136,7 +143,7 @@ class ScreensDecompiler(CommonDecompiler):
 			elif command.type == 0x0013:
 				data_command.content.foo_1 = command.content.foo_1
 				data_command.content.foo_2 = command.content.foo_2
-				if self.source.version > 2:
+				if self.source.version <= 2:
 					data_command.content.foo_3 = command.content.foo_3
 
 			# demo
@@ -166,11 +173,11 @@ class ScreensDecompiler(CommonDecompiler):
 
 			# playwav
 			elif command.type == 0x0018:
-				if self.source.version < 3:
-					data_command.content.foo = command.content.foo
-				else:
+				if self.source.version >= 2:
 					data_command.content.foo_1 = command.content.foo_1
 					data_command.content.foo_2 = command.content.foo_2
+				else:
+					data_command.content.foo = command.content.foo
 
 			# image
 			elif command.type == 0x0020:
@@ -178,6 +185,22 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.foo_2 = command.content.foo_2
 				data_command.content.foo_3 = command.content.foo_3
 				data_command.content.foo_4 = command.content.foo_4
+				if self.source.version >= 4:
+					data_command.content.foo_5 = command.content.foo_5
+
+			# ???
+			elif command.type == 0x0021:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+
+			# ???
+			elif command.type == 0x0022:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+				data_command.content.foo_4 = command.content.foo_4
+				data_command.content.foo_5 = command.content.foo_5
 
 			# curhelp
 			elif command.type == 0x0023:
@@ -186,7 +209,96 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.foo_3 = command.content.foo_3
 				data_command.content.foo_4 = command.content.foo_4
 				data_command.content.text_length = command.content.text_length
-				data_command.content.text = command.content.text
+				#data_command.content.text = command.content.text
+				data_command.content.text = "" # TODO
+				data_command.content.foo_5 = command.content.foo_5
+
+			# ???
+			elif command.type == 0x0024:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+
+			# ???
+			elif command.type == 0x0025:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+
+			# ???
+			elif command.type == 0x0026:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+
+			# ???
+			elif command.type == 0x0027:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+
+			# ???
+			elif command.type == 0x0028:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+
+			# ???
+			elif command.type == 0x0029:
+				data_command.content.foo = command.content.foo
+
+			# ???
+			elif command.type == 0x002b:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+				data_command.content.foo_4 = command.content.foo_4
+				data_command.content.foo_5 = command.content.foo_5
+				data_command.content.foo_6 = command.content.foo_6
+				data_command.content.foo_7 = command.content.foo_7
+
+			# ???
+			elif command.type == 0x002c:
+				data_command.content.foo = command.content.foo
+				data_command.content.textfile_length = command.content.textfile_length
+				#data_command.content.textfile = command.content.textfile
+				data_command.content.textfile = "" # TODO
+
+			# ???
+			elif command.type == 0x002d:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+
+			# ???
+			elif command.type == 0x0033:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+				data_command.content.foo_4 = command.content.foo_4
+				data_command.content.foo_5 = command.content.foo_5
+
+			# ???
+			elif command.type == 0x0035:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+				data_command.content.foo_4 = command.content.foo_4
+				data_command.content.foo_5 = command.content.foo_5
+				data_command.content.foo_6 = command.content.foo_6
+				data_command.content.foo_7 = command.content.foo_7
+				data_command.content.foo_8 = command.content.foo_8
+
+			# ???
+			elif command.type == 0x0036:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+
+			# ???
+			elif command.type == 0x0037:
+				data_command.content.foo_1 = command.content.foo_1
+				data_command.content.foo_2 = command.content.foo_2
+				data_command.content.foo_3 = command.content.foo_3
+				data_command.content.foo_4 = command.content.foo_4
+
+			# ???
+			elif command.type == 0x0038:
 				data_command.content.foo = command.content.foo
 
 			# if
@@ -201,23 +313,29 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.branches.branch_if.value_1 = command.content.branches.branch_if.value_1
 				data_command.content.branches.branch_if.condition = command.content.branches.branch_if.condition
 				data_command.content.branches.branch_if.value_2 = command.content.branches.branch_if.value_2
+				if hasattr(command.content.branches.branch_if, "foo"):
+					data_command.content.branches.branch_if.foo = command.content.branches.branch_if.foo
 				data_command.content.branches.branch_if.commands = ObjDict()
 
-				for command_inner_index, command_inner in enumerate(command.content.branches.branch_if.commands):
-					data_command_inner = self._parse_command(command_inner)
-					data_command.content.branches.branch_if.commands[str(command_inner_index)] = data_command_inner
+				for self.command_inner_index, self.command_inner in enumerate(command.content.branches.branch_if.commands):
+					data_command_inner = self._parse_command(self.command_inner)
+					data_command.content.branches.branch_if.commands[str(self.command_inner_index)] = data_command_inner
 
 				if hasattr(command.content.branches, "branch_else"):
 					data_command.content.branches.branch_else = ObjDict()
 					data_command.content.branches.branch_else.commands = ObjDict()
 
-					for command_inner_index, command_inner in enumerate(command.content.branches.branch_else.commands):
-						data_command_inner = self._parse_command(command_inner)
-						data_command.content.branches.branch_else.commands[str(command_inner_index)] = data_command_inner
+					for self.command_inner_index, self.command_inner in enumerate(command.content.branches.branch_else.commands):
+						data_command_inner = self._parse_command(self.command_inner)
+						data_command.content.branches.branch_else.commands[str(self.command_inner_index)] = data_command_inner
 
 			else:
 				print "Unknown command type: %s" % (command.type)
 				sys.exit()
+
+		else:
+			if command.type != 0x0010 and command.type != 0x002a and command.type != 0xffff:
+				print "Command without content: %s (%s), screen %s, command %s" % (command.type, command_type_hex, self.screen_index, self.command_index)
 
 		return data_command
 
@@ -227,40 +345,41 @@ class ScreensDecompiler(CommonDecompiler):
 
 		self.meta.data.screens = ObjDict()
 
-		for screen_index, screen in enumerate(tqdm(self.library.data.screens, desc="data.screens", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
+		for self.screen_index, self.screen in enumerate(tqdm(self.library.data.screens, desc="data.screens", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			data_screen = ObjDict()
-			data_screen.param_offset = screen.param_offset
+			data_screen.param_offset = self.screen.param_offset
 			data_screen.content = ObjDict()
 
-			if screen.content:
-				data_screen.content.type = screen.content.type
-				data_screen.content.foo = screen.content.foo
+			if self.screen.content:
+				data_screen.content.type_1 = self.screen.content.type_1
+				data_screen.content.type_2 = self.screen.content.type_2
+				data_screen.content.foo = self.screen.content.foo
 
 				data_screen.content.data = ObjDict()
 				data_screen.content.data.commands = ObjDict()
 				data_screen.content.data.events = ObjDict()
 
-				for command_index, command in enumerate(screen.content.data.commands):
-					data_command = self._parse_command(command)
-					data_screen.content.data.commands[str(command_index)] = data_command
+				for self.command_index, self.command in enumerate(self.screen.content.data.commands):
+					data_command = self._parse_command(self.command)
+					data_screen.content.data.commands[str(self.command_index)] = data_command
 
-				for event_index, event in enumerate(screen.content.data.events):
+				for self.event_index, self.event in enumerate(self.screen.content.data.events):
 					data_event = ObjDict()
-					data_event.binding = event.binding
+					data_event.binding = self.event.binding
 
-					if hasattr(event, "content"):
+					if hasattr(self.event, "content"):
 						data_event.content = ObjDict()
-						data_event.content.data_length = event.content.data_length
+						data_event.content.data_length = self.event.content.data_length
 						data_event.content.data = ObjDict()
 						data_event.content.data.commands = ObjDict()
 
-						for command_index, command in enumerate(event.content.data.commands):
-							data_command = self._parse_command(command)
-							data_event.content.data.commands[str(command_index)] = data_command
+						for self.command_index, self.command in enumerate(self.event.content.data.commands):
+							data_command = self._parse_command(self.command)
+							data_event.content.data.commands[str(self.command_index)] = data_command
 
-					data_screen.content.data.events[str(event_index)] = data_event
+					data_screen.content.data.events[str(self.event_index)] = data_event
 
-			self.meta.data.screens[str(screen_index)] = data_screen
+			self.meta.data.screens[str(self.screen_index)] = data_screen
 
 		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
 			print "Type %s: %s" % (count_index, count)

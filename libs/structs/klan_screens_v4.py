@@ -7,7 +7,7 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
-class KlanScreensV1(KaitaiStruct):
+class KlanScreensV4(KaitaiStruct):
     """
     .. seealso::
        Source - https://wiki.klan2016.cz
@@ -46,7 +46,8 @@ class KlanScreensV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.foo = self._io.read_u2le()
+            self.foo_1 = self._io.read_u2le()
+            self.foo_2 = self._io.read_u1()
 
 
     class THeader(KaitaiStruct):
@@ -110,8 +111,8 @@ class KlanScreensV1(KaitaiStruct):
             if hasattr(self, '_m_screens'):
                 return self._m_screens if hasattr(self, '_m_screens') else None
 
-            self._m_screens = [None] * (255)
-            for i in range(255):
+            self._m_screens = [None] * (1023)
+            for i in range(1023):
                 self._m_screens[i] = self._root.TScreen(self._parent.fat.offsets[i], self._io, self, self._root)
 
             return self._m_screens if hasattr(self, '_m_screens') else None
@@ -268,7 +269,8 @@ class KlanScreensV1(KaitaiStruct):
             self.foo_1 = self._io.read_u2le()
             self.foo_2 = self._io.read_u2le()
             self.foo_3 = self._io.read_u2le()
-            self.foo_4 = self._io.read_u1()
+            self.foo_4 = self._io.read_u2le()
+            self.foo_5 = self._io.read_u1()
 
 
     class TScreenDataCommand0026(KaitaiStruct):
@@ -346,6 +348,7 @@ class KlanScreensV1(KaitaiStruct):
             self.slider_height = self._io.read_u2le()
             self.textfile_length = self._io.read_u1()
             self.textfile = self._io.read_bytes(self.textfile_length)
+            self.foo = self._io.read_u1()
 
 
     class TScreenDataCommand0015(KaitaiStruct):
@@ -384,6 +387,18 @@ class KlanScreensV1(KaitaiStruct):
 
         def _read(self):
             self.id = self._io.read_u2le()
+            self.foo = self._io.read_u1()
+
+
+    class TScreenDataCommand0029(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_u2le()
 
 
     class TScreenDataCommand0063(KaitaiStruct):
@@ -498,6 +513,21 @@ class KlanScreensV1(KaitaiStruct):
 
 
 
+    class TScreenDataCommand0033(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo_1 = self._io.read_u2le()
+            self.foo_2 = self._io.read_u2le()
+            self.foo_3 = self._io.read_u2le()
+            self.foo_4 = self._io.read_u2le()
+            self.foo_5 = self._io.read_u1()
+
+
     class TScreenDataCommand0005(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -512,6 +542,20 @@ class KlanScreensV1(KaitaiStruct):
             self.foo_4 = self._io.read_u2le()
             self.foo_5 = self._io.read_u2le()
             self.foo_6 = self._io.read_u1()
+
+
+    class TScreenDataCommand0037(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo_1 = self._io.read_u2le()
+            self.foo_2 = self._io.read_u2le()
+            self.foo_3 = self._io.read_u2le()
+            self.foo_4 = self._io.read_u2le()
 
 
     class TScreenDataCommand0063ModeIfOnly(KaitaiStruct):
@@ -628,6 +672,8 @@ class KlanScreensV1(KaitaiStruct):
                 self.content = self._root.TScreenDataCommand0007(self._io, self, self._root)
             elif _on == 1:
                 self.content = self._root.TScreenDataCommand0001(self._io, self, self._root)
+            elif _on == 55:
+                self.content = self._root.TScreenDataCommand0037(self._io, self, self._root)
             elif _on == 13:
                 self.content = self._root.TScreenDataCommand000d(self._io, self, self._root)
             elif _on == 56:
@@ -646,6 +692,8 @@ class KlanScreensV1(KaitaiStruct):
                 self.content = self._root.TScreenDataCommand0063(self._io, self, self._root)
             elif _on == 19:
                 self.content = self._root.TScreenDataCommand0013(self._io, self, self._root)
+            elif _on == 51:
+                self.content = self._root.TScreenDataCommand0033(self._io, self, self._root)
             elif _on == 23:
                 self.content = self._root.TScreenDataCommand0017(self._io, self, self._root)
             elif _on == 53:
@@ -664,6 +712,8 @@ class KlanScreensV1(KaitaiStruct):
                 self.content = self._root.TScreenDataCommand0015(self._io, self, self._root)
             elif _on == 37:
                 self.content = self._root.TScreenDataCommand0025(self._io, self, self._root)
+            elif _on == 41:
+                self.content = self._root.TScreenDataCommand0029(self._io, self, self._root)
             elif _on == 36:
                 self.content = self._root.TScreenDataCommand0024(self._io, self, self._root)
             elif _on == 18:
@@ -704,7 +754,6 @@ class KlanScreensV1(KaitaiStruct):
         def _read(self):
             self.foo_1 = self._io.read_u2le()
             self.foo_2 = self._io.read_u2le()
-            self.foo_3 = self._io.read_u2le()
 
 
     class TScreenDataCommand0028(KaitaiStruct):
@@ -753,8 +802,8 @@ class KlanScreensV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.offsets = [None] * (255)
-            for i in range(255):
+            self.offsets = [None] * (1023)
+            for i in range(1023):
                 self.offsets[i] = self._io.read_u4le()
 
 
@@ -840,7 +889,8 @@ class KlanScreensV1(KaitaiStruct):
             self.hover_topleft_y = self._io.read_u2le()
             self.hover_bottomright_x = self._io.read_u2le()
             self.hover_bottomright_y = self._io.read_u2le()
-            self.foo_2 = self._io.read_u1()
+            self.foo_2 = self._io.read_u2le()
+            self.foo_3 = self._io.read_u1()
 
 
 

@@ -21,6 +21,8 @@ from structs.klan_music_v2 import KlanMusicV2
 from structs.klan_screens_v1 import KlanScreensV1
 from structs.klan_screens_v2 import KlanScreensV2
 from structs.klan_screens_v3 import KlanScreensV3
+from structs.klan_screens_v4 import KlanScreensV4
+#from structs.klan_screens_v5 import KlanScreensV5
 from structs.klan_texts_v1 import KlanTextsV1
 from structs.klan_texts_v2 import KlanTextsV2
 from structs.klan_texts_v3 import KlanTextsV3
@@ -118,6 +120,10 @@ class CommonDecompiler(object):
 					self.library = KlanScreensV2.from_io(self.iso_content)
 				elif self.source.version == 3:
 					self.library = KlanScreensV3.from_io(self.iso_content)
+				elif self.source.version == 4:
+					self.library = KlanScreensV4.from_io(self.iso_content)
+				#elif self.source.version == 5:
+					#self.library = KlanScreensV5.from_io(self.iso_content)
 
 			elif self.source.library == "texts":
 				if self.source.version == 1:

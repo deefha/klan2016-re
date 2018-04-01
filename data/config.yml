@@ -88,7 +88,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 1
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -140,7 +140,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 1
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -195,7 +195,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 1
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -250,7 +250,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 1
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -305,7 +305,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 1
       screensaver:
       texts:
         - path: TEXTS.LIB
@@ -363,7 +363,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 2
+          version: 1
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -424,7 +424,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -485,7 +485,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -546,7 +546,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -607,7 +607,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 2
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -790,7 +790,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -851,7 +851,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -912,7 +912,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -973,7 +973,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1034,7 +1034,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1095,7 +1095,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1156,7 +1156,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1217,7 +1217,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1278,7 +1278,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1339,7 +1339,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1400,7 +1400,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1461,7 +1461,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1522,7 +1522,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1583,7 +1583,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1644,7 +1644,7 @@ issues:
       screens:
         - path: VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -1715,7 +1715,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1783,7 +1783,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1851,7 +1851,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1916,7 +1916,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -1981,7 +1981,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2046,7 +2046,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2111,7 +2111,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2176,7 +2176,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2241,7 +2241,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2306,7 +2306,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2371,7 +2371,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2436,7 +2436,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2501,7 +2501,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
@@ -2566,7 +2566,7 @@ issues:
       screens:
         - path: KLAN/VOID_SCR.Z3P
           library: screens
-          version: 3
+          version: 4
       screensaver:
       texts:
         - path: KLAN/TEXTS.LIB
