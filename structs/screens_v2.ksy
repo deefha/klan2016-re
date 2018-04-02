@@ -112,14 +112,19 @@ types:
             0x0026: t_screen_data_command_0026 # ???
             0x0027: t_screen_data_command_0027 # ???
             0x0028: t_screen_data_command_0028 # ???
+            0x0029: t_screen_data_command_0029 # ???
             #0x002a: t_screen_data_command_002a # ??? (no content)
             0x002b: t_screen_data_command_002b # ???
             0x002c: t_screen_data_command_002c # ???
             0x002d: t_screen_data_command_002d # ???
+            0x0033: t_screen_data_command_0033 # link?
             0x0035: t_screen_data_command_0035 # ???
             0x0036: t_screen_data_command_0036 # ???
+            0x0037: t_screen_data_command_0037 # ???
             0x0038: t_screen_data_command_0038 # ???
+            #0x003a: t_screen_data_command_003a # ??? (no content)
             0x0063: t_screen_data_command_0063 # if
+            0x4f4e: t_screen_data_command_4f4e # nokeys
 
   t_screen_data_event:
     seq:
@@ -456,6 +461,12 @@ types:
         type: u1
 
   # ???
+  t_screen_data_command_0029:
+    seq:
+      - id: foo
+        type: u2
+
+  # ???
   t_screen_data_command_002b:
     seq:
       - id: foo_1
@@ -491,6 +502,20 @@ types:
       - id: foo_2
         type: u1
 
+  # link?
+  t_screen_data_command_0033:
+    seq:
+      - id: text_1_length
+        type: u1
+      - id: text_1
+        size: text_1_length
+      - id: text_2_length
+        type: u1
+      - id: text_2
+        size: text_2_length
+      - id: foo
+        type: u1
+
   # ???
   t_screen_data_command_0035:
     seq:
@@ -520,6 +545,18 @@ types:
         type: u2
       - id: foo_3
         type: u1
+
+  # ???
+  t_screen_data_command_0037:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+      - id: foo_3
+        type: u2
+      - id: foo_4
+        type: u2
 
   # ???
   t_screen_data_command_0038:
@@ -588,6 +625,14 @@ types:
         type: t_screen_data_command
         repeat: eos
 
+  # nokeys
+  t_screen_data_command_4f4e:
+    seq:
+      - id: foo_1
+        type: u2
+      - id: foo_2
+        type: u2
+        
   t_screen_data_event_content:
     seq:
       - id: data_length
