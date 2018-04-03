@@ -390,10 +390,10 @@ class ScreensDecompiler(CommonDecompiler):
 
 					data_screen.content.data.events[str(self.event_index)] = data_event
 
-			with open(self.PATTERN_FILE_SCREEN % (self.PATH_DATA, self.screen_index), "w") as f:
+			with open(self.PATTERN_FILE_SCREEN % (self.PATH_DATA, self.screen_index + 1), "w") as f:
 				f.write(data_screen.dumps())
 
-			self.meta.data.screens[str(self.screen_index)] = self.PATTERN_DECOMPILED_SCREEN % (self.issue.number, self.source.library, self.source_index, self.screen_index)
+			self.meta.data.screens[str(self.screen_index + 1)] = self.PATTERN_DECOMPILED_SCREEN % (self.issue.number, self.source.library, self.source_index, self.screen_index + 1)
 
 		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
 			print "Type %s: %s" % (count_index, count)
@@ -412,4 +412,4 @@ class ScreensDecompiler(CommonDecompiler):
 		self.meta.fat.offsets = ObjDict()
 
 		for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
-			self.meta.fat.offsets[str(offset_index)] = offset
+			self.meta.fat.offsets[str(offset_index + 1)] = offset
