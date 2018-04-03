@@ -17,6 +17,10 @@ class ScreensDecompiler(CommonDecompiler):
 	def __init__(self, issue, source, source_index):
 		super(ScreensDecompiler, self).__init__(issue, source, source_index)
 
+		self.PATTERN_FILE_SCREEN = "%s%04d.json"
+
+		self.PATTERN_DECOMPILED_SCREEN = "decompiled://%s/%s/%s/%04d.json"
+
 		self.counts = ObjDict()
 
 
@@ -346,6 +350,7 @@ class ScreensDecompiler(CommonDecompiler):
 		return data_command
 
 
+
 	def fill_meta_data(self):
 		super(ScreensDecompiler, self).fill_meta_data()
 
@@ -385,7 +390,10 @@ class ScreensDecompiler(CommonDecompiler):
 
 					data_screen.content.data.events[str(self.event_index)] = data_event
 
-			self.meta.data.screens[str(self.screen_index)] = data_screen
+			with open(self.PATTERN_FILE_SCREEN % (self.PATH_DATA, self.screen_index), "w") as f:
+				f.write(data_screen.dumps())
+
+			self.meta.data.screens[str(self.screen_index)] = self.PATTERN_DECOMPILED_SCREEN % (self.issue.number, self.source.library, self.source_index, self.screen_index)
 
 		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
 			print "Type %s: %s" % (count_index, count)
