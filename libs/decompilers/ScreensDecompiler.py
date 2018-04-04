@@ -119,8 +119,7 @@ class ScreensDecompiler(CommonDecompiler):
 			elif command.type == 0x000d:
 				data_command.content.variable = command.content.variable
 				data_command.content.value_length = command.content.value_length
-				#data_command.content.value = command.content.value
-				data_command.content.value = ""
+				data_command.content.value = unicode(command.content.value.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
 
 			# ivar / mov
 			elif command.type == 0x000e:
@@ -213,8 +212,7 @@ class ScreensDecompiler(CommonDecompiler):
 				data_command.content.foo_3 = command.content.foo_3
 				data_command.content.foo_4 = command.content.foo_4
 				data_command.content.text_length = command.content.text_length
-				#data_command.content.text = command.content.text
-				data_command.content.text = "" # TODO
+				data_command.content.text = unicode(command.content.text.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
 				data_command.content.foo_5 = command.content.foo_5
 
 			# ???
@@ -261,8 +259,7 @@ class ScreensDecompiler(CommonDecompiler):
 			elif command.type == 0x002c:
 				data_command.content.foo = command.content.foo
 				data_command.content.textfile_length = command.content.textfile_length
-				#data_command.content.textfile = command.content.textfile
-				data_command.content.textfile = "" # TODO
+				data_command.content.textfile = unicode(command.content.textfile.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
 
 			# ???
 			elif command.type == 0x002d:
@@ -272,11 +269,9 @@ class ScreensDecompiler(CommonDecompiler):
 			# link?
 			elif command.type == 0x0033:
 				data_command.content.text_1_length = command.content.text_1_length
-				#data_command.content.text_1 = command.content.text_1
-				data_command.content.text_1 = "" # TODO
+				data_command.content.text_1 = unicode(command.content.text_1.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
 				data_command.content.text_2_length = command.content.text_2_length
-				#data_command.content.text_2 = command.content.text_2
-				data_command.content.text_2 = "" # TODO
+				data_command.content.text_2 = unicode(command.content.text_2.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
 				data_command.content.foo = command.content.foo
 
 			# ???
@@ -390,10 +385,13 @@ class ScreensDecompiler(CommonDecompiler):
 
 					data_screen.content.data.events[str(self.event_index)] = data_event
 
-			with open(self.PATTERN_FILE_SCREEN % (self.PATH_DATA, self.screen_index + 1), "w") as f:
-				f.write(data_screen.dumps())
+				with open(self.PATTERN_FILE_SCREEN % (self.PATH_DATA, self.screen_index + 1), "w") as f:
+					f.write(data_screen.dumps())
 
-			self.meta.data.screens[str(self.screen_index + 1)] = self.PATTERN_DECOMPILED_SCREEN % (self.issue.number, self.source.library, self.source_index, self.screen_index + 1)
+				self.meta.data.screens[str(self.screen_index + 1)] = self.PATTERN_DECOMPILED_SCREEN % (self.issue.number, self.source.library, self.source_index, self.screen_index + 1)
+
+			else:
+				self.meta.data.screens[str(self.screen_index + 1)] = None
 
 		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
 			print "Type %s: %s" % (count_index, count)

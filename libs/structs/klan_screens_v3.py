@@ -118,6 +118,18 @@ class KlanScreensV3(KaitaiStruct):
             return self._m_screens if hasattr(self, '_m_screens') else None
 
 
+    class TScreenDataCommand4f4e(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo_1 = self._io.read_u2le()
+            self.foo_2 = self._io.read_u2le()
+
+
     class TScreenDataCommand000f(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -389,6 +401,17 @@ class KlanScreensV3(KaitaiStruct):
             self.foo = self._io.read_u1()
 
 
+    class TScreenDataCommand0029(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_u2le()
+
+
     class TScreenDataCommand0063(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -501,6 +524,21 @@ class KlanScreensV3(KaitaiStruct):
 
 
 
+    class TScreenDataCommand0033(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.text_1_length = self._io.read_u1()
+            self.text_1 = self._io.read_bytes(self.text_1_length)
+            self.text_2_length = self._io.read_u1()
+            self.text_2 = self._io.read_bytes(self.text_2_length)
+            self.foo = self._io.read_u1()
+
+
     class TScreenDataCommand0005(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -515,6 +553,20 @@ class KlanScreensV3(KaitaiStruct):
             self.foo_4 = self._io.read_u2le()
             self.foo_5 = self._io.read_u2le()
             self.foo_6 = self._io.read_u1()
+
+
+    class TScreenDataCommand0037(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo_1 = self._io.read_u2le()
+            self.foo_2 = self._io.read_u2le()
+            self.foo_3 = self._io.read_u2le()
+            self.foo_4 = self._io.read_u2le()
 
 
     class TScreenDataCommand0063ModeIfOnly(KaitaiStruct):
@@ -631,6 +683,8 @@ class KlanScreensV3(KaitaiStruct):
                 self.content = self._root.TScreenDataCommand0007(self._io, self, self._root)
             elif _on == 1:
                 self.content = self._root.TScreenDataCommand0001(self._io, self, self._root)
+            elif _on == 55:
+                self.content = self._root.TScreenDataCommand0037(self._io, self, self._root)
             elif _on == 13:
                 self.content = self._root.TScreenDataCommand000d(self._io, self, self._root)
             elif _on == 56:
@@ -649,6 +703,8 @@ class KlanScreensV3(KaitaiStruct):
                 self.content = self._root.TScreenDataCommand0063(self._io, self, self._root)
             elif _on == 19:
                 self.content = self._root.TScreenDataCommand0013(self._io, self, self._root)
+            elif _on == 51:
+                self.content = self._root.TScreenDataCommand0033(self._io, self, self._root)
             elif _on == 23:
                 self.content = self._root.TScreenDataCommand0017(self._io, self, self._root)
             elif _on == 53:
@@ -667,10 +723,14 @@ class KlanScreensV3(KaitaiStruct):
                 self.content = self._root.TScreenDataCommand0015(self._io, self, self._root)
             elif _on == 37:
                 self.content = self._root.TScreenDataCommand0025(self._io, self, self._root)
+            elif _on == 41:
+                self.content = self._root.TScreenDataCommand0029(self._io, self, self._root)
             elif _on == 36:
                 self.content = self._root.TScreenDataCommand0024(self._io, self, self._root)
             elif _on == 18:
                 self.content = self._root.TScreenDataCommand0012(self._io, self, self._root)
+            elif _on == 20302:
+                self.content = self._root.TScreenDataCommand4f4e(self._io, self, self._root)
             elif _on == 34:
                 self.content = self._root.TScreenDataCommand0022(self._io, self, self._root)
             elif _on == 54:
