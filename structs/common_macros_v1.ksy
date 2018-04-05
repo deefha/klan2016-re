@@ -536,13 +536,13 @@ types:
       - id: foo
         type: u1
         if: param_foo_1 == 1
-      - id: commands
+      - id: macros
         type: t_macros_v1
         repeat: eos
 
   t_macros_v1_macro_0063_branch_else:
     seq:
-      - id: commands
+      - id: macros
         type: t_macros_v1
         repeat: eos
 

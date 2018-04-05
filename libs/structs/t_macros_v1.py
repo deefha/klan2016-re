@@ -414,10 +414,10 @@ class TMacrosV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.commands = []
+            self.macros = []
             i = 0
             while not self._io.is_eof():
-                self.commands.append(TMacrosV1(self._io))
+                self.macros.append(TMacrosV1(self._io))
                 i += 1
 
 
@@ -647,10 +647,10 @@ class TMacrosV1(KaitaiStruct):
             if self.param_foo_1 == 1:
                 self.foo = self._io.read_u1()
 
-            self.commands = []
+            self.macros = []
             i = 0
             while not self._io.is_eof():
-                self.commands.append(TMacrosV1(self._io))
+                self.macros.append(TMacrosV1(self._io))
                 i += 1
 
 
