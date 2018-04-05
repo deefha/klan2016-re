@@ -5,6 +5,8 @@ meta:
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
+  imports:
+    - common_macros_v1
 
 doc-ref: https://wiki.klan2016.cz/knihovny/texty.html
 
@@ -98,77 +100,11 @@ types:
 
   t_linktable_content:
     seq:
-      - id: pieces
-        type: t_linktable_content_piece
-        repeat: eos
-
-  t_linktable_content_piece:
-    seq:
-      - id: mode
-        type: u2
-      - id: data
-        type:
-          switch-on: mode
-          cases:
-            4: t_linktable_content_piece_4
-            6: t_linktable_content_piece_6
-            12: t_linktable_content_piece_12
-            13: t_linktable_content_piece_13
-            14: t_linktable_content_piece_14
-            65535: t_linktable_content_piece_65535
-
-  t_linktable_content_piece_4:
-    seq:
-      - id: topleft_x
-        type: u2
-      - id: topleft_y
-        type: u2
-      - id: width
-        type: u2
-      - id: height
-        type: u2
-      - id: slider_topleft_x
-        type: u2
-      - id: slider_topleft_y
-        type: u2
-      - id: slider_height
-        type: u2
-      - id: textfile_length
-        type: u1
-      - id: textfile
-        size: textfile_length
-
-  t_linktable_content_piece_6:
-    seq:
-      - id: foo
-        size: 71
-
-  t_linktable_content_piece_12:
-    seq:
-      - id: id
-        type: u1
-      - id: foo
-        type: u1
-
-  t_linktable_content_piece_13:
-    seq:
-      - id: id
-        type: u2
-      - id: textfile_length
-        type: u1
-      - id: textfile
-        size: textfile_length
-
-  t_linktable_content_piece_14:
-    seq:
-      - id: id
-        type: u2
-      - id: value
-        type: u2
-
-  t_linktable_content_piece_65535:
-    seq:
-      - id: foo
+      - id: macros
+        type: t_macros_v1
+        repeat: until
+        repeat-until: _.type == 0xffff
+      - id: events
         type: u2
 
   t_linetable_meta:

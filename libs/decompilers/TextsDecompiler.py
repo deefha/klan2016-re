@@ -7,7 +7,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-import humanize, psutil, re, string, struct
+import collections, humanize, psutil, re, string, struct
 from CommonDecompiler import CommonDecompiler
 from memory_profiler import profile
 from mem_top import mem_top
@@ -35,6 +35,8 @@ class TextsDecompiler(CommonDecompiler):
 		self.PATTERN_DECOMPILED_TITLE = "decompiled://%s/%s/%s/%03d/%d/title/content.bin"
 		self.PATTERN_DECOMPILED_DATA = "decompiled://%s/%s/%s/%03d/%d/content.bin"
 		self.PATTERN_DECOMPILED_TEXT = "decompiled://%s/%s/%s/%03d.json"
+
+		self.counts = ObjDict()
 
 
 
@@ -80,79 +82,14 @@ class TextsDecompiler(CommonDecompiler):
 				data_linktable.param_offset = linktable.param_offset
 				data_linktable.param_length = linktable.param_length
 				data_linktable.content = ObjDict()
-				data_linktable.content.pieces = ObjDict()
+				data_linktable.content.macros = ObjDict()
 
-				for linktable_content_piece_index, linktable_content_piece in enumerate(linktable.content.pieces):
-					data_linktable_content_piece = ObjDict()
-					data_linktable_content_piece.mode = linktable_content_piece.mode
-					data_linktable_content_piece.data = ObjDict()
+				if self.source.version <= 4:
+					data_linktable.content.events = linktable.content.events
 
-					#print "Text %s, variant %s, linktable %s, piece %s" % (self.text_index, self.variant_index, linktable_index, linktable_content_piece_index)
-
-					if data_linktable_content_piece.mode == 4:
-						data_linktable_content_piece.data.topleft_x = linktable_content_piece.data.topleft_x
-						data_linktable_content_piece.data.topleft_y = linktable_content_piece.data.topleft_y
-						data_linktable_content_piece.data.width = linktable_content_piece.data.width
-						data_linktable_content_piece.data.height = linktable_content_piece.data.height
-						data_linktable_content_piece.data.slider_topleft_x = linktable_content_piece.data.slider_topleft_x
-						data_linktable_content_piece.data.slider_topleft_y = linktable_content_piece.data.slider_topleft_y
-						data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
-						data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
-
-					elif data_linktable_content_piece.mode == 6:
-						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
-						data_linktable_content_piece.data.foo = ""
-
-					elif data_linktable_content_piece.mode == 9:
-						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
-						data_linktable_content_piece.data.foo = ""
-
-					elif data_linktable_content_piece.mode == 11:
-						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
-
-					elif data_linktable_content_piece.mode == 12:
-						data_linktable_content_piece.data.id = linktable_content_piece.data.id
-						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
-
-					elif data_linktable_content_piece.mode == 13:
-						data_linktable_content_piece.data.id = linktable_content_piece.data.id
-						data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
-						data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
-
-					elif data_linktable_content_piece.mode == 14:
-						data_linktable_content_piece.data.id = linktable_content_piece.data.id
-						data_linktable_content_piece.data.value = linktable_content_piece.data.value
-
-					elif data_linktable_content_piece.mode == 20:
-						data_linktable_content_piece.data.textfile_length = linktable_content_piece.data.textfile_length
-						data_linktable_content_piece.data.textfile = linktable_content_piece.data.textfile
-						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
-
-					elif data_linktable_content_piece.mode == 99:
-						data_linktable_content_piece.data.length = linktable_content_piece.data.length
-						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
-						data_linktable_content_piece.data.foo = ""
-
-					elif data_linktable_content_piece.mode == 240:
-						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
-						data_linktable_content_piece.data.foo = ""
-
-					elif data_linktable_content_piece.mode == 16717:
-						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
-						data_linktable_content_piece.data.foo = ""
-
-					elif data_linktable_content_piece.mode == 49407:
-						#data_linktable_content_piece.data.foo = linktable_content_piece.data.foo # TODO
-						data_linktable_content_piece.data.foo = ""
-
-					elif data_linktable_content_piece.mode == 65535:
-						data_linktable_content_piece.data.foo = linktable_content_piece.data.foo
-
-					else:
-						print "Unknown mode: %s (text %s, variant %s)" % (data_linktable_content_piece.mode, self.text_index, self.variant_index)
-						sys.exit()
-
-					data_linktable.content.pieces[str(linktable_content_piece_index)] = data_linktable_content_piece
+				for linktable_content_macro_index, linktable_content_macro in enumerate(linktable.content.macros):
+					data_linktable_content_macro = self._parse_macro(linktable_content_macro)
+					data_linktable.content.macros[str(linktable_content_macro_index)] = data_linktable_content_macro
 
 				self.data_variant.content.linktable[str(linktable_index)] = data_linktable
 
@@ -353,15 +290,16 @@ class TextsDecompiler(CommonDecompiler):
 
 						data_text.variants[str(variant_index)] = self.data_variant
 
-				with open(self.PATTERN_FILE_TEXT % (self.PATH_DATA, text_index), "w") as f:
-					f.write(data_text.dumps())
+				if data_text.variants:
+					with open(self.PATTERN_FILE_TEXT % (self.PATH_DATA, text_index), "w") as f:
+						f.write(data_text.dumps())
 
-				self.meta.data.texts[str(text_index)] = self.PATTERN_DECOMPILED_TEXT % (self.issue.number, self.source.library, self.source_index, text_index)
+					self.meta.data.texts[str(text_index)] = self.PATTERN_DECOMPILED_TEXT % (self.issue.number, self.source.library, self.source_index, text_index)
+				else:
+					self.meta.data.texts[str(text_index)] = None
 
-				#process = psutil.Process(os.getpid())
-				#print "MEM: %s" % humanize.naturalsize(process.memory_info().rss)
-
-		#print(mem_top())
+		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
+			print "Type %s: %s" % (count_index, count)
 
 
 

@@ -7,6 +7,7 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
+from t_macros_v1 import TMacrosV1
 from t_header import THeader
 class KlanTextsV2(KaitaiStruct):
     """
@@ -41,18 +42,6 @@ class KlanTextsV2(KaitaiStruct):
                     self.rows[i] = self._root.TLinetableContentPiece8Row(self._io, self, self._root)
 
 
-
-
-    class TLinktableContentPiece12(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.id = self._io.read_u1()
-            self.foo = self._io.read_u1()
 
 
     class TLinetableContentPiece(KaitaiStruct):
@@ -190,47 +179,6 @@ class KlanTextsV2(KaitaiStruct):
             self.foo = self._io.read_bytes(10)
 
 
-    class TLinktableContentPiece11(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.foo = self._io.read_u2le()
-
-
-    class TLinktableContentPiece(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.mode = self._io.read_u2le()
-            _on = self.mode
-            if _on == 14:
-                self.data = self._root.TLinktableContentPiece14(self._io, self, self._root)
-            elif _on == 4:
-                self.data = self._root.TLinktableContentPiece4(self._io, self, self._root)
-            elif _on == 6:
-                self.data = self._root.TLinktableContentPiece6(self._io, self, self._root)
-            elif _on == 20:
-                self.data = self._root.TLinktableContentPiece20(self._io, self, self._root)
-            elif _on == 13:
-                self.data = self._root.TLinktableContentPiece13(self._io, self, self._root)
-            elif _on == 11:
-                self.data = self._root.TLinktableContentPiece11(self._io, self, self._root)
-            elif _on == 12:
-                self.data = self._root.TLinktableContentPiece12(self._io, self, self._root)
-            elif _on == 65535:
-                self.data = self._root.TLinktableContentPiece65535(self._io, self, self._root)
-            elif _on == 9:
-                self.data = self._root.TLinktableContentPiece9(self._io, self, self._root)
-
-
     class TTextContentPlain(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -305,36 +253,6 @@ class KlanTextsV2(KaitaiStruct):
                 if _.data == 192:
                     break
                 i += 1
-
-
-    class TLinktableContentPiece6(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.foo = self._io.read_bytes(71)
-
-
-    class TLinktableContentPiece4(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.topleft_x = self._io.read_u2le()
-            self.topleft_y = self._io.read_u2le()
-            self.width = self._io.read_u2le()
-            self.height = self._io.read_u2le()
-            self.slider_topleft_x = self._io.read_u2le()
-            self.slider_topleft_y = self._io.read_u2le()
-            self.slider_height = self._io.read_u2le()
-            self.textfile_length = self._io.read_u1()
-            self.textfile = self._io.read_bytes(self.textfile_length)
 
 
     class TTextVariantFull(KaitaiStruct):
@@ -416,18 +334,6 @@ class KlanTextsV2(KaitaiStruct):
             return self._m_content if hasattr(self, '_m_content') else None
 
 
-    class TLinktableContentPiece14(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.id = self._io.read_u2le()
-            self.value = self._io.read_u2le()
-
-
     class TLinetableContent(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -465,17 +371,6 @@ class KlanTextsV2(KaitaiStruct):
             self._m_content = self._io.read_bytes(768)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
-
-
-    class TLinktableContentPiece9(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.foo = self._io.read_bytes(27)
 
 
     class TLinktableMeta(KaitaiStruct):
@@ -653,17 +548,6 @@ class KlanTextsV2(KaitaiStruct):
             return self._m_linktable if hasattr(self, '_m_linktable') else None
 
 
-    class TLinktableContentPiece65535(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.foo = self._io.read_u2le()
-
-
     class TLinetableContentPiece32(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -683,12 +567,15 @@ class KlanTextsV2(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.pieces = []
+            self.macros = []
             i = 0
-            while not self._io.is_eof():
-                self.pieces.append(self._root.TLinktableContentPiece(self._io, self, self._root))
+            while True:
+                _ = TMacrosV1(self._io)
+                self.macros.append(_)
+                if _.type == 65535:
+                    break
                 i += 1
-
+            self.events = self._io.read_u2le()
 
 
     class TLinetableContentPiece9(KaitaiStruct):
@@ -717,19 +604,6 @@ class KlanTextsV2(KaitaiStruct):
 
 
 
-    class TLinktableContentPiece13(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.id = self._io.read_u2le()
-            self.textfile_length = self._io.read_u1()
-            self.textfile = self._io.read_bytes(self.textfile_length)
-
-
     class TFatOffset(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -743,19 +617,6 @@ class KlanTextsV2(KaitaiStruct):
             self.offset_2 = self._io.read_u4le()
             self.offset_3 = self._io.read_u4le()
             self.offset_4 = self._io.read_u4le()
-
-
-    class TLinktableContentPiece20(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.textfile_length = self._io.read_u1()
-            self.textfile = self._io.read_bytes(self.textfile_length)
-            self.foo = self._io.read_u1()
 
 
 

@@ -432,7 +432,7 @@ issues:
       texts:
         - path: TEXTS.LIB
           library: texts
-          version: 4
+          version: 5
       video:
         - path: ANIM.LIB
           library: video

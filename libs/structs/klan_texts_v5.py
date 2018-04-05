@@ -7,9 +7,9 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
-from t_macros_v1 import TMacrosV1
 from t_header import THeader
-class KlanTextsV4(KaitaiStruct):
+from t_macros_v2 import TMacrosV2
+class KlanTextsV5(KaitaiStruct):
     """
     .. seealso::
        Source - https://wiki.klan2016.cz/knihovny/texty.html
@@ -581,7 +581,7 @@ class KlanTextsV4(KaitaiStruct):
             self.macros = []
             i = 0
             while True:
-                _ = TMacrosV1(self._io)
+                _ = TMacrosV2(self._io)
                 self.macros.append(_)
                 if _.type == 65535:
                     break

@@ -1,13 +1,13 @@
 meta:
-  id: klan_texts_v2
+  id: klan_texts_v5
   file-extension: lib
-  title: KLAN texts library v2
+  title: KLAN texts library v5
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
   imports:
     - common_header
-    - common_macros_v1
+    - common_macros_v2
 
 doc-ref: https://wiki.klan2016.cz/knihovny/texty.html
 
@@ -27,7 +27,7 @@ types:
       - id: offsets
         type: t_fat_offset
         repeat: expr
-        repeat-expr: 200
+        repeat-expr: 500
 
   t_fat_offset:
     seq:
@@ -47,7 +47,7 @@ types:
       texts:
         type: t_text(_parent.fat.offsets[_index].offset_1, _parent.fat.offsets[_index].offset_2, _parent.fat.offsets[_index].offset_3, _parent.fat.offsets[_index].offset_4)
         repeat: expr
-        repeat-expr: 200
+        repeat-expr: 500
 
   t_text:
     params:
@@ -149,6 +149,9 @@ types:
         repeat: expr
         repeat-expr: count_linetable_meta
         if: count_linetable_meta != 0
+      title:
+        pos: 0
+        size: 256
 
   t_text_content_plain:
     seq:
@@ -192,11 +195,9 @@ types:
   t_linktable_content:
     seq:
       - id: macros
-        type: t_macros_v1
+        type: t_macros_v2
         repeat: until
         repeat-until: _.type == 0xffff
-      - id: events
-        type: u2
 
   t_linetable_meta:
     params:
