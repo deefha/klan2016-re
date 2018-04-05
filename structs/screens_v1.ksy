@@ -67,7 +67,7 @@ types:
 
   t_screen_data:
     seq:
-      - id: commands
+      - id: macros
         type: t_macros_v1
         repeat: until
         repeat-until: _.type == 0xffff
@@ -89,11 +89,11 @@ types:
       - id: data_length
         type: u2
       - id: data
-        type: t_screen_data_event_commands
+        type: t_screen_data_event_macros
         size: data_length - 4
 
-  t_screen_data_event_commands:
+  t_screen_data_event_macros:
     seq:
-      - id: commands
+      - id: macros
         type: t_macros_v1
         repeat: eos

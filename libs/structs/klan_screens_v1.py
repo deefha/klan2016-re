@@ -69,7 +69,7 @@ class KlanScreensV1(KaitaiStruct):
             self.data_length = self._io.read_u2le()
             self._raw_data = self._io.read_bytes((self.data_length - 4))
             io = KaitaiStream(BytesIO(self._raw_data))
-            self.data = self._root.TScreenDataEventCommands(io, self, self._root)
+            self.data = self._root.TScreenDataEventMacros(io, self, self._root)
 
 
     class TScreenContent(KaitaiStruct):
@@ -98,11 +98,11 @@ class KlanScreensV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.commands = []
+            self.macros = []
             i = 0
             while True:
                 _ = TMacrosV1(self._io)
-                self.commands.append(_)
+                self.macros.append(_)
                 if _.type == 65535:
                     break
                 i += 1
@@ -130,7 +130,7 @@ class KlanScreensV1(KaitaiStruct):
 
 
 
-    class TScreenDataEventCommands(KaitaiStruct):
+    class TScreenDataEventMacros(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
@@ -138,10 +138,10 @@ class KlanScreensV1(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.commands = []
+            self.macros = []
             i = 0
             while not self._io.is_eof():
-                self.commands.append(TMacrosV1(self._io))
+                self.macros.append(TMacrosV1(self._io))
                 i += 1
 
 
