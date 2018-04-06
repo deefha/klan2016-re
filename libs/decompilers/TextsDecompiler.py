@@ -87,9 +87,10 @@ class TextsDecompiler(CommonDecompiler):
 				if self.source.version <= 4:
 					data_linktable.content.events = linktable.content.events
 
-				for linktable_content_macro_index, linktable_content_macro in enumerate(linktable.content.macros):
-					data_linktable_content_macro = self._parse_macro(linktable_content_macro)
-					data_linktable.content.macros[str(linktable_content_macro_index)] = data_linktable_content_macro
+				if linktable.content:
+					for linktable_content_macro_index, linktable_content_macro in enumerate(linktable.content.macros):
+						data_linktable_content_macro = self._parse_macro(linktable_content_macro)
+						data_linktable.content.macros[str(linktable_content_macro_index)] = data_linktable_content_macro
 
 				self.data_variant.content.linktable[str(linktable_index)] = data_linktable
 
@@ -157,7 +158,7 @@ class TextsDecompiler(CommonDecompiler):
 						if data_linetable_content_piece.raw == 1:
 							data_linetable_content_piece.data.mode = linetable_content_piece.data.mode
 
-						elif data_linetable_content_piece.raw == 8:
+						elif data_linetable_content_piece.raw == 8 or data_linetable_content_piece.raw == 10 or data_linetable_content_piece.raw == 11 or data_linetable_content_piece.raw == 12:
 							data_linetable_content_piece.data.table = linetable_content_piece.data.table
 							data_linetable_content_piece.data.width = linetable_content_piece.data.width
 							data_linetable_content_piece.data.height = linetable_content_piece.data.height

@@ -194,7 +194,7 @@ types:
       - id: macros
         type: t_macros_v1
         repeat: until
-        repeat-until: _.type == 0xffff
+        repeat-until: _.type == 0x00f0 or _.type == 0x414d or _.type == 0xc0ff or _.type == 0xffff
       - id: events
         type: u2
 

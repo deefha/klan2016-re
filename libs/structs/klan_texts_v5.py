@@ -7,8 +7,8 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
-from t_header import THeader
 from t_macros_v2 import TMacrosV2
+from t_header import THeader
 class KlanTextsV5(KaitaiStruct):
     """
     .. seealso::
@@ -583,10 +583,9 @@ class KlanTextsV5(KaitaiStruct):
             while True:
                 _ = TMacrosV2(self._io)
                 self.macros.append(_)
-                if _.type == 65535:
+                if  ((_.type == 240) or (_.type == 16717) or (_.type == 49407) or (_.type == 65535)) :
                     break
                 i += 1
-            self.events = self._io.read_u2le()
 
 
     class TLinetableContentPiece9(KaitaiStruct):

@@ -27,6 +27,7 @@ from structs.klan_texts_v2 import KlanTextsV2
 from structs.klan_texts_v3 import KlanTextsV3
 from structs.klan_texts_v4 import KlanTextsV4
 from structs.klan_texts_v5 import KlanTextsV5
+from structs.klan_texts_v6 import KlanTextsV6
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -112,6 +113,9 @@ class CommonDecompiler(object):
 				# macros >= 3
 				if self.source.library == 'screens' and self.source.version >= 3:
 					data_macro.content.foo = macro.content.foo
+				# macros >= 3
+				if self.source.library == 'texts' and self.source.version >=6:
+					data_macro.content.foo = macro.content.foo
 
 			# video
 			elif macro.type == 0x0005:
@@ -154,6 +158,9 @@ class CommonDecompiler(object):
 				# macros >= 3
 				if self.source.library == 'screens' and self.source.version >= 3:
 					data_macro.content.foo_3 = macro.content.foo_3
+				# macros >= 3
+				if self.source.library == 'texts' and self.source.version >= 6:
+					data_macro.content.foo_3 = macro.content.foo_3
 
 			# area
 			elif macro.type == 0x000a:
@@ -173,6 +180,9 @@ class CommonDecompiler(object):
 				data_macro.content.id = macro.content.id
 				# macros >= 3
 				if self.source.library == 'screens' and self.source.version >= 3:
+					data_macro.content.foo = macro.content.foo
+				# macros >= 3
+				if self.source.library == 'texts' and self.source.version >= 6:
 					data_macro.content.foo = macro.content.foo
 
 			# svar
@@ -399,10 +409,26 @@ class CommonDecompiler(object):
 					for self.macro_inner_index, self.macro_inner in enumerate(macro.content.branches.branch_else.macros):
 						data_macro_inner = self._parse_macro(self.macro_inner)
 						data_macro.content.branches.branch_else.macros[str(self.macro_inner_index)] = data_macro_inner
+
+			# #07/texts/184/linktable error
+			elif macro.type == 0x00f0:
+				#data_macro.content.foo = macro.content.foo # TODO
+				data_macro.content.foo = ""
+
+			# #10/texts/202/linktable error
+			elif macro.type == 0x414d:
+				#data_macro.content.foo = macro.content.foo # TODO
+				data_macro.content.foo = ""
+
 			# nokeys
 			elif macro.type == 0x4f4e:
 				data_macro.content.foo_1 = macro.content.foo_1
 				data_macro.content.foo_2 = macro.content.foo_2
+
+			# #08/texts/211/linktable error
+			elif macro.type == 0xc0ff:
+				#data_macro.content.foo = macro.content.foo # TODO
+				data_macro.content.foo = ""
 
 			else:
 				print "Unknown macro type: %s" % (macro.type)
@@ -468,6 +494,8 @@ class CommonDecompiler(object):
 					self.library = KlanTextsV4.from_io(self.iso_content)
 				elif self.source.version == 5:
 					self.library = KlanTextsV5.from_io(self.iso_content)
+				elif self.source.version == 6:
+					self.library = KlanTextsV6.from_io(self.iso_content)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()
