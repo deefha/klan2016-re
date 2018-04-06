@@ -54,7 +54,10 @@ seq:
         0x0038: t_macros_v3_macro_0038 # ???
         #0x003a: t_macros_v3_macro_003a # ??? (no content)
         0x0063: t_macros_v3_macro_0063 # if
+        0x00f0: t_macros_v3_macro_00f0 # #07/texts/184/linktable error
+        0x414d: t_macros_v3_macro_414d # #10/texts/202/linktable error
         0x4f4e: t_macros_v3_macro_4f4e # nokeys
+        0xc0ff: t_macros_v3_macro_c0ff # #08/texts/211/linktable error
 
 types:
   # doit
@@ -552,6 +555,18 @@ types:
         type: t_macros_v3
         repeat: eos
 
+  # #07/texts/184/linktable error
+  t_macros_v3_macro_00f0:
+    seq:
+      - id: foo
+        size: _io.size - 2
+
+  # #10/texts/202/linktable error
+  t_macros_v3_macro_414d:
+    seq:
+      - id: foo
+        size: _io.size - 2
+
   # nokeys
   t_macros_v3_macro_4f4e:
     seq:
@@ -559,3 +574,9 @@ types:
         type: u2
       - id: foo_2
         type: u2
+
+  # #08/texts/211/linktable error
+  t_macros_v3_macro_c0ff:
+    seq:
+      - id: foo
+        size: _io.size - 2
