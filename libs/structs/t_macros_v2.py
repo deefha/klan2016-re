@@ -25,6 +25,8 @@ class TMacrosV2(KaitaiStruct):
             self.content = self._root.TMacrosV2Macro000e(self._io, self, self._root)
         elif _on == 10:
             self.content = self._root.TMacrosV2Macro000a(self._io, self, self._root)
+        elif _on == 16717:
+            self.content = self._root.TMacrosV2Macro414d(self._io, self, self._root)
         elif _on == 17:
             self.content = self._root.TMacrosV2Macro0011(self._io, self, self._root)
         elif _on == 4:
@@ -61,6 +63,8 @@ class TMacrosV2(KaitaiStruct):
             self.content = self._root.TMacrosV2Macro0005(self._io, self, self._root)
         elif _on == 33:
             self.content = self._root.TMacrosV2Macro0021(self._io, self, self._root)
+        elif _on == 49407:
+            self.content = self._root.TMacrosV2MacroC0ff(self._io, self, self._root)
         elif _on == 99:
             self.content = self._root.TMacrosV2Macro0063(self._io, self, self._root)
         elif _on == 19:
@@ -81,6 +85,8 @@ class TMacrosV2(KaitaiStruct):
             self.content = self._root.TMacrosV2Macro002c(self._io, self, self._root)
         elif _on == 9:
             self.content = self._root.TMacrosV2Macro0009(self._io, self, self._root)
+        elif _on == 240:
+            self.content = self._root.TMacrosV2Macro00f0(self._io, self, self._root)
         elif _on == 21:
             self.content = self._root.TMacrosV2Macro0015(self._io, self, self._root)
         elif _on == 37:
@@ -139,6 +145,17 @@ class TMacrosV2(KaitaiStruct):
             self.textfile_length = self._io.read_u1()
             self.textfile = self._io.read_bytes(self.textfile_length)
             self.foo = self._io.read_u1()
+
+
+    class TMacrosV2Macro00f0(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes((self._io.size() - 2))
 
 
     class TMacrosV2Macro002b(KaitaiStruct):
@@ -345,6 +362,17 @@ class TMacrosV2(KaitaiStruct):
             self.id = self._io.read_u2le()
 
 
+    class TMacrosV2MacroC0ff(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes((self._io.size() - 2))
+
+
     class TMacrosV2Macro0023(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -395,6 +423,17 @@ class TMacrosV2(KaitaiStruct):
             self.bottomright_y = self._io.read_u2le()
             self.image = self._io.read_u2le()
             self.id = self._io.read_u2le()
+
+
+    class TMacrosV2Macro414d(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_bytes((self._io.size() - 2))
 
 
     class TMacrosV2Macro0021(KaitaiStruct):
