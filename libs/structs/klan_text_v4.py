@@ -7,8 +7,8 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
-from t_macros_v1 import TMacrosV1
-class KlanTextsV1(KaitaiStruct):
+from t_macros_v2 import TMacrosV2
+class KlanTextV4(KaitaiStruct):
     """
     .. seealso::
        Source - https://wiki.klan2016.cz/knihovny/texty.html
@@ -294,7 +294,7 @@ class KlanTextsV1(KaitaiStruct):
             self.macros = []
             i = 0
             while True:
-                _ = TMacrosV1(self._io)
+                _ = TMacrosV2(self._io)
                 self.macros.append(_)
                 if  ((_.type == 240) or (_.type == 16717) or (_.type == 49407) or (_.type == 65535)) :
                     break
@@ -452,5 +452,16 @@ class KlanTextsV1(KaitaiStruct):
 
 
         return self._m_linktable if hasattr(self, '_m_linktable') else None
+
+    @property
+    def title(self):
+        if hasattr(self, '_m_title'):
+            return self._m_title if hasattr(self, '_m_title') else None
+
+        _pos = self._io.pos()
+        self._io.seek(0)
+        self._m_title = self._io.read_bytes(256)
+        self._io.seek(_pos)
+        return self._m_title if hasattr(self, '_m_title') else None
 
 

@@ -1,12 +1,12 @@
 meta:
-  id: klan_texts_v1
+  id: klan_text_v4
   file-extension: lib
-  title: KLAN texts library v1
+  title: KLAN text library v4
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
   imports:
-    - common_macros_v1
+    - common_macros_v2
 
 doc-ref: https://wiki.klan2016.cz/knihovny/texty.html
 
@@ -62,6 +62,9 @@ instances:
     repeat: expr
     repeat-expr: count_linetable_meta
     if: count_linetable_meta != 0
+  title:
+    pos: 0
+    size: 256
 
 types:
   t_linktable_meta:
@@ -101,7 +104,7 @@ types:
   t_linktable_content:
     seq:
       - id: macros
-        type: t_macros_v1
+        type: t_macros_v2
         repeat: until
         repeat-until: _.type == 0x00f0 or _.type == 0x414d or _.type == 0xc0ff or _.type == 0xffff
 

@@ -7,10 +7,17 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-import collections, humanize, psutil, re, string, struct
+import collections, gc, humanize, psutil, re, string, struct
 from CommonDecompiler import CommonDecompiler
 from memory_profiler import profile
 from mem_top import mem_top
+from guppy import hpy
+from structs.klan_text_v1 import KlanTextV1
+from structs.klan_text_v2 import KlanTextV2
+from structs.klan_text_v3 import KlanTextV3
+from structs.klan_text_v4 import KlanTextV4
+from structs.klan_text_v5 import KlanTextV5
+from structs.klan_text_v6 import KlanTextV6
 
 
 
@@ -84,8 +91,8 @@ class TextsDecompiler(CommonDecompiler):
 				data_linktable.content = ObjDict()
 				data_linktable.content.macros = ObjDict()
 
-				if self.source.version <= 4:
-					data_linktable.content.events = linktable.content.events
+				#if self.source.version <= 4:
+					#data_linktable.content.events = linktable.content.events
 
 				if linktable.content:
 					for linktable_content_macro_index, linktable_content_macro in enumerate(linktable.content.macros):
@@ -255,9 +262,6 @@ class TextsDecompiler(CommonDecompiler):
 
 			self.meta.data.texts[str(self.text_index)] = self.PATTERN_DECOMPILED_TEXT % (self.issue.number, self.source.library, self.source_index, self.text_index)
 
-			#process = psutil.Process(os.getpid())
-			#print "MEM: %s" % humanize.naturalsize(process.memory_info().rss)
-
 		else:
 			for text_index, text in enumerate(tqdm(self.library.data.texts, desc="data.texts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 				data_text = ObjDict()
@@ -275,10 +279,25 @@ class TextsDecompiler(CommonDecompiler):
 					self.data_variant.content = ObjDict()
 
 					if variant.content:
-						self.variant_content = variant.content
 						self.variant_index = variant_index
 
-						if variant_index == 0 or variant_index == 1:
+						#self.variant_content = variant.content
+						#self._variant_content_data()
+
+						if self.variant_index == 0 or self.variant_index == 1:
+							if self.source.version == 2:
+								self.variant_content = KlanTextV1.from_bytes(variant.content.data)
+							if self.source.version == 3:
+								self.variant_content = KlanTextV2.from_bytes(variant.content.data)
+							if self.source.version == 4:
+								self.variant_content = KlanTextV3.from_bytes(variant.content.data)
+							if self.source.version == 5:
+								self.variant_content = KlanTextV4.from_bytes(variant.content.data)
+							if self.source.version == 6:
+								self.variant_content = KlanTextV5.from_bytes(variant.content.data)
+							if self.source.version == 7:
+								self.variant_content = KlanTextV6.from_bytes(variant.content.data)
+
 							self._variant_content_init()
 							self._variant_content_linktable_meta()
 							self._variant_content_linktable()
@@ -287,6 +306,7 @@ class TextsDecompiler(CommonDecompiler):
 							self._variant_content_linetable()
 							self._variant_content_title()
 						else:
+							self.variant_content = variant.content
 							self._variant_content_data()
 
 						data_text.variants[str(variant_index)] = self.data_variant

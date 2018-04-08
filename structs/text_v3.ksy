@@ -1,7 +1,7 @@
 meta:
-  id: klan_texts_v1
+  id: klan_text_v3
   file-extension: lib
-  title: KLAN texts library v1
+  title: KLAN text library v3
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
@@ -62,6 +62,9 @@ instances:
     repeat: expr
     repeat-expr: count_linetable_meta
     if: count_linetable_meta != 0
+  title:
+    pos: 0
+    size: 256
 
 types:
   t_linktable_meta:

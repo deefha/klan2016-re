@@ -7,8 +7,8 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 if parse_version(ks_version) < parse_version('0.7'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
 
-from t_macros_v1 import TMacrosV1
-class KlanTextsV1(KaitaiStruct):
+from t_macros_v3 import TMacrosV3
+class KlanTextV5(KaitaiStruct):
     """
     .. seealso::
        Source - https://wiki.klan2016.cz/knihovny/texty.html
@@ -50,16 +50,22 @@ class KlanTextsV1(KaitaiStruct):
 
         def _read(self):
             self.raw = self._io.read_u1()
-            if  ((self.raw == 1) or (self.raw == 8) or (self.raw == 9) or (self.raw == 32)) :
+            if  ((self.raw == 1) or (self.raw == 8) or (self.raw == 9) or (self.raw == 10) or (self.raw == 11) or (self.raw == 12) or (self.raw == 32)) :
                 _on = self.raw
-                if _on == 1:
+                if _on == 10:
+                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
+                elif _on == 32:
+                    self.data = self._root.TLinetableContentPiece32(self._io, self, self._root)
+                elif _on == 1:
                     self.data = self._root.TLinetableContentPiece1(self._io, self, self._root)
+                elif _on == 11:
+                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
+                elif _on == 12:
+                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
                 elif _on == 8:
                     self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
                 elif _on == 9:
                     self.data = self._root.TLinetableContentPiece9(self._io, self, self._root)
-                elif _on == 32:
-                    self.data = self._root.TLinetableContentPiece32(self._io, self, self._root)
 
 
 
@@ -80,12 +86,12 @@ class KlanTextsV1(KaitaiStruct):
             if hasattr(self, '_m_content'):
                 return self._m_content if hasattr(self, '_m_content') else None
 
-            _pos = self._io.pos()
-            self._io.seek(self.param_offset)
-            self._raw__m_content = self._io.read_bytes(self.param_length)
-            io = KaitaiStream(BytesIO(self._raw__m_content))
-            self._m_content = self._root.TLinktableContent(io, self, self._root)
-            self._io.seek(_pos)
+            if self.param_offset > 0:
+                _pos = self._io.pos()
+                self._io.seek(self.param_offset)
+                self._m_content = self._root.TLinktableContent(self._io, self, self._root)
+                self._io.seek(_pos)
+
             return self._m_content if hasattr(self, '_m_content') else None
 
 
@@ -166,7 +172,7 @@ class KlanTextsV1(KaitaiStruct):
             self.topleft_y = self._io.read_u4le()
             self.bottomright_x = self._io.read_u4le()
             self.bottomright_y = self._io.read_u4le()
-            self.offset = self._io.read_u4le()
+            self.offset = self._io.read_s4le()
 
 
     class TLinetableContentPiece8Row(KaitaiStruct):
@@ -294,7 +300,7 @@ class KlanTextsV1(KaitaiStruct):
             self.macros = []
             i = 0
             while True:
-                _ = TMacrosV1(self._io)
+                _ = TMacrosV3(self._io)
                 self.macros.append(_)
                 if  ((_.type == 240) or (_.type == 16717) or (_.type == 49407) or (_.type == 65535)) :
                     break
@@ -318,7 +324,7 @@ class KlanTextsV1(KaitaiStruct):
             return self._m_count_linetable_meta if hasattr(self, '_m_count_linetable_meta') else None
 
         _pos = self._io.pos()
-        self._io.seek((self.offset_linktable - 52))
+        self._io.seek((self.offset_linktable - 212))
         self._m_count_linetable_meta = self._io.read_u4le()
         self._io.seek(_pos)
         return self._m_count_linetable_meta if hasattr(self, '_m_count_linetable_meta') else None
@@ -408,7 +414,7 @@ class KlanTextsV1(KaitaiStruct):
         if hasattr(self, '_m_offset_linetable_meta'):
             return self._m_offset_linetable_meta if hasattr(self, '_m_offset_linetable_meta') else None
 
-        self._m_offset_linetable_meta = (((self.offset_linktable - 52) - (self.count_linetable_meta * 17)) - 17)
+        self._m_offset_linetable_meta = (((self.offset_linktable - 212) - (self.count_linetable_meta * 17)) - 17)
         return self._m_offset_linetable_meta if hasattr(self, '_m_offset_linetable_meta') else None
 
     @property
@@ -452,5 +458,16 @@ class KlanTextsV1(KaitaiStruct):
 
 
         return self._m_linktable if hasattr(self, '_m_linktable') else None
+
+    @property
+    def title(self):
+        if hasattr(self, '_m_title'):
+            return self._m_title if hasattr(self, '_m_title') else None
+
+        _pos = self._io.pos()
+        self._io.seek(0)
+        self._m_title = self._io.read_bytes(256)
+        self._io.seek(_pos)
+        return self._m_title if hasattr(self, '_m_title') else None
 
 

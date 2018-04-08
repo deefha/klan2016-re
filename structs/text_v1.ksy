@@ -1,7 +1,7 @@
 meta:
-  id: klan_texts_v1
+  id: klan_text_v1
   file-extension: lib
-  title: KLAN texts library v1
+  title: KLAN text library v1
   application: KLAN discmag engine
   endian: le
   encoding: ASCII

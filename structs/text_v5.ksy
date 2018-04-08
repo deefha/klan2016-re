@@ -1,12 +1,12 @@
 meta:
-  id: klan_texts_v1
+  id: klan_text_v5
   file-extension: lib
-  title: KLAN texts library v1
+  title: KLAN text library v5
   application: KLAN discmag engine
   endian: le
   encoding: ASCII
   imports:
-    - common_macros_v1
+    - common_macros_v3
 
 doc-ref: https://wiki.klan2016.cz/knihovny/texty.html
 
@@ -34,10 +34,10 @@ instances:
     repeat-expr: count_linktable
     if: count_linktable != 0
   count_linetable_meta:
-    pos: offset_linktable - 52
+    pos: offset_linktable - 212
     type: u4
   offset_linetable_meta:
-    value: offset_linktable - 52 - (count_linetable_meta * 17) - 17
+    value: offset_linktable - 212 - (count_linetable_meta * 17) - 17
   linetable_meta:
     type: t_linetable_meta(offset_linetable_meta + 17 * _index)
     repeat: expr
@@ -62,6 +62,9 @@ instances:
     repeat: expr
     repeat-expr: count_linetable_meta
     if: count_linetable_meta != 0
+  title:
+    pos: 0
+    size: 256
 
 types:
   t_linktable_meta:
@@ -84,24 +87,24 @@ types:
       - id: bottomright_y
         type: u4
       - id: offset
-        type: u4
+        type: s4
 
   t_linktable:
     params:
       - id: param_offset
-        type: u4
+        type: s4
       - id: param_length
-        type: u4
+        type: s4
     instances:
       content:
         type: t_linktable_content
         pos: param_offset
-        size: param_length
+        if: param_offset > 0
 
   t_linktable_content:
     seq:
       - id: macros
-        type: t_macros_v1
+        type: t_macros_v3
         repeat: until
         repeat-until: _.type == 0x00f0 or _.type == 0x414d or _.type == 0xc0ff or _.type == 0xffff
 
@@ -163,8 +166,11 @@ types:
             1: t_linetable_content_piece_1
             8: t_linetable_content_piece_8
             9: t_linetable_content_piece_9
+            10: t_linetable_content_piece_8
+            11: t_linetable_content_piece_8
+            12: t_linetable_content_piece_8
             32: t_linetable_content_piece_32
-        if: raw == 1 or raw == 8 or raw == 9 or raw == 32
+        if: raw == 1 or raw == 8 or raw == 9 or raw == 10 or raw == 11 or raw == 12 or raw == 32
 
   # font
   t_linetable_content_piece_1:
