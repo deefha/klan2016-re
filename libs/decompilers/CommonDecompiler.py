@@ -28,6 +28,7 @@ from structs.klan_texts_v3 import KlanTextsV3
 from structs.klan_texts_v4 import KlanTextsV4
 from structs.klan_texts_v5 import KlanTextsV5
 from structs.klan_texts_v6 import KlanTextsV6
+from structs.klan_texts_v7 import KlanTextsV7
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
@@ -114,7 +115,7 @@ class CommonDecompiler(object):
 				if self.source.library == 'screens' and self.source.version >= 3:
 					data_macro.content.foo = macro.content.foo
 				# macros >= 3
-				if self.source.library == 'texts' and self.source.version >=6:
+				if self.source.library == 'texts' and self.source.version >= 6:
 					data_macro.content.foo = macro.content.foo
 
 			# video
@@ -270,12 +271,13 @@ class CommonDecompiler(object):
 				# macros >= 4
 				if self.source.library == 'screens' and self.source.version >= 4:
 					data_macro.content.foo_5 = macro.content.foo_5
+				# macros >= 4
+				if self.source.library == 'texts' and self.source.version >= 7:
+					data_macro.content.foo_5 = macro.content.foo_5
 
 			# ???
 			elif macro.type == 0x0021:
 				data_macro.content.foo_1 = macro.content.foo_1
-				data_macro.content.foo_2 = macro.content.foo_2
-				data_macro.content.foo_3 = macro.content.foo_3
 
 			# ???
 			elif macro.type == 0x0022:
@@ -496,6 +498,8 @@ class CommonDecompiler(object):
 					self.library = KlanTextsV5.from_io(self.iso_content)
 				elif self.source.version == 6:
 					self.library = KlanTextsV6.from_io(self.iso_content)
+				elif self.source.version == 7:
+					self.library = KlanTextsV7.from_io(self.iso_content)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()
