@@ -445,8 +445,6 @@ class TMacrosV2(KaitaiStruct):
 
         def _read(self):
             self.foo_1 = self._io.read_u2le()
-            self.foo_2 = self._io.read_u2le()
-            self.foo_3 = self._io.read_u2le()
 
 
     class TMacrosV2Macro4f4e(KaitaiStruct):

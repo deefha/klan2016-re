@@ -313,10 +313,6 @@ types:
     seq:
       - id: foo_1
         type: u2
-      - id: foo_2
-        type: u2
-      - id: foo_3
-        type: u2
 
   # ???
   t_macros_v4_macro_0022:
