@@ -83,6 +83,8 @@ class TMacrosV4(KaitaiStruct):
             self.content = self._root.TMacrosV4Macro0026(self._io, self, self._root)
         elif _on == 40:
             self.content = self._root.TMacrosV4Macro0028(self._io, self, self._root)
+        elif _on == 24909:
+            self.content = self._root.TMacrosV4Macro614d(self._io, self, self._root)
         elif _on == 44:
             self.content = self._root.TMacrosV4Macro002c(self._io, self, self._root)
         elif _on == 9:
@@ -211,6 +213,17 @@ class TMacrosV4(KaitaiStruct):
         def _read(self):
             self.foo_1 = self._io.read_u2le()
             self.foo_2 = self._io.read_u2le()
+
+
+    class TMacrosV4Macro614d(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_u2le()
 
 
     class TMacrosV4Macro0063BranchIf(KaitaiStruct):

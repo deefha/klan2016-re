@@ -57,7 +57,11 @@ seq:
         0x00f0: t_macros_v1_macro_00f0 # #07/texts/184/linktable error
         0x414d: t_macros_v1_macro_414d # #10/texts/202/linktable error
         0x4f4e: t_macros_v1_macro_4f4e # nokeys
+        0x614d: t_macros_v1_macro_614d # #30/texts/94/linktable error
         0xc0ff: t_macros_v1_macro_c0ff # #08/texts/211/linktable error
+        0xc20c: t_macros_v1_macro_c20c # #21/texts/145/0/linktable error
+        0xff02: t_macros_v1_macro_ff02 # #21/texts/145/1/linktable error
+        #0xffff: t_macros_v1_macro_ffff # separator (no content)
 
 types:
   # doit
@@ -565,8 +569,29 @@ types:
       - id: foo_2
         type: u2
 
+  # #30/texts/94/linktable error
+  t_macros_v1_macro_614d:
+    seq:
+      - id: foo
+        type: u2
+        #size: _io.size - 2
+
   # #08/texts/211/linktable error
   t_macros_v1_macro_c0ff:
     seq:
       - id: foo
         size: _io.size - 2
+
+  # #21/texts/145/0/linktable error
+  t_macros_v1_macro_c20c:
+    seq:
+      - id: foo
+        type: u2
+        #size: _io.size - 2
+
+  # #21/texts/145/1/linktable error
+  t_macros_v1_macro_ff02:
+    seq:
+      - id: foo
+        type: u2
+        #size: _io.size - 2

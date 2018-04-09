@@ -296,7 +296,7 @@ class KlanTextV3(KaitaiStruct):
             while True:
                 _ = TMacrosV1(self._io)
                 self.macros.append(_)
-                if  ((_.type == 240) or (_.type == 16717) or (_.type == 49407) or (_.type == 65535)) :
+                if  ((_.type == 240) or (_.type == 16717) or (_.type == 24909) or (_.type == 49407) or (_.type == 49676) or (_.type == 65282) or (_.type == 65535)) :
                     break
                 i += 1
 
