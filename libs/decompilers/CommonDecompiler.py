@@ -432,6 +432,16 @@ class CommonDecompiler(object):
 				#data_macro.content.foo = macro.content.foo # TODO
 				data_macro.content.foo = ""
 
+			# #21/texts/145/0/linktable error
+			elif macro.type == 0xc20c:
+				#data_macro.content.foo = macro.content.foo # TODO
+				data_macro.content.foo = ""
+
+			# #21/texts/145/1/linktable error
+			elif macro.type == 0xff02:
+				#data_macro.content.foo = macro.content.foo # TODO
+				data_macro.content.foo = ""
+
 			else:
 				print "Unknown macro type: %s" % (macro.type)
 				sys.exit()

@@ -73,6 +73,8 @@ class TMacrosV4(KaitaiStruct):
             self.content = self._root.TMacrosV4Macro0033(self._io, self, self._root)
         elif _on == 23:
             self.content = self._root.TMacrosV4Macro0017(self._io, self, self._root)
+        elif _on == 65282:
+            self.content = self._root.TMacrosV4MacroFf02(self._io, self, self._root)
         elif _on == 53:
             self.content = self._root.TMacrosV4Macro0035(self._io, self, self._root)
         elif _on == 15:
@@ -99,6 +101,8 @@ class TMacrosV4(KaitaiStruct):
             self.content = self._root.TMacrosV4Macro0012(self._io, self, self._root)
         elif _on == 20302:
             self.content = self._root.TMacrosV4Macro4f4e(self._io, self, self._root)
+        elif _on == 49676:
+            self.content = self._root.TMacrosV4MacroC20c(self._io, self, self._root)
         elif _on == 34:
             self.content = self._root.TMacrosV4Macro0022(self._io, self, self._root)
         elif _on == 54:
@@ -230,6 +234,17 @@ class TMacrosV4(KaitaiStruct):
                 self.macros.append(TMacrosV4(self._io))
                 i += 1
 
+
+
+    class TMacrosV4MacroC20c(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_u2le()
 
 
     class TMacrosV4Macro002c(KaitaiStruct):
@@ -473,6 +488,17 @@ class TMacrosV4(KaitaiStruct):
             self.image = self._io.read_u2le()
             self.foo = self._io.read_u2le()
             self.scancode = self._io.read_u2le()
+
+
+    class TMacrosV4MacroFf02(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo = self._io.read_u2le()
 
 
     class TMacrosV4Macro0017(KaitaiStruct):
