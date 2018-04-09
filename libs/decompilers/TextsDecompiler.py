@@ -96,6 +96,7 @@ class TextsDecompiler(CommonDecompiler):
 
 				if linktable.content:
 					for linktable_content_macro_index, linktable_content_macro in enumerate(linktable.content.macros):
+						self.macro_index = linktable_content_macro_index
 						data_linktable_content_macro = self._parse_macro(linktable_content_macro)
 						data_linktable.content.macros[str(linktable_content_macro_index)] = data_linktable_content_macro
 

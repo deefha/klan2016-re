@@ -427,6 +427,11 @@ class CommonDecompiler(object):
 				data_macro.content.foo_1 = macro.content.foo_1
 				data_macro.content.foo_2 = macro.content.foo_2
 
+			# #30/texts/94/linktable error
+			elif macro.type == 0x614d:
+				#data_macro.content.foo = macro.content.foo # TODO
+				data_macro.content.foo = ""
+
 			# #08/texts/211/linktable error
 			elif macro.type == 0xc0ff:
 				#data_macro.content.foo = macro.content.foo # TODO
@@ -443,12 +448,19 @@ class CommonDecompiler(object):
 				data_macro.content.foo = ""
 
 			else:
-				print "Unknown macro type: %s" % (macro.type)
+				if self.source.library == 'screens':
+					print "Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
+				if self.source.library == 'texts':
+					print "Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
 				sys.exit()
 
 		else:
 			if macro.type != 0x0010 and macro.type != 0x002a and macro.type != 0x003a and macro.type != 0xffff:
-				print "Macro without content: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
+				if self.source.library == 'screens':
+					print "Macro without content: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
+				if self.source.library == 'texts':
+					print "Macro without content: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
+				sys.exit()
 
 		return data_macro
 
