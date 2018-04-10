@@ -23,7 +23,12 @@ class TextsRemaker(CommonRemaker):
 
 		print "Loading fonts..."
 
-		for index in range(0, 2):
+		if self.issue.number >= 28:
+			index_max = 4
+		else:
+			index_max = 2
+
+		for index in tqdm(range(0, index_max), desc="fonts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if index == 0 or self.source.version > 1:
 				with open("%s%s/%s/%s.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "fonts", index), "r") as f:
 					#content = f.read()
@@ -31,7 +36,8 @@ class TextsRemaker(CommonRemaker):
 					content = ''.join(lines) # TODO
 					self.fonts[str(index)] = ObjDict(content)
 
-				for font_index, font in self.fonts[str(index)].fonts.iteritems():
+				#for font_index, font in self.fonts[str(index)].fonts.iteritems():
+				for font_index, font in tqdm(self.fonts[str(index)].fonts.iteritems(), total=len(self.fonts[str(index)].fonts), desc="characters", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 					for font_variant_index, font_variant in font.iteritems():
 						for character_index, character in font_variant.characters.iteritems():
 							with Image.open(character.asset.replace("remaked://", self.PATH_PHASE_REMAKED)) as i:
@@ -40,6 +46,7 @@ class TextsRemaker(CommonRemaker):
 		self.PATTERN_PATH_TEXT = "%s%s" % (self.PATH_DATA_REMAKED, "%03d/")
 
 		self.PATTERN_FILE_TEXT_ASSET = "%s%d.png"
+		self.PATTERN_FILE_TEXT_ASSET_INVERSE = "%s%d_inverse.png"
 		self.PATTERN_FILE_TEXT_PLAIN = "%s%d.txt"
 
 
@@ -81,11 +88,15 @@ class TextsRemaker(CommonRemaker):
 
 								lines_height = 0
 								lines = []
+								if self.issue.number >= 28:
+									inverse_lines = []
 
 								for linetable_index, linetable in variant.content.linetable.iteritems():
 									line_width = 0
 									line_height = variant.content.linetable_meta[linetable_index].content.height
 									line_pieces = []
+									if self.issue.number >= 28:
+										inverse_line_pieces = []
 
 									flag_bold = False
 									flag_italic = False
@@ -98,15 +109,19 @@ class TextsRemaker(CommonRemaker):
 											# konec radku
 											if piece.raw == 0:
 												data_text += "\n"
+
 											# font
 											elif piece.raw == 1:
 												font_id = piece.data.mode
+
 											# bold
 											elif piece.raw == 2:
 												flag_bold = not flag_bold
+
 											# italic
 											elif piece.raw == 4:
 												flag_italic = not flag_italic
+
 											# obrazek
 											elif piece.raw == 8 or piece.raw == 10 or piece.raw == 11 or piece.raw == 12:
 												image_content_unpacked = []
@@ -137,9 +152,13 @@ class TextsRemaker(CommonRemaker):
 												i_piece.convert("RGBA")
 												line_width += piece.data.width
 												line_pieces.append(i_piece)
+												if self.issue.number >= 28:
+													inverse_line_pieces.append(i_piece)
+
 											# odkaz
 											elif piece.raw == 9:
 												flag_link = not flag_link
+
 											# mezera
 											elif piece.raw == 32:
 												data_text += " "
@@ -147,6 +166,9 @@ class TextsRemaker(CommonRemaker):
 												i_piece = Image.new("RGBA", (piece.data.length, line_height), (0, 0, 0, 0))
 												line_width += piece.data.length
 												line_pieces.append(i_piece)
+												if self.issue.number >= 28:
+													inverse_line_pieces.append(i_piece)
+
 											# bezny znak
 											else:
 												if piece.raw < 128:
@@ -166,10 +188,12 @@ class TextsRemaker(CommonRemaker):
 														font_variant += "_link"
 
 													i_piece = self.fonts[str(variant_index)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].image
-													#i_piece = Image.open(self.fonts[str(variant_index)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].asset.replace("remaked://", self.PATH_PHASE_REMAKED))
 													i_piece_width, i_piece_height = i_piece.size
 													line_width += i_piece_width
 													line_pieces.append(i_piece)
+													if self.issue.number >= 28:
+														i_piece = self.fonts[str(int(variant_index) + 2)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].image
+														inverse_line_pieces.append(i_piece)
 
 									i_line = Image.new("RGBA", (line_width, line_height), (0, 0, 0, 0))
 									line_offset_x = 0
@@ -179,10 +203,19 @@ class TextsRemaker(CommonRemaker):
 										i_line.paste(line_piece, (line_offset_x, 0))
 										line_offset_x += line_piece_width
 
-									#if line_width > lines_width:
-										#lines_width = line_width
 									lines_height += line_height
 									lines.append(i_line)
+
+									if self.issue.number >= 28:
+										i_line = Image.new("RGBA", (line_width, line_height), (0, 0, 0, 0))
+										line_offset_x = 0
+
+										for line_piece in inverse_line_pieces:
+											line_piece_width, line_piece_height = line_piece.size
+											i_line.paste(line_piece, (line_offset_x, 0))
+											line_offset_x += line_piece_width
+
+										inverse_lines.append(i_line)
 
 								i_lines_temp = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 0))
 								lines_offset_y = 0
@@ -196,6 +229,20 @@ class TextsRemaker(CommonRemaker):
 								i_lines = Image.alpha_composite(i_lines, i_lines_temp)
 								i_lines.convert("RGBA")
 								i_lines.save(self.PATTERN_FILE_TEXT_ASSET % (path_text, int(variant_index)))
+
+								if self.issue.number >= 28:
+									i_lines_temp = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 0))
+									lines_offset_y = 0
+
+									for line in inverse_lines:
+										line_width, line_height = line.size
+										i_lines_temp.paste(line, (0, lines_offset_y))
+										lines_offset_y += line_height
+
+									i_lines = Image.new("RGBA", (lines_width, lines_height), (181, 178, 181, 255))
+									i_lines = Image.alpha_composite(i_lines, i_lines_temp)
+									i_lines.convert("RGBA")
+									i_lines.save(self.PATTERN_FILE_TEXT_ASSET_INVERSE % (path_text, int(variant_index)))
 
 							with open(self.PATTERN_FILE_TEXT_PLAIN % (path_text, int(variant_index)), "w") as f:
 								f.write(data_text.encode("utf8", "replace"))
