@@ -112,10 +112,10 @@ class CommonDecompiler(object):
 				data_macro.content.textfile_length = macro.content.textfile_length
 				data_macro.content.textfile = macro.content.textfile
 				# macros >= 3
-				if self.source.library == 'screens' and self.source.version >= 3:
+				if self.source.library == "screens" and self.source.version >= 3:
 					data_macro.content.foo = macro.content.foo
 				# macros >= 3
-				if self.source.library == 'texts' and self.source.version >= 6:
+				if self.source.library == "texts" and self.source.version >= 6:
 					data_macro.content.foo = macro.content.foo
 
 			# video
@@ -157,10 +157,10 @@ class CommonDecompiler(object):
 				data_macro.content.hover_bottomright_y = macro.content.hover_bottomright_y
 				data_macro.content.foo_2 = macro.content.foo_2
 				# macros >= 3
-				if self.source.library == 'screens' and self.source.version >= 3:
+				if self.source.library == "screens" and self.source.version >= 3:
 					data_macro.content.foo_3 = macro.content.foo_3
 				# macros >= 3
-				if self.source.library == 'texts' and self.source.version >= 6:
+				if self.source.library == "texts" and self.source.version >= 6:
 					data_macro.content.foo_3 = macro.content.foo_3
 
 			# area
@@ -180,10 +180,10 @@ class CommonDecompiler(object):
 			elif macro.type == 0x000c:
 				data_macro.content.id = macro.content.id
 				# macros >= 3
-				if self.source.library == 'screens' and self.source.version >= 3:
+				if self.source.library == "screens" and self.source.version >= 3:
 					data_macro.content.foo = macro.content.foo
 				# macros >= 3
-				if self.source.library == 'texts' and self.source.version >= 6:
+				if self.source.library == "texts" and self.source.version >= 6:
 					data_macro.content.foo = macro.content.foo
 
 			# svar
@@ -218,10 +218,10 @@ class CommonDecompiler(object):
 				data_macro.content.foo_1 = macro.content.foo_1
 				data_macro.content.foo_2 = macro.content.foo_2
 				# macros <= 2
-				if self.source.library == 'screens' and self.source.version <= 2:
+				if self.source.library == "screens" and self.source.version <= 2:
 					data_macro.content.foo_3 = macro.content.foo_3
 				# macros <= 2
-				if self.source.library == 'texts' and self.source.version <= 4:
+				if self.source.library == "texts" and self.source.version <= 4:
 					data_macro.content.foo_3 = macro.content.foo_3
 
 			# demo
@@ -252,11 +252,11 @@ class CommonDecompiler(object):
 			# playwav
 			elif macro.type == 0x0018:
 				# macros >= 2
-				if self.source.library == 'screens' and self.source.version >= 2:
+				if self.source.library == "screens" and self.source.version >= 2:
 					data_macro.content.foo_1 = macro.content.foo_1
 					data_macro.content.foo_2 = macro.content.foo_2
 				# macros >= 2
-				elif self.source.library == 'texts' and self.source.version >= 5:
+				elif self.source.library == "texts" and self.source.version >= 5:
 					data_macro.content.foo_1 = macro.content.foo_1
 					data_macro.content.foo_2 = macro.content.foo_2
 				else:
@@ -269,10 +269,10 @@ class CommonDecompiler(object):
 				data_macro.content.foo_3 = macro.content.foo_3
 				data_macro.content.foo_4 = macro.content.foo_4
 				# macros >= 4
-				if self.source.library == 'screens' and self.source.version >= 4:
+				if self.source.library == "screens" and self.source.version >= 4:
 					data_macro.content.foo_5 = macro.content.foo_5
 				# macros >= 4
-				if self.source.library == 'texts' and self.source.version >= 7:
+				if self.source.library == "texts" and self.source.version >= 7:
 					data_macro.content.foo_5 = macro.content.foo_5
 
 			# ???
@@ -448,17 +448,17 @@ class CommonDecompiler(object):
 				data_macro.content.foo = ""
 
 			else:
-				if self.source.library == 'screens':
+				if self.source.library == "screens":
 					print "Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
-				if self.source.library == 'texts':
+				if self.source.library == "texts":
 					print "Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
 				sys.exit()
 
 		else:
 			if macro.type != 0x0010 and macro.type != 0x002a and macro.type != 0x003a and macro.type != 0xffff:
-				if self.source.library == 'screens':
+				if self.source.library == "screens":
 					print "Macro without content: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
-				if self.source.library == 'texts':
+				if self.source.library == "texts":
 					print "Macro without content: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
 				sys.exit()
 
