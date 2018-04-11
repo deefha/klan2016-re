@@ -77,6 +77,9 @@ def remake(config, issue, source, source_index):
 	elif source.library == "music":
 		remaker = MusicRemaker.MusicRemaker(issue, source, source_index)
 
+	elif source.library == "screens":
+		remaker = ScreensRemaker.ScreensRemaker(issue, source, source_index)
+
 	elif source.library == "texts":
 		remaker = TextsRemaker.TextsRemaker(issue, source, source_index)
 
