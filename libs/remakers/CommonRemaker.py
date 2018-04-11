@@ -70,11 +70,14 @@ class CommonRemaker(object):
 			minute = (self.meta_decompiled.header.filetime & 0b0000011111100000) >> 5
 			sec = (self.meta_decompiled.header.filetime & 0b0000000000011111) * 2
 
-			self.meta_remaked.header.created = datetime.datetime(year, month, day, hour, minute, sec).isoformat()
+			try:
+				self.meta_remaked.header.created = datetime.datetime(year, month, day, hour, minute, sec).isoformat()
+			except ValueError:
+				self.meta_remaked.header.created = ""
 		else:
 			self.meta_remaked.header.created = ""
 
-			self.meta_remaked.header.remaked = datetime.datetime.now().isoformat()
+		self.meta_remaked.header.remaked = datetime.datetime.now().isoformat()
 
 
 
