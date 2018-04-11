@@ -79,7 +79,10 @@ class CommonRemaker(object):
 			data_macro.params.slider.topleft_x = macro.content.slider_topleft_x
 			data_macro.params.slider.topleft_y = macro.content.slider_topleft_y
 			# macros >= 3
-			if self.source.library == 'screens' and self.source.version >= 6:
+			if self.source.library == "screens" and self.source.version >= 3:
+				data_macro.params.foo = macro.content.foo
+			# macros >= 3
+			if self.source.library == "texts" and self.source.version >= 6:
 				data_macro.params.foo = macro.content.foo
 
 		# video
@@ -125,7 +128,10 @@ class CommonRemaker(object):
 			data_macro.params.hover_bottomright_y = macro.content.hover_bottomright_y
 			data_macro.params.foo_2 = macro.content.foo_2
 			# macros >= 3
-			if self.source.library == 'screens' and self.source.version >= 6:
+			if self.source.library == "screens" and self.source.version >= 3:
+				data_macro.params.foo_3 = macro.content.foo_3
+			# macros >= 3
+			if self.source.library == "texts" and self.source.version >= 6:
 				data_macro.params.foo_3 = macro.content.foo_3
 
 		# area
@@ -148,14 +154,16 @@ class CommonRemaker(object):
 			data_macro.type = "gotopage"
 			data_macro.params.id = macro.content.id
 			# macros >= 3
-			if self.source.library == 'screens' and self.source.version >= 6:
+			if self.source.library == "screens" and self.source.version >= 3:
+				data_macro.params.foo = macro.content.foo
+			# macros >= 3
+			if self.source.library == "texts" and self.source.version >= 6:
 				data_macro.params.foo = macro.content.foo
 
 		# svar
 		elif macro.type == 0x000d:
 			data_macro.type = "svar"
 			data_macro.params.variable = macro.content.variable
-			data_macro.params.value_length = macro.content.value_length
 			data_macro.params.value = macro.content.value
 
 		# ivar / mov
@@ -193,13 +201,15 @@ class CommonRemaker(object):
 			data_macro.params.foo_1 = macro.content.foo_1
 			data_macro.params.foo_2 = macro.content.foo_2
 			# macros <= 2
-			if self.source.library == 'screens' and self.source.version <= 4:
+			if self.source.library == "screens" and self.source.version <= 2:
+				data_macro.params.foo_3 = macro.content.foo_3
+			# macros <= 2
+			if self.source.library == "texts" and self.source.version <= 4:
 				data_macro.params.foo_3 = macro.content.foo_3
 
 		# demo
 		elif macro.type == 0x0014:
 			data_macro.type = "demo"
-			data_macro.params.textfile_length = macro.content.textfile_length
 			data_macro.params.textfile = macro.content.textfile
 			data_macro.params.foo = macro.content.foo
 
@@ -229,7 +239,11 @@ class CommonRemaker(object):
 		elif macro.type == 0x0018:
 			data_macro.type = "playwav"
 			# macros >= 2
-			if self.source.library == 'screens' and self.source.version >= 5:
+			if self.source.library == "screens" and self.source.version >= 2:
+				data_macro.params.foo_1 = macro.content.foo_1
+				data_macro.params.foo_2 = macro.content.foo_2
+			# macros >= 2
+			elif self.source.library == "texts" and self.source.version >= 5:
 				data_macro.params.foo_1 = macro.content.foo_1
 				data_macro.params.foo_2 = macro.content.foo_2
 			else:
@@ -243,7 +257,10 @@ class CommonRemaker(object):
 			data_macro.params.foo_3 = macro.content.foo_3
 			data_macro.params.foo_4 = macro.content.foo_4
 			# macros >= 4
-			if self.source.library == 'screens' and self.source.version >= 7:
+			if self.source.library == "screens" and self.source.version >= 4:
+				data_macro.params.foo_5 = macro.content.foo_5
+			# macros >= 4
+			if self.source.library == "texts" and self.source.version >= 7:
 				data_macro.params.foo_5 = macro.content.foo_5
 
 		# ???
@@ -267,7 +284,6 @@ class CommonRemaker(object):
 			data_macro.params.foo_2 = macro.content.foo_2
 			data_macro.params.foo_3 = macro.content.foo_3
 			data_macro.params.foo_4 = macro.content.foo_4
-			data_macro.params.text_length = macro.content.text_length
 			data_macro.params.text = macro.content.text
 			data_macro.params.foo_5 = macro.content.foo_5
 
@@ -326,7 +342,6 @@ class CommonRemaker(object):
 		elif macro.type == 0x002c:
 			data_macro.type = "0x002c"
 			data_macro.params.foo = macro.content.foo
-			data_macro.params.textfile_length = macro.content.textfile_length
 			data_macro.params.textfile = macro.content.textfile
 
 		# ???
@@ -338,9 +353,7 @@ class CommonRemaker(object):
 		# link?
 		elif macro.type == 0x0033:
 			data_macro.type = "link?"
-			data_macro.params.text_1_length = macro.content.text_1_length
 			data_macro.params.text_1 = macro.content.text_1
-			data_macro.params.text_2_length = macro.content.text_2_length
 			data_macro.params.text_2 = macro.content.text_2
 			data_macro.params.foo = macro.content.foo
 
@@ -454,9 +467,9 @@ class CommonRemaker(object):
 			data_macro.type = "separator"
 
 		else:
-			if self.source.library == 'screens':
+			if self.source.library == "screens":
 				print "Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
-			if self.source.library == 'texts':
+			if self.source.library == "texts":
 				print "Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
 			sys.exit()
 

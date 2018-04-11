@@ -23,7 +23,7 @@ class TextsRemaker(CommonRemaker):
 
 		print "Loading fonts..."
 
-		if self.issue.number >= 28:
+		if self.issue.number >= "28":
 			index_max = 4
 		else:
 			index_max = 2
@@ -36,7 +36,6 @@ class TextsRemaker(CommonRemaker):
 					content = ''.join(lines) # TODO
 					self.fonts[str(index)] = ObjDict(content)
 
-				#for font_index, font in self.fonts[str(index)].fonts.iteritems():
 				for font_index, font in tqdm(self.fonts[str(index)].fonts.iteritems(), total=len(self.fonts[str(index)].fonts), desc="characters", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 					for font_variant_index, font_variant in font.iteritems():
 						for character_index, character in font_variant.characters.iteritems():
@@ -48,6 +47,7 @@ class TextsRemaker(CommonRemaker):
 		self.PATTERN_FILE_TEXT_ASSET = "%s%d.png"
 		self.PATTERN_FILE_TEXT_ASSET_INVERSE = "%s%d_inverse.png"
 		self.PATTERN_FILE_TEXT_PLAIN = "%s%d.txt"
+		self.PATTERN_FILE_TEXT_LINKS = "%s%d.json"
 
 
 
@@ -77,8 +77,9 @@ class TextsRemaker(CommonRemaker):
 						if not os.path.exists(path_text):
 							os.makedirs(path_text)
 
-						if int(variant_index) == 0 or int(variant_index) == 1:
+						if int(variant_index) <= 1:
 							data_text = u""
+							data_links = ObjDict()
 
 							if variant.content.linetable:
 								if self.source.version >= 3:
@@ -88,14 +89,14 @@ class TextsRemaker(CommonRemaker):
 
 								lines_height = 0
 								lines = []
-								if self.issue.number >= 28:
+								if self.issue.number >= "28":
 									inverse_lines = []
 
 								for linetable_index, linetable in variant.content.linetable.iteritems():
 									line_width = 0
 									line_height = variant.content.linetable_meta[linetable_index].content.height
 									line_pieces = []
-									if self.issue.number >= 28:
+									if self.issue.number >= "28":
 										inverse_line_pieces = []
 
 									flag_bold = False
@@ -123,7 +124,7 @@ class TextsRemaker(CommonRemaker):
 												flag_italic = not flag_italic
 
 											# obrazek
-											elif piece.raw == 8 or piece.raw == 10 or piece.raw == 11 or piece.raw == 12:
+											elif piece.raw == 8 or (self.source.version >= 6 and (piece.raw == 10 or piece.raw == 11 or piece.raw == 12)):
 												image_content_unpacked = []
 
 												for row_index, row in piece.data.rows.iteritems():
@@ -152,7 +153,7 @@ class TextsRemaker(CommonRemaker):
 												i_piece.convert("RGBA")
 												line_width += piece.data.width
 												line_pieces.append(i_piece)
-												if self.issue.number >= 28:
+												if self.issue.number >= "28":
 													inverse_line_pieces.append(i_piece)
 
 											# odkaz
@@ -166,7 +167,7 @@ class TextsRemaker(CommonRemaker):
 												i_piece = Image.new("RGBA", (piece.data.length, line_height), (0, 0, 0, 0))
 												line_width += piece.data.length
 												line_pieces.append(i_piece)
-												if self.issue.number >= 28:
+												if self.issue.number >= "28":
 													inverse_line_pieces.append(i_piece)
 
 											# bezny znak
@@ -191,7 +192,7 @@ class TextsRemaker(CommonRemaker):
 													i_piece_width, i_piece_height = i_piece.size
 													line_width += i_piece_width
 													line_pieces.append(i_piece)
-													if self.issue.number >= 28:
+													if self.issue.number >= "28":
 														i_piece = self.fonts[str(int(variant_index) + 2)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].image
 														inverse_line_pieces.append(i_piece)
 
@@ -206,7 +207,7 @@ class TextsRemaker(CommonRemaker):
 									lines_height += line_height
 									lines.append(i_line)
 
-									if self.issue.number >= 28:
+									if self.issue.number >= "28":
 										i_line = Image.new("RGBA", (line_width, line_height), (0, 0, 0, 0))
 										line_offset_x = 0
 
@@ -230,7 +231,7 @@ class TextsRemaker(CommonRemaker):
 								i_lines.convert("RGBA")
 								i_lines.save(self.PATTERN_FILE_TEXT_ASSET % (path_text, int(variant_index)))
 
-								if self.issue.number >= 28:
+								if self.issue.number >= "28":
 									i_lines_temp = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 0))
 									lines_offset_y = 0
 
@@ -246,6 +247,28 @@ class TextsRemaker(CommonRemaker):
 
 							with open(self.PATTERN_FILE_TEXT_PLAIN % (path_text, int(variant_index)), "w") as f:
 								f.write(data_text.encode("utf8", "replace"))
+
+							if variant.content.linktable:
+								for link_index, link in variant.content.linktable_meta.iteritems():
+									linktable = variant.content.linktable[str(link_index)]
+
+									data_link = ObjDict()
+									data_link.area = ObjDict()
+									data_link.macros = ObjDict()
+
+									data_link.area.topleft_x = link.content.topleft_x
+									data_link.area.topleft_y = link.content.topleft_y
+									data_link.area.bottomright_x = link.content.bottomright_x
+									data_link.area.bottomright_y = link.content.bottomright_y
+
+									for self.macro_index, self.macro in linktable.content.macros.iteritems():
+										data_macro = self._parse_macro(self.macro)
+										data_link.macros[str(self.macro_index)] = data_macro
+
+									data_links[str(link_index)] = data_link
+
+								with open(self.PATTERN_FILE_TEXT_LINKS % (path_text, int(variant_index)), "w") as f:
+									f.write(data_links.dumps())
 
 						else:
 							with open(variant.content.data.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
@@ -290,6 +313,7 @@ class TextsRemaker(CommonRemaker):
 					text_variants = text_content.variants
 
 				data_text = ObjDict()
+				data_text.name = ""
 				data_text.variants = ObjDict()
 
 				for variant_index, variant in text_variants.iteritems():
@@ -303,369 +327,14 @@ class TextsRemaker(CommonRemaker):
 
 						data_variant = ObjDict()
 
-						if variant_index == 0 or  variant_index == 1:
+						if int(variant_index) <= 1:
+							data_variant.title = ""
 							data_variant.asset = (self.PATTERN_FILE_TEXT_ASSET % (path_text, int(variant_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
 							data_variant.plain = (self.PATTERN_FILE_TEXT_PLAIN % (path_text, int(variant_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
-
-							data_variant.links = ObjDict()
-
-							for link_index, link in variant.content.linktable_meta.iteritems():
-								linktable = variant.content.linktable[str(link_index)]
-
-								data_link = ObjDict()
-								data_link.area = ObjDict()
-								data_link.actions = ObjDict()
-
-								data_link.area.topleft_x = link.content.topleft_x
-								data_link.area.topleft_y = link.content.topleft_y
-								data_link.area.bottomright_x = link.content.bottomright_x
-								data_link.area.bottomright_y = link.content.bottomright_y
-
-								for action_index, action in linktable.content.pieces.iteritems():
-									data_action = ObjDict()
-
-									data_action.type = action.mode
-									data_action.params = ObjDict()
-
-									# doit
-									if data_action.type == 0x0001:
-										data_action.params.id = action.data.id
-
-									# text
-									elif data_action.type == 0x0004:
-										data_action.params.content = action.data.textfile
-										data_action.params.area = ObjDict()
-										data_action.params.area.topleft_x = action.data.topleft_x
-										data_action.params.area.topleft_y = action.data.topleft_y
-										data_action.params.area.width = action.data.width
-										data_action.params.area.height = action.data.height
-										data_action.params.slider = ObjDict()
-										data_action.params.slider.topleft_x = action.data.slider_topleft_x
-										data_action.params.slider.topleft_y = action.data.slider_topleft_y
-										# macros >= 3
-										if self.source.library == 'texts' and self.source.version >= 6:
-											data_action.params.foo = action.data.foo
-
-									# video
-									elif data_action.type == 0x0005:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-										data_action.params.foo_6 = action.data.foo_6
-
-									# obrazky
-									elif data_action.type == 0x0006:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-
-									# zvuk
-									elif data_action.type == 0x0007:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-
-									# button
-									elif data_action.type == 0x0009:
-										data_action.params.id = action.data.id
-										data_action.params.image = action.data.image
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.topleft_x = action.data.topleft_x
-										data_action.params.topleft_y = action.data.topleft_y
-										data_action.params.scancode = action.data.scancode
-										data_action.params.hover_topleft_x = action.data.hover_topleft_x
-										data_action.params.hover_topleft_y = action.data.hover_topleft_y
-										data_action.params.hover_bottomright_x = action.data.hover_bottomright_x
-										data_action.params.hover_bottomright_y = action.data.hover_bottomright_y
-										data_action.params.foo_2 = action.data.foo_2
-										# macros >= 3
-										if self.source.library == 'texts' and self.source.version >= 6:
-											data_action.params.foo_3 = action.data.foo_3
-
-									# area
-									elif data_action.type == 0x000a:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-										data_action.params.foo_6 = action.data.foo_6
-
-									# event
-									if data_action.type == 0x000b:
-										data_action.params.id = action.data.id
-
-									# gotopage
-									if data_action.type == 0x000c:
-										data_action.params.id = action.data.id
-										# macros >= 3
-										if self.source.library == 'texts' and self.source.version >= 6:
-											data_action.params.foo = action.data.foo
-
-									# svar
-									elif data_action.type == 0x000d:
-										data_action.params.variable = action.data.variable
-										data_action.params.value_length = action.data.value_length
-										data_action.params.value = action.data.value
-
-									# ivar / mov
-									elif data_action.type == 0x000e:
-										data_action.params.variable = action.data.variable
-										data_action.params.value = action.data.value
-
-									# screen
-									if data_action.type == 0x000f:
-										data_action.params.id = action.data.id
-
-									# keybutt
-									elif data_action.type == 0x0011:
-										data_action.params.topleft_x = action.data.topleft_x
-										data_action.params.topleft_y = action.data.topleft_y
-										data_action.params.image = action.data.image
-										data_action.params.foo = action.data.foo
-										data_action.params.scancode = action.data.scancode
-
-									# getchar
-									if data_action.type == 0x0012:
-										data_action.params.id = action.data.id
-
-									# pic
-									elif data_action.type == 0x0013:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										# macros <= 2
-										if self.source.library == 'texts' and self.source.version <= 4:
-											data_action.params.foo_3 = action.data.foo_3
-
-									# demo
-									elif data_action.type == 0x0014:
-										data_action.params.textfile_length = action.data.textfile_length
-										data_action.params.textfile = action.data.textfile
-										data_action.params.foo = action.data.foo
-
-									# reklama
-									elif data_action.type == 0x0015:
-										data_action.params.topleft_x = action.data.topleft_x
-										data_action.params.topleft_y = action.data.topleft_y
-										data_action.params.bottomright_x = action.data.bottomright_x
-										data_action.params.bottomright_y = action.data.bottomright_y
-										data_action.params.image = action.data.image
-										data_action.params.id = action.data.id
-
-									# keyevent
-									elif data_action.type == 0x0016:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-
-									# snap
-									elif data_action.type == 0x0017:
-										data_action.params.foo = action.data.foo
-
-									# playwav
-									elif data_action.type == 0x0018:
-										# macros >= 2
-										if self.source.library == 'texts' and self.source.version >= 5:
-											data_action.params.foo_1 = action.data.foo_1
-											data_action.params.foo_2 = action.data.foo_2
-										else:
-											data_action.params.foo = action.data.foo
-
-									# image
-									elif data_action.type == 0x0020:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										# macros >= 4
-										if self.source.library == 'texts' and self.source.version >= 7:
-											data_action.params.foo_5 = action.data.foo_5
-
-									# ???
-									elif data_action.type == 0x0021:
-										data_action.params.foo_1 = action.data.foo_1
-
-									# ???
-									elif data_action.type == 0x0022:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-
-									# curhelp
-									elif data_action.type == 0x0023:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.text_length = action.data.text_length
-										data_action.params.text = action.data.text
-										data_action.params.foo_5 = action.data.foo_5
-
-									# ???
-									elif data_action.type == 0x0024:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-
-									# ???
-									elif data_action.type == 0x0025:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-
-									# ???
-									elif data_action.type == 0x0026:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-
-									# ???
-									elif data_action.type == 0x0027:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-
-									# ???
-									elif data_action.type == 0x0028:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-
-									# ???
-									elif data_action.type == 0x0029:
-										data_action.params.foo = action.data.foo
-
-									# ???
-									elif data_action.type == 0x002b:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-										data_action.params.foo_6 = action.data.foo_6
-										data_action.params.foo_7 = action.data.foo_7
-
-									# ???
-									elif data_action.type == 0x002c:
-										data_action.params.foo = action.data.foo
-										data_action.params.textfile_length = action.data.textfile_length
-										data_action.params.textfile = action.data.textfile
-
-									# ???
-									elif data_action.type == 0x002d:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-
-									# link?
-									elif data_action.type == 0x0033:
-										data_action.params.text_1_length = action.data.text_1_length
-										data_action.params.text_1 = action.data.text_1
-										data_action.params.text_2_length = action.data.text_2_length
-										data_action.params.text_2 = action.data.text_2
-										data_action.params.foo = action.data.foo
-
-									# ???
-									elif data_action.type == 0x0035:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-										data_action.params.foo_5 = action.data.foo_5
-										data_action.params.foo_6 = action.data.foo_6
-										data_action.params.foo_7 = action.data.foo_7
-										data_action.params.foo_8 = action.data.foo_8
-
-									# ???
-									elif data_action.type == 0x0036:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-
-									# ???
-									elif data_action.type == 0x0037:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.foo_3 = action.data.foo_3
-										data_action.params.foo_4 = action.data.foo_4
-
-									# ???
-									elif data_action.type == 0x0038:
-										data_action.params.foo = action.data.foo
-
-									# if
-									elif data_action.type == 0x0063:
-										data_action.params.data_length_1 = action.data.data_length_1
-										data_action.params.data_length_2 = action.data.data_length_2
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-										data_action.params.branches = ObjDict()
-
-										data_action.params.branches.branch_if = ObjDict()
-										data_action.params.branches.branch_if.value_1 = action.data.branches.branch_if.value_1
-										data_action.params.branches.branch_if.condition = action.data.branches.branch_if.condition
-										data_action.params.branches.branch_if.value_2 = action.data.branches.branch_if.value_2
-										if hasattr(action.data.branches.branch_if, "foo"):
-											data_action.params.branches.branch_if.foo = action.data.branches.branch_if.foo
-										data_action.params.branches.branch_if.macros = ObjDict()
-
-										#for self.macro_inner_index, self.macro_inner in enumerate(action.data.branches.branch_if.macros):
-											#data_macro_inner = self._parse_macro(self.macro_inner)
-											#data_action.params.branches.branch_if.macros[str(self.macro_inner_index)] = data_macro_inner
-
-										if hasattr(action.data.branches, "branch_else"):
-											data_action.params.branches.branch_else = ObjDict()
-											data_action.params.branches.branch_else.macros = ObjDict()
-
-											#for self.macro_inner_index, self.macro_inner in enumerate(action.data.branches.branch_else.macros):
-												#data_macro_inner = self._parse_macro(self.macro_inner)
-												#data_action.params.branches.branch_else.macros[str(self.macro_inner_index)] = data_macro_inner
-
-									# #07/texts/184/linktable error
-									elif data_action.type == 0x00f0:
-										#data_action.params.foo = action.data.foo # TODO
-										data_action.params.foo = ""
-
-									# #10/texts/202/linktable error
-									elif data_action.type == 0x414d:
-										#data_action.params.foo = action.data.foo # TODO
-										data_action.params.foo = ""
-
-									# nokeys
-									elif data_action.type == 0x4f4e:
-										data_action.params.foo_1 = action.data.foo_1
-										data_action.params.foo_2 = action.data.foo_2
-
-									# #30/texts/94/linktable error
-									elif data_action.type == 0x614d:
-										#data_action.params.foo = action.data.foo # TODO
-										data_action.params.foo = ""
-
-									# #08/texts/211/linktable error
-									elif data_action.type == 0xc0ff:
-										#data_action.params.foo = action.data.foo # TODO
-										data_action.params.foo = ""
-
-									# #21/texts/145/0/linktable error
-									elif data_action.type == 0xc20c:
-										#data_action.params.foo = action.data.foo # TODO
-										data_action.params.foo = ""
-
-									# #21/texts/145/1/linktable error
-									elif data_action.type == 0xff02:
-										#data_action.params.foo = action.data.foo # TODO
-										data_action.params.foo = ""
-
-									else:
-										print "Unknown action type: %s (text_index=%s, variant_index=%s, link_index=%s)" % (action.mode, text_index, variant_index, link_index)
-										sys.exit()
-
-									data_link.actions[str(action_index)] = data_action
-
-								data_variant.links[str(link_index)] = data_link
+							if variant.content.linktable:
+								data_variant.links = (self.PATTERN_FILE_TEXT_LINKS % (path_text, int(variant_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+							else:
+								data_variant.links = None
 
 							if self.source.version > 3:
 								with open(variant.content.title.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
@@ -673,7 +342,6 @@ class TextsRemaker(CommonRemaker):
 
 								all_bytes = string.maketrans("", "")
 								variant_title = variant_title.translate(all_bytes, all_bytes[:32])
-								data_variant.title = ""
 
 								for char_index, char in enumerate(variant_title):
 									if ord(char) < 128:
