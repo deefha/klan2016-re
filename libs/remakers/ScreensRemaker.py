@@ -18,13 +18,8 @@ class ScreensRemaker(CommonRemaker):
 		super(ScreensRemaker, self).__init__(issue, source, source_index)
 
 		self.CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™   "
-		self.fonts = ObjDict()
 
-		self.PATTERN_PATH_SCREEN = "%s%s" % (self.PATH_DATA_REMAKED, "%03d/")
-
-		self.PATTERN_FILE_TEXT_ASSET = "%s%d.png"
-		self.PATTERN_FILE_TEXT_ASSET_INVERSE = "%s%d_inverse.png"
-		self.PATTERN_FILE_TEXT_PLAIN = "%s%d.txt"
+		self.PATTERN_FILE_SCREEN = "%s%03d.json"
 
 
 
@@ -40,6 +35,8 @@ class ScreensRemaker(CommonRemaker):
 
 		for self.screen_index, self.screen in tqdm(self.meta_decompiled.data.screens.iteritems(), total=len(self.meta_decompiled.data.screens), desc="fill_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if self.screen:
+				self.meta_remaked.screens[str(self.screen_index)] = (self.PATTERN_FILE_SCREEN % (self.PATH_DATA_REMAKED, int(self.screen_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
+
 				with open(self.screen.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "r") as f:
 					#content = f.read()
 					lines = f.readlines() # TODO
@@ -69,4 +66,5 @@ class ScreensRemaker(CommonRemaker):
 
 						data_screen.events[str(event_index)] = data_event
 
-				self.meta_remaked.screens[str(self.screen_index)] = data_screen
+				with open(self.PATTERN_FILE_SCREEN % (self.PATH_DATA_REMAKED, int(self.screen_index)), "w") as f:
+					f.write(data_screen.dumps())

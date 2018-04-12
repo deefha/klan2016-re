@@ -17,9 +17,9 @@ class ScreensDecompiler(CommonDecompiler):
 	def __init__(self, issue, source, source_index):
 		super(ScreensDecompiler, self).__init__(issue, source, source_index)
 
-		self.PATTERN_FILE_SCREEN = "%s%04d.json"
+		self.PATTERN_FILE_SCREEN = "%s%03d.json"
 
-		self.PATTERN_DECOMPILED_SCREEN = "decompiled://%s/%s/%s/%04d.json"
+		self.PATTERN_DECOMPILED_SCREEN = "decompiled://%s/%s/%s/%03d.json"
 
 		self.counts = ObjDict()
 
