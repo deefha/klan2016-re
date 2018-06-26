@@ -2,6 +2,7 @@
 
 # common imports
 import os, sys, datetime
+from objdict import ObjDict
 from pprint import pprint
 from colorama import init as colorama_init, Fore, Back, Style
 
@@ -22,6 +23,7 @@ ARG_ISSUE_NUMBER = sys.argv[1]
 CONFIG_PATH = "../data/config.yml"
 CHECK_PATH = "../data/initialized/%s.check"
 ISSUE_PATH = "../data/initialized/%s.iso"
+MANIFEST_PATH = "../data/initialized/%s.json"
 
 
 
@@ -42,6 +44,7 @@ def initialize(config, issue):
 
 	check_path = CHECK_PATH % issue.number
 	issue_path = ISSUE_PATH % issue.number
+	manifest_path = MANIFEST_PATH % issue.number
 
 	# download missing issues
 	if os.path.isfile(issue_path):
@@ -99,6 +102,11 @@ def initialize(config, issue):
 	with open(check_path, "w") as f:
 		print "\tWriting check file..."
 		f.write(datetime.datetime.utcnow().replace(microsecond=0).isoformat())
+
+	# write manifest file
+	with open(manifest_path, "w") as f:
+		print "\tWriting manifest file..."
+		f.write(issue.dumps())
 
 	# issue done
 	if not os.path.isfile(issue_path):
