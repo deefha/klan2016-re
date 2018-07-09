@@ -1,6 +1,7 @@
 data/decompiled/**/
-data/remaked/**/
+data/exported/**/
+data/exported/*.json
 data/initialized/*.check
 data/initialized/*.iso
-data/initialized/*.json
+data/remaked/**/
 libs/**/*.pyc
