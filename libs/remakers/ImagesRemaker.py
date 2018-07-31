@@ -116,6 +116,7 @@ class ImagesRemaker(CommonRemaker):
 				data_image = ObjDict()
 				data_image.width = image.content.width
 				data_image.height = image.content.height
+				data_image.mode = image.content.mode
 				data_image.asset = "remaked://%s/%s/%s/%04d.png" % (self.issue.number, self.source.library, self.source_index, int(image_index))
 
 				self.meta_remaked.images[image_index] = data_image
