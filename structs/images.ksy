@@ -72,7 +72,7 @@ types:
             5: t_image_data_rgb565(data_size)
             256: t_image_data_indexed(data_size)
             257: t_image_data_indexed(data_size)
-            258: t_image_data_common(data_size)
+            258: t_image_data_indexed(data_size)
             261: t_image_data_rgb565(data_size)
 
   t_image_data_common:

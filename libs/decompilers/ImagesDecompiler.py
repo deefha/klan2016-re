@@ -54,7 +54,7 @@ class ImagesDecompiler(CommonDecompiler):
 				data_image.content.data = ObjDict()
 				data_image.content.data.param_data_size = image.content.data.param_data_size
 
-				if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257:
+				if image.content.mode == 1 or image.content.mode == 256 or image.content.mode == 257 or image.content.mode == 258:
 					data_image.content.data.colormap = self.PATTERN_DECOMPILED_COLORMAP % (self.issue.number, self.source.library, self.source_index, image_index)
 
 					#print "\tColormap"
