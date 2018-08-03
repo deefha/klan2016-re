@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 # specific imports
 from PIL import Image
+from collections import deque
 from CommonRemaker import CommonRemaker
 
 
@@ -25,10 +26,25 @@ class ImagesRemaker(CommonRemaker):
 				self.items_total += 1
 				status = True
 
-				# colormap, indexed, RLE compression
+				# 256 colors, indexed, no compression
+				# 256 (#00+)
+				if image.content.mode == 256:
+					continue
+					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
+						image_colormap = f.read()
+
+					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
+						image_content = f.read()
+
+						i = Image.frombytes("P", (image.content.width, image.content.height), image_content)
+						i.putpalette(image_colormap)
+						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
+
+				# 256 colors, indexed, custom RLE compression
 				# 1 (#00+)
 				# 257 (#09+)
-				if image.content.mode == 1 or image.content.mode == 257:
+				elif image.content.mode == 1 or image.content.mode == 257:
+					continue
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
@@ -67,37 +83,123 @@ class ImagesRemaker(CommonRemaker):
 					i.putpalette(image_colormap)
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
-				# colormap, indexed, no compression
-				# 256 (#00+)
-				elif image.content.mode == 256:
+				# 256 colors, indexed, custom LZSS compression
+				# 258 (#11+)
+				elif image.content.mode == 258 and int(image_index) == 5531:
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
 					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
-						i = Image.frombytes("P", (image.content.width, image.content.height), image_content)
-						i.putpalette(image_colormap)
-						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
+					image_content_unpacked = []
 
-				# TODO, red placeholder
-				# 4 (#06+)
-				# 258 (#11+)
-				elif image.content.mode == 4 or image.content.mode == 258:
-					status = False
+					image_buffer = []
+					for i in xrange(4096):
+						image_buffer.append(chr(0))
+					image_buffer_index = 0
 
-					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
+					content_byte_flags = True
+					content_byte_flags_value = None
+					content_byte_flags_index = None
+					content_byte_reference = False
+					content_byte_reference_value_first = None
+					content_byte_reference_value_second = None
+
+					flag_count = 0
+
+					for content_byte in image_content:
+						if content_byte_flags:
+							flag_count += 1
+							#i = Image.frombytes("P", (32, 128), "".join(image_buffer))
+							#i.putpalette(image_colormap)
+							#i.save("%s%04d-%09d.png" % (self.PATH_DATA_REMAKED, int(image_index), flag_count))
+
+							content_byte_flags_value = content_byte
+							content_byte_flags_index = 0
+
+							#print "New flags: %s" % ord(content_byte_flags_value)
+
+							content_byte_flags = False
+						else:
+							#print "Flags: %s, flags index: %s, flag bit: %s" % (ord(content_byte_flags_value), content_byte_flags_index, ord(content_byte_flags_value) & (2 ** content_byte_flags_index))
+
+							if ord(content_byte_flags_value) & (2 ** content_byte_flags_index):
+								image_content_unpacked.append(content_byte)
+
+								image_buffer[image_buffer_index] = content_byte
+								image_buffer_index += 1
+								if image_buffer_index > 4095:
+									image_buffer_index %= 4095
+
+								content_byte_flags_index += 1
+								#print image_content_unpacked
+							else:
+								if content_byte_reference:
+									content_byte_reference_value_second = content_byte
+									reference_index = ((ord(content_byte_reference_value_second) & 0xf0) << 4) + ord(content_byte_reference_value_first)
+									reference_length = ((ord(content_byte_reference_value_second) & 0x0f) + 3)
+
+									if reference_index > len(image_content_unpacked):
+										#reference_index = len(image_content_unpacked) - reference_index - 1
+									#else:
+										reference_index = image_buffer_index + (4077 - reference_index)
+
+									print "Reference index: %s, reference length: %s, buffer index: %s" % (reference_index, reference_length, image_buffer_index)
+
+									#image_content_unpacked.extend([chr(171)] * reference_length)
+
+									for x in xrange(reference_length):
+										real_index = reference_index + x
+										if real_index > 4095:
+											real_index %= 4095
+
+										print "\tReal index: %s" % real_index
+
+										image_content_unpacked.append(image_buffer[real_index])
+
+										image_buffer[image_buffer_index] = image_buffer[real_index]
+										image_buffer_index += 1
+										if image_buffer_index > 4095:
+											image_buffer_index %= 4095
+
+									content_byte_reference = False
+									content_byte_flags_index += 1
+									#print image_content_unpacked
+								else:
+									content_byte_reference_value_first = content_byte
+									content_byte_reference = True
+
+							if content_byte_flags_index > 7:
+								content_byte_flags = True
+								content_byte_flags_value = None
+								content_byte_flags_index = None
+
+					image_content_unpacked = "".join(image_content_unpacked)
+
+					i = Image.frombytes("P", (image.content.width, image.content.height), image_content_unpacked)
+					i.putpalette(image_colormap)
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# RGB565
 				# 5 (#11+)
 				# 261 (#11+)
 				elif image.content.mode == 5 or image.content.mode == 261:
+					continue
 					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
 						i = Image.frombytes("RGB", (image.content.width, image.content.height), image_content, "raw", "BGR;16")
 						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
+
+				# TODO, red placeholder
+				# 4 (#06+)
+				elif image.content.mode == 4:
+					continue
+					status = False
+
+					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
+					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				if status:
 					self.items_hit += 1
