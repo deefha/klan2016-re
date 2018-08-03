@@ -8,7 +8,6 @@ from tqdm import tqdm
 
 # specific imports
 from PIL import Image
-from collections import deque
 from CommonRemaker import CommonRemaker
 
 
@@ -27,9 +26,8 @@ class ImagesRemaker(CommonRemaker):
 				status = True
 
 				# 256 colors, indexed, no compression
-				# 256 (#00+)
-				if image.content.mode == 256:
-					continue
+				# 0x0100 - M256 (#00+)
+				if image.content.mode == 0x0100:
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
@@ -41,10 +39,9 @@ class ImagesRemaker(CommonRemaker):
 						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# 256 colors, indexed, custom RLE compression
-				# 1 (#00+)
-				# 257 (#09+)
-				elif image.content.mode == 1 or image.content.mode == 257:
-					continue
+				# 0x0001 - M1 (#00+)
+				# 0x0101 - M257 (#09+)
+				elif image.content.mode == 0x0001 or image.content.mode == 0x0101:
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
@@ -84,8 +81,8 @@ class ImagesRemaker(CommonRemaker):
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# 256 colors, indexed, custom LZSS compression
-				# 258 (#11+)
-				elif image.content.mode == 258 and int(image_index) == 5531:
+				# 0x0102 - M258 (#11+)
+				elif image.content.mode == 0x0102:
 					with open(image.content.data.colormap.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_colormap = f.read()
 
@@ -95,9 +92,9 @@ class ImagesRemaker(CommonRemaker):
 					image_content_unpacked = []
 
 					image_buffer = []
+					image_buffer_index = 4096 - 18
 					for i in xrange(4096):
 						image_buffer.append(chr(0))
-					image_buffer_index = 0
 
 					content_byte_flags = True
 					content_byte_flags_value = None
@@ -106,19 +103,10 @@ class ImagesRemaker(CommonRemaker):
 					content_byte_reference_value_first = None
 					content_byte_reference_value_second = None
 
-					flag_count = 0
-
 					for content_byte in image_content:
 						if content_byte_flags:
-							flag_count += 1
-							#i = Image.frombytes("P", (32, 128), "".join(image_buffer))
-							#i.putpalette(image_colormap)
-							#i.save("%s%04d-%09d.png" % (self.PATH_DATA_REMAKED, int(image_index), flag_count))
-
 							content_byte_flags_value = content_byte
 							content_byte_flags_index = 0
-
-							#print "New flags: %s" % ord(content_byte_flags_value)
 
 							content_byte_flags = False
 						else:
@@ -126,46 +114,38 @@ class ImagesRemaker(CommonRemaker):
 
 							if ord(content_byte_flags_value) & (2 ** content_byte_flags_index):
 								image_content_unpacked.append(content_byte)
+								#print "Image index: %s, buffer index: %s, value: %s, literal" % (len(image_content_unpacked) - 1, image_buffer_index, ord(image_content_unpacked[len(image_content_unpacked) - 1]))
+								#print "---"
 
 								image_buffer[image_buffer_index] = content_byte
 								image_buffer_index += 1
-								if image_buffer_index > 4095:
-									image_buffer_index %= 4095
+								if image_buffer_index == 4096:
+									image_buffer_index = 0
 
 								content_byte_flags_index += 1
-								#print image_content_unpacked
 							else:
 								if content_byte_reference:
 									content_byte_reference_value_second = content_byte
 									reference_index = ((ord(content_byte_reference_value_second) & 0xf0) << 4) + ord(content_byte_reference_value_first)
 									reference_length = ((ord(content_byte_reference_value_second) & 0x0f) + 3)
 
-									if reference_index > len(image_content_unpacked):
-										#reference_index = len(image_content_unpacked) - reference_index - 1
-									#else:
-										reference_index = image_buffer_index + (4077 - reference_index)
-
-									print "Reference index: %s, reference length: %s, buffer index: %s" % (reference_index, reference_length, image_buffer_index)
-
-									#image_content_unpacked.extend([chr(171)] * reference_length)
-
 									for x in xrange(reference_length):
 										real_index = reference_index + x
-										if real_index > 4095:
-											real_index %= 4095
-
-										print "\tReal index: %s" % real_index
+										if real_index >= 4096:
+											real_index -= 4096
 
 										image_content_unpacked.append(image_buffer[real_index])
+										#print "Image index: %s, buffer index: %s, value: %s, reference index: %s, length: %s, step: %s, real index: %s" % (len(image_content_unpacked) - 1, image_buffer_index, ord(image_content_unpacked[len(image_content_unpacked) - 1]), reference_index, reference_length, x, real_index)
 
 										image_buffer[image_buffer_index] = image_buffer[real_index]
 										image_buffer_index += 1
-										if image_buffer_index > 4095:
-											image_buffer_index %= 4095
+										if image_buffer_index == 4096:
+											image_buffer_index = 0
+
+									#print "---"
 
 									content_byte_reference = False
 									content_byte_flags_index += 1
-									#print image_content_unpacked
 								else:
 									content_byte_reference_value_first = content_byte
 									content_byte_reference = True
@@ -182,10 +162,9 @@ class ImagesRemaker(CommonRemaker):
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# RGB565
-				# 5 (#11+)
-				# 261 (#11+)
-				elif image.content.mode == 5 or image.content.mode == 261:
-					continue
+				# 0x0005 - M5 (#11+)
+				# 0x0105 - M261 (#11+)
+				elif image.content.mode == 0x0005 or image.content.mode == 0x0105:
 					with open(image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 						image_content = f.read()
 
@@ -193,9 +172,8 @@ class ImagesRemaker(CommonRemaker):
 						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				# TODO, red placeholder
-				# 4 (#06+)
-				elif image.content.mode == 4:
-					continue
+				# 0x0004 - M4 (#06+)
+				elif image.content.mode == 0x0004:
 					status = False
 
 					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
