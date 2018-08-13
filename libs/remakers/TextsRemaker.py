@@ -82,7 +82,7 @@ class TextsRemaker(CommonRemaker):
 							data_links = ObjDict()
 
 							if variant.content.linetable:
-								if self.source.version >= 3:
+								if self.source.version >= 6:
 									lines_width = 552
 								else:
 									lines_width = 310
