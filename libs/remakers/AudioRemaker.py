@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 # specific imports
 import audioop
+import contextlib
 import struct
 import wave as wavelib
 from CommonRemaker import CommonRemaker
@@ -129,7 +130,7 @@ class AudioRemaker(CommonRemaker):
 					f.writeframes(wave_content)
 					f.close()
 
-				# PCM, mono, 24 bit, 11025 Hz (#02+)
+				# ? PCM, mono, 24 bit, 11025 Hz (#02+)
 				elif wave.content.mode == 1:
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
 					f.setparams((1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
@@ -140,7 +141,7 @@ class AudioRemaker(CommonRemaker):
 				elif wave.content.mode == 2:
 					status = False
 
-				# ADPCM? (#04+)
+				# ? ADPCM (#04+)
 				elif wave.content.mode == 3:
 					status = False
 					##state = None
@@ -282,9 +283,15 @@ class AudioRemaker(CommonRemaker):
 
 		for wave_index, wave in self.meta_decompiled.data.waves.iteritems():
 			if wave.content:
+				wave_path = "%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index))
+				duration = 0
+				if os.path.isfile(wave_path):
+					with contextlib.closing(wavelib.open(wave_path, 'rb')) as f:
+						duration = f.getnframes() / float(f.getframerate())
+
 				data_wave = ObjDict()
-				#data_wave.width = wave.content.width
-				#data_wave.height = wave.content.height
+				data_wave.duration = duration
+				data_wave.mode = wave.content.mode
 				data_wave.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
 				self.meta_remaked.waves[wave_index] = data_wave
