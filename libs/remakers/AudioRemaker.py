@@ -272,6 +272,16 @@ class AudioRemaker(CommonRemaker):
 				if status:
 					self.items_hit += 1
 				else:
+					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
+					f.setparams((1, 2, 11025, 0, "NONE", "Uncompressed"))
+					values = []
+
+					for i in range(0, 11025):
+						values.append(struct.pack('h', 0))
+
+					f.writeframes(''.join(values))
+					f.close()
+
 					self.items_miss += 1
 
 
