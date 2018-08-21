@@ -295,7 +295,7 @@ class AudioRemaker(CommonRemaker):
 			if wave.content:
 				wave_path = "%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index))
 				duration = 0
-				if os.path.isfile(wave_path):
+				if wave.content.mode == 0 or wave.content.mode == 1:
 					with contextlib.closing(wavelib.open(wave_path, 'rb')) as f:
 						duration = f.getnframes() / float(f.getframerate())
 
