@@ -49,6 +49,8 @@ class CursorsRemaker(CommonRemaker):
 		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
 			if frame.content:
 				data_frame = ObjDict()
+				data_frame.width = 32
+				data_frame.height = 32
 				data_frame.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(frame_index))
 
 				self.meta_remaked.frames[frame_index] = data_frame
