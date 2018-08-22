@@ -14,6 +14,7 @@ from structs.klan_audio_v1 import KlanAudioV1
 from structs.klan_audio_v2 import KlanAudioV2
 from structs.klan_audio_v3 import KlanAudioV3
 from structs.klan_cursors import KlanCursors
+from structs.klan_descriptions import KlanDescriptions
 from structs.klan_fonts import KlanFonts
 from structs.klan_images import KlanImages
 from structs.klan_music_v1 import KlanMusicV1
@@ -484,6 +485,9 @@ class CommonDecompiler(object):
 
 			elif self.source.library == "cursors":
 				self.library = KlanCursors.from_io(self.iso_content)
+
+			elif self.source.library == "descriptions":
+				self.library = KlanDescriptions.from_io(self.iso_content)
 
 			elif self.source.library == "fonts":
 				self.library = KlanFonts.from_io(self.iso_content)

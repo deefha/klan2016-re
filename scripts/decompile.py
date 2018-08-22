@@ -64,6 +64,9 @@ def decompile(config, issue, source, source_index):
 	elif source.library == "cursors":
 		decompiler = CursorsDecompiler.CursorsDecompiler(issue, source, source_index)
 
+	elif source.library == "descriptions":
+		decompiler = DescriptionsDecompiler.DescriptionsDecompiler(issue, source, source_index)
+
 	elif source.library == "fonts":
 		decompiler = FontsDecompiler.FontsDecompiler(issue, source, source_index)
 
