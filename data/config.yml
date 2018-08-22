@@ -29,6 +29,7 @@ issues:
         - path: IMGS.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -81,6 +82,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -133,6 +135,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -188,6 +191,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -243,6 +247,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -298,6 +303,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -356,6 +362,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -417,6 +424,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -478,6 +486,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -539,6 +548,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -600,6 +610,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -661,14 +672,15 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
-      screens:
-        - path: VOID_SCR.Z3P
-          library: screens
-          version: 3
+      index:
       music:
         - path: MODS.LIB
           library: music
           version: 2
+      screens:
+        - path: VOID_SCR.Z3P
+          library: screens
+          version: 3
       screensaver:
         - path: SCRSVR.LIB
           library: screensaver
@@ -722,6 +734,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -783,6 +796,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -844,6 +858,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -905,6 +920,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -966,6 +982,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1027,6 +1044,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1088,6 +1106,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1149,6 +1168,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1210,6 +1230,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1271,6 +1292,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1332,6 +1354,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1393,6 +1416,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1454,6 +1478,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1515,6 +1540,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1576,6 +1602,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
@@ -1637,6 +1664,7 @@ issues:
         - path: IMAGE1.LIB
           library: images
           version: 1
+      index:
       music:
         - path: MODS.LIB
           library: music
