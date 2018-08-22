@@ -1,0 +1,49 @@
+#include "common_blank.bt"
+#include "common_padding.bt"
+#include "common_header.bt"
+
+typedef struct {
+    UINT foo_1;
+    UINT foo_2;
+    UINT foo_3;
+    UINT foo_4;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 8192; lOffsetIndex++) {
+        if (lOffsetIndex % 2) {
+            UINT offsets <format=hex>;
+        }
+        else {
+            UINT offsets <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        }
+    }
+} tFAT <bgcolor=cLtPurple>;
+
+typedef struct {
+    CHAR name[128];
+} mTitle <comment=GetTitleInfo>;
+
+typedef struct {
+    for (lOffsetIndex = 0; lOffsetIndex < 8192; lOffsetIndex++) {
+        lOffset = fat.offsets[lOffsetIndex];
+        if (lOffset != 0x00000000) {
+            FSeek(lOffset);
+            mTitle title;
+        }
+        else {
+            tBlank title;
+        }
+    }
+} tTitles;
+
+string GetTitleInfo(mTitle &title) {
+    string s;
+    SPrintf(s, "%s", title.name);
+    return s;
+}
+
+local UINT lOffsetIndex;
+local UINT lOffset;
+
+tHeader header;
+tFAT fat;
+tTitles titles;
