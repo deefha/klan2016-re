@@ -9,6 +9,7 @@ from tqdm import tqdm
 # specific imports
 import audioop
 import contextlib
+import string
 import struct
 import wave as wavelib
 from CommonRemaker import CommonRemaker
@@ -18,6 +19,8 @@ from CommonRemaker import CommonRemaker
 class AudioRemaker(CommonRemaker):
 
 	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%04d.wav"
+
+	CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™   "
 
 	adpcm_predictor = 0
 	adpcm_step_index = 0
@@ -294,14 +297,28 @@ class AudioRemaker(CommonRemaker):
 		for wave_index, wave in self.meta_decompiled.data.waves.iteritems():
 			if wave.content:
 				wave_path = "%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index))
-				duration = 0
+				wave_duration = 0
 				if wave.content.mode == 0 or wave.content.mode == 1:
-					with contextlib.closing(wavelib.open(wave_path, 'rb')) as f:
-						duration = f.getnframes() / float(f.getframerate())
+					with contextlib.closing(wavelib.open(wave_path, "rb")) as f:
+						wave_duration = f.getnframes() / float(f.getframerate())
+
+				wave_title = ""
+				if self.issue.number >= "03":
+					with open(wave.content.data.title.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
+						wave_title_temp = f.read()
+
+					for char_index, char in enumerate(wave_title_temp):
+						if ord(char) < 32:
+							break
+						elif ord(char) < 128:
+							wave_title += char
+						else:
+							wave_title += self.CHARTABLE[ord(char) - 128]
 
 				data_wave = ObjDict()
-				data_wave.duration = duration
+				data_wave.duration = wave_duration
 				data_wave.mode = wave.content.mode
+				data_wave.title = wave_title
 				data_wave.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
 				self.meta_remaked.waves[wave_index] = data_wave

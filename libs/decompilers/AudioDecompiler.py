@@ -14,10 +14,13 @@ from CommonDecompiler import CommonDecompiler
 class AudioDecompiler(CommonDecompiler):
 
 	PATTERN_PATH_WAVE = "%s%04d/"
+	PATTERN_PATH_TITLE = "%s%04d/title/"
 
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
+	PATTERN_FILE_TITLE = "%s%04d/title/content.bin"
 
 	PATTERN_DECOMPILED_CONTENT = "decompiled://%s/%s/%s/%04d/content.bin"
+	PATTERN_DECOMPILED_TITLE = "decompiled://%s/%s/%s/%04d/title/content.bin"
 
 
 
@@ -49,11 +52,16 @@ class AudioDecompiler(CommonDecompiler):
 				data_wave.content.data = ObjDict()
 				data_wave.content.data.param_data_size = wave.content.data.param_data_size
 
-				if self.source.version == 1:
-					data_wave.content.data.title = ""
-				else:
-					data_wave.content.data.title = ""
-					#data_wave.content.data.title = wave.content.data.title
+				if self.source.version > 1:
+					file_title = self.PATTERN_FILE_TITLE % (self.PATH_DATA, wave_index)
+					path_title = self.PATTERN_PATH_TITLE % (self.PATH_DATA, wave_index)
+					if not os.path.exists(path_title):
+						os.makedirs(path_title)
+
+					data_wave.content.data.title = self.PATTERN_DECOMPILED_TITLE % (self.issue.number, self.source.library, self.source_index, wave_index)
+
+					with open(file_title, "wb") as f:
+						f.write(wave.content.data.title)
 
 				data_wave.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, wave_index)
 
