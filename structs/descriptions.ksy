@@ -53,5 +53,10 @@ types:
 
   t_description_content:
     seq:
+      - id: data
+        type: t_description_data
+
+  t_description_data:
+    seq:
       - id: title
         size: 128

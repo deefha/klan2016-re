@@ -24,24 +24,6 @@ class KlanDescriptions(KaitaiStruct):
         self.fat = self._root.TFat(self._io, self, self._root)
         self.data = self._root.TData(self._io, self, self._root)
 
-    class TFat(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.foo_1 = self._io.read_u4le()
-            self.foo_2 = self._io.read_u4le()
-            self.foo_3 = self._io.read_u4le()
-            self.foo_4 = self._io.read_u4le()
-            self.offsets = [None] * (8192)
-            for i in range(8192):
-                self.offsets[i] = self._io.read_u4le()
-
-
-
     class TData(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
@@ -97,7 +79,36 @@ class KlanDescriptions(KaitaiStruct):
             self._read()
 
         def _read(self):
+            self.data = self._root.TDescriptionData(self._io, self, self._root)
+
+
+    class TDescriptionData(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
             self.title = self._io.read_bytes(128)
+
+
+    class TFat(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.foo_1 = self._io.read_u4le()
+            self.foo_2 = self._io.read_u4le()
+            self.foo_3 = self._io.read_u4le()
+            self.foo_4 = self._io.read_u4le()
+            self.offsets = [None] * (8192)
+            for i in range(8192):
+                self.offsets[i] = self._io.read_u4le()
+
 
 
 
