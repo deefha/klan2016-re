@@ -68,6 +68,9 @@ def remake(config, issue, source, source_index):
 	elif source.library == "cursors":
 		remaker = CursorsRemaker.CursorsRemaker(issue, source, source_index)
 
+	elif source.library == "descriptions":
+		remaker = DescriptionsRemaker.DescriptionsRemaker(issue, source, source_index)
+
 	elif source.library == "fonts":
 		remaker = FontsRemaker.FontsRemaker(issue, source, source_index)
 
