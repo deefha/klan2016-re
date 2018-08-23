@@ -14,8 +14,18 @@ from CommonRemaker import CommonRemaker
 
 class ImagesRemaker(CommonRemaker):
 
-	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
-	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
+	def __init__(self, issue, source, source_index):
+		super(ImagesRemaker, self).__init__(issue, source, source_index)
+
+		self.descriptions = ObjDict()
+
+		print "Loading descriptions..."
+
+		if self.issue.number >= "06":
+			with open("%s%s/%s/0.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "descriptions"), "r") as f:
+				lines = f.readlines() # TODO
+				content = ''.join(lines) # TODO
+				self.descriptions = ObjDict(content)
 
 
 
@@ -70,7 +80,7 @@ class ImagesRemaker(CommonRemaker):
 							else:
 								image_content_unpacked.append(content_byte)
 								content_byte_break_length -= 1
-								
+
 								if not content_byte_break_length:
 									content_byte_break = True
 
@@ -197,6 +207,10 @@ class ImagesRemaker(CommonRemaker):
 				data_image.width = image.content.width
 				data_image.height = image.content.height
 				data_image.mode = image.content.mode
+				data_image.title = ""
 				data_image.asset = "remaked://%s/%s/%s/%04d.png" % (self.issue.number, self.source.library, self.source_index, int(image_index))
+
+				if hasattr(self.descriptions, "descriptions") and hasattr(self.descriptions.descriptions, str(image_index)):
+					data_image.title = self.descriptions.descriptions[str(image_index)].title
 
 				self.meta_remaked.images[image_index] = data_image
