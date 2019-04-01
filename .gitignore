@@ -1,6 +1,7 @@
 data/decompiled/**/
 data/exported/**/
 data/exported/*.json
+data/initialized/*.7z
 data/initialized/*.check
 data/initialized/*.iso
 data/remaked/**/

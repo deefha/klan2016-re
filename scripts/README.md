@@ -29,6 +29,20 @@ Zobrazí strukturu z adresáře `structs` aplikovanou na zdrojová data z adres�
 ./struct_view.sh font 01
 ```
 
+## initialize.py
+
+Získá zdrojová data z centrálního repozitáře, uloží je do adresáře `data/initialized` a ověří kontrolní součty.
+
+**Parametry:**
+
+* číslo vydání (nepovinné)
+
+**Příklad:**
+
+```bash
+./initialize.py 03
+```
+
 ## source_decompile.py
 
 Zkonvertuje zdrojová data z adresáře `data/sources` na JSON metadata a binární bloby v adresářích `data/meta` a `data/blobs`. Využívá Python knihovny z adresářů `libs/structs` a `libs/decompilers`.

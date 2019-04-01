@@ -6,9 +6,12 @@ issues:
   "00":
     number: "00"
     origin:
-      key: 0Bw1iZK6iA4_xT1hUTjJ3Zkwwa0k
+      key: 1AAxB2NQr-d-uDdytLzaH-kZemTGfNeWc
+      filename: klan-00.iso
       size: 575526912
+      size_packed: 351448447
       md5: ea99f38cffbf4e7ae5469706c5aa2dce
+      md5_packed: 34eea75147c21cb007ae0688d174920c
     libraries:
       arklanoid:
       audio:
@@ -50,9 +53,12 @@ issues:
   "01":
     number: "01"
     origin:
-      key: 0Bw1iZK6iA4_xd1ZHbjlhT1ZraXM
+      key: 1hdaRdcMcSb-nf9WkGeYA3hVvxN7ZlqOQ
+      filename: klan-01.iso
       size: 658802688
+      size_packed: 468474208
       md5: d8f32b7293a85df7cec737b74d78e9fe
+      md5_packed: 7c44471f9f277666e3dda0a25841f92e
     libraries:
       arklanoid:
       audio:
@@ -103,9 +109,12 @@ issues:
   "02":
     number: "02"
     origin:
-      key: 0Bw1iZK6iA4_xc2NEeFRFckd4VFU
+      key: 1fr_JnznGMbyqjafvgXR0rTRALTW6oHy5
+      filename: klan-02.iso
       size: 665669632
+      size_packed: 422901134
       md5: 46524e277a4e208b2fbc28bc8e3e922f
+      md5_packed: 197469cb242e9fae1ecb1a0d061a3ea2
     libraries:
       arklanoid:
       audio:
@@ -156,9 +165,12 @@ issues:
   "03":
     number: "03"
     origin:
-      key: 0Bw1iZK6iA4_xT2NNR2cwTTNvMTg
+      key: 1nqi2dgL2PVLIQ-hnVa1-Fj8YYV4eJl8D
+      filename: klan-03.iso
       size: 673789952
+      size_packed: 673789952
       md5: 607c42710b3b7e08b612e6e65462ff31
+      md5_packed: 607c42710b3b7e08b612e6e65462ff31
     libraries:
       arklanoid:
         - path: A.LIB
