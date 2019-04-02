@@ -31,7 +31,7 @@ Zobrazí strukturu z adresáře `structs` aplikovanou na zdrojová data z adres�
 
 ## initialize.py
 
-Získá zdrojová data z centrálního repozitáře, uloží je do adresáře `data/initialized` a ověří kontrolní součty.
+Získá zdrojová data z centrálního repozitáře, rozbalí je do adresáře `data/initialized`, ověří velikosti a kontrolní součty. Bez této inicializace není možné provádět další operace.
 
 **Parametry:**
 
