@@ -72,7 +72,7 @@ def initialize(config, issue):
 		if issue_packed_size == issue.origin.size_packed:
 			print "\tPacked size OK (%s)" % issue_packed_size
 		else:
-			print "\tPacked size error (%s != %s)" % (issue_packed_size, issue.origin.size_packed)
+			print Fore.RED + "\tPacked size error (%s != %s)" % (issue_packed_size, issue.origin.size_packed)
 			return
 
 	# check packed md5 by config
@@ -107,7 +107,7 @@ def initialize(config, issue):
 	if os.path.isfile(file_issue):
 		print "\tUnpacking OK"
 	else:
-		print Fore.RED + "\tUnpacking error, file not found"
+		print Fore.RED + "\tUnpacking error, file %s not found" % issue.origin.filename
 		return
 
 	## skip checking if checked
@@ -127,7 +127,7 @@ def initialize(config, issue):
 		if issue_size == issue.origin.size:
 			print "\tSize OK (%s)" % issue_size
 		else:
-			print "\tSize error (%s != %s)" % (issue_size, issue.origin.size)
+			print Fore.RED + "\tSize error (%s != %s)" % (issue_size, issue.origin.size)
 			return
 
 	# check md5 by config
