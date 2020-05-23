@@ -1,13 +1,14 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-from t_header import THeader
+import t_header
 class KlanCursors(KaitaiStruct):
     """
     .. seealso::
@@ -20,9 +21,9 @@ class KlanCursors(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.header = THeader(self._io)
-        self.fat = self._root.TFat(self._io, self, self._root)
-        self.data = self._root.TData(self._io, self, self._root)
+        self.header = t_header.THeader(self._io)
+        self.fat = KlanCursors.TFat(self._io, self, self._root)
+        self.data = KlanCursors.TData(self._io, self, self._root)
 
     class TColortableContent(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -63,7 +64,7 @@ class KlanCursors(KaitaiStruct):
 
             self._m_frames = [None] * (self._parent.fat.frames_count)
             for i in range(self._parent.fat.frames_count):
-                self._m_frames[i] = self._root.TFrame(self._parent.fat.frames_offset, i, self._io, self, self._root)
+                self._m_frames[i] = KlanCursors.TFrame(self._parent.fat.frames_offset, i, self._io, self, self._root)
 
             return self._m_frames if hasattr(self, '_m_frames') else None
 
@@ -72,7 +73,7 @@ class KlanCursors(KaitaiStruct):
             if hasattr(self, '_m_foo_1'):
                 return self._m_foo_1 if hasattr(self, '_m_foo_1') else None
 
-            self._m_foo_1 = self._root.TFoo1(self._parent.fat.foo_1_offset, self._io, self, self._root)
+            self._m_foo_1 = KlanCursors.TFoo1(self._parent.fat.foo_1_offset, self._io, self, self._root)
             return self._m_foo_1 if hasattr(self, '_m_foo_1') else None
 
         @property
@@ -82,7 +83,7 @@ class KlanCursors(KaitaiStruct):
 
             self._m_foo_2 = [None] * (self._parent.fat.foo_2_count)
             for i in range(self._parent.fat.foo_2_count):
-                self._m_foo_2[i] = self._root.TFoo2(self._parent.fat.foo_2[i].offset, self._io, self, self._root)
+                self._m_foo_2[i] = KlanCursors.TFoo2(self._parent.fat.foo_2[i].offset, self._io, self, self._root)
 
             return self._m_foo_2 if hasattr(self, '_m_foo_2') else None
 
@@ -93,7 +94,7 @@ class KlanCursors(KaitaiStruct):
 
             self._m_colortables = [None] * (5)
             for i in range(5):
-                self._m_colortables[i] = self._root.TColortable(self._parent.fat.colortables_ofset, i, self._io, self, self._root)
+                self._m_colortables[i] = KlanCursors.TColortable(self._parent.fat.colortables_ofset, i, self._io, self, self._root)
 
             return self._m_colortables if hasattr(self, '_m_colortables') else None
 
@@ -127,7 +128,7 @@ class KlanCursors(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
-            self._m_content = self._root.TFoo2Content(self._io, self, self._root)
+            self._m_content = KlanCursors.TFoo2Content(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 
@@ -151,7 +152,7 @@ class KlanCursors(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek((self.param_offset + (self.param_index * 768)))
-            self._m_content = self._root.TColortableContent(self._io, self, self._root)
+            self._m_content = KlanCursors.TColortableContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 
@@ -174,7 +175,7 @@ class KlanCursors(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
-            self._m_content = self._root.TFoo1Content(self._io, self, self._root)
+            self._m_content = KlanCursors.TFoo1Content(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 
@@ -221,7 +222,7 @@ class KlanCursors(KaitaiStruct):
             self.foo = self._io.read_bytes(8)
             self.foo_2 = [None] * (99)
             for i in range(99):
-                self.foo_2[i] = self._root.TFatFoo2(self._io, self, self._root)
+                self.foo_2[i] = KlanCursors.TFatFoo2(self._io, self, self._root)
 
 
 
@@ -244,7 +245,7 @@ class KlanCursors(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek((self.param_offset + (self.param_index * (((1 + 1) + 2) + 1024))))
-            self._m_content = self._root.TFrameContent(self._io, self, self._root)
+            self._m_content = KlanCursors.TFrameContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 

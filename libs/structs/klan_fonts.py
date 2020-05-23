@@ -1,13 +1,14 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-from t_header import THeader
+import t_header
 class KlanFonts(KaitaiStruct):
     """
     .. seealso::
@@ -20,9 +21,9 @@ class KlanFonts(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.header = THeader(self._io)
-        self.fat = self._root.TFat(self._io, self, self._root)
-        self.data = self._root.TData(self._io, self, self._root)
+        self.header = t_header.THeader(self._io)
+        self.fat = KlanFonts.TFat(self._io, self, self._root)
+        self.data = KlanFonts.TData(self._io, self, self._root)
 
     class TData(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -41,7 +42,7 @@ class KlanFonts(KaitaiStruct):
 
             self._m_fonts = [None] * (60)
             for i in range(60):
-                self._m_fonts[i] = self._root.TFont(self._parent.fat.offsets[i], self._io, self, self._root)
+                self._m_fonts[i] = KlanFonts.TFont(self._parent.fat.offsets[i], self._io, self, self._root)
 
             return self._m_fonts if hasattr(self, '_m_fonts') else None
 
@@ -59,11 +60,11 @@ class KlanFonts(KaitaiStruct):
             self.colormap = self._io.read_bytes(768)
             self.characters = [None] * (256)
             for i in range(256):
-                self.characters[i] = self._root.TCharacter(self._io, self, self._root)
+                self.characters[i] = KlanFonts.TCharacter(self._io, self, self._root)
 
             self.matrices = [None] * (256)
             for i in range(256):
-                self.matrices[i] = self._root.TMatrice((self.computed_matrices_offset + self.characters[i].computed_offset), self.characters[i].computed_width, self.height, self._io, self, self._root)
+                self.matrices[i] = KlanFonts.TMatrice((self.computed_matrices_offset + self.characters[i].computed_offset), self.characters[i].computed_width, self.height, self._io, self, self._root)
 
 
         @property
@@ -139,7 +140,7 @@ class KlanFonts(KaitaiStruct):
             if self.param_offset != 0:
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
-                self._m_content = self._root.TFontContent(self._io, self, self._root)
+                self._m_content = KlanFonts.TFontContent(self._io, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None

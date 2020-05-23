@@ -1,3 +1,4 @@
+.venv/*
 data/decompiled/**/
 data/exported/**/
 data/exported/*.json
@@ -6,3 +7,5 @@ data/initialized/*.check
 data/initialized/*.iso
 data/remaked/**/
 libs/**/*.pyc
+libs/structs/*.py
+libs/vendors/**/

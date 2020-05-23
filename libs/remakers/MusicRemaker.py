@@ -10,7 +10,7 @@ from tqdm import tqdm
 import array
 import binascii
 import struct
-from CommonRemaker import CommonRemaker
+from .CommonRemaker import CommonRemaker
 
 
 
@@ -23,7 +23,7 @@ class MusicRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		for mod_index, mod in self.meta.data.mods.iteritems():
+		for mod_index, mod in self.meta_decompiled.data.mods.items():
 			#if mod.content:
 			if mod_index == "0" or mod_index == "1" or mod_index == "2":
 				struct_sources = []
@@ -36,7 +36,8 @@ class MusicRemaker(CommonRemaker):
 					if sample_index > 0:
 						if sample_id == 65535:
 							# sample name - 22 B
-							struct_sources.append(("22s", binascii.hexlify(array.array("c", "\0" * 22))))
+							#struct_sources.append(("22s", binascii.hexlify(array.array("c", "\0" * 22))))
+							struct_sources.append(("22s", 'SampleNameSampleNameSa'))
 							# sample length in words - 2 B
 							struct_sources.append((">H", 0))
 							# sample finetune - 1 B
@@ -48,7 +49,7 @@ class MusicRemaker(CommonRemaker):
 							# sample repeatlength in words - 2 B
 							struct_sources.append((">H", 0))
 						else:
-							sample = self.meta.data.samples[str(sample_id)]
+							sample = self.meta_decompiled.data.samples[str(sample_id)]
 
 							# sample name - 22 B
 							struct_sources.append(("22s", "SampleNameSampleNameSa"))
@@ -77,7 +78,7 @@ class MusicRemaker(CommonRemaker):
 				struct_sources.append(("4s", "M.K."))
 
 				# patterns - 64x 16 B
-				for pattern_index, pattern in mod.content.data.patterns.iteritems():
+				for pattern_index, pattern in mod.content.data.patterns.items():
 					with open(pattern.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
 						for row_index in range(64):
 							# first 4 channels
@@ -124,7 +125,7 @@ class MusicRemaker(CommonRemaker):
 
 		self.scheme.mods = ObjDict()
 
-		for mod_index, mod in self.meta.data.mods.iteritems():
+		for mod_index, mod in self.meta.data.mods.items():
 			if mod.content:
 				data_mod = ObjDict()
 				#data_mod.width = mod.content.width

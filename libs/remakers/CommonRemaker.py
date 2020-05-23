@@ -37,7 +37,7 @@ class CommonRemaker(object):
 		if not os.path.exists(self.PATH_DATA_REMAKED):
 			os.makedirs(self.PATH_DATA_REMAKED)
 
-		print "Loading decompiled data..."
+		print("Loading decompiled data...")
 
 		try:
 			with open(self.FILE_META_DECOMPILED, "r") as f:
@@ -50,7 +50,7 @@ class CommonRemaker(object):
 				
 				self.initialized = True
 		except IOError:
-			print "Not decompiled"
+			print("Not decompiled")
 
 
 
@@ -408,7 +408,7 @@ class CommonRemaker(object):
 				data_macro.params.branches.branch_if.foo = macro.content.branches.branch_if.foo
 			data_macro.params.branches.branch_if.macros = ObjDict()
 
-			for macro_inner_index, macro_inner in macro.content.branches.branch_if.macros.iteritems():
+			for macro_inner_index, macro_inner in macro.content.branches.branch_if.macros.items():
 				data_macro_inner = self._parse_macro(macro_inner)
 				data_macro.params.branches.branch_if.macros[str(macro_inner_index)] = data_macro_inner
 
@@ -416,7 +416,7 @@ class CommonRemaker(object):
 				data_macro.params.branches.branch_else = ObjDict()
 				data_macro.params.branches.branch_else.macros = ObjDict()
 
-				for macro_inner_index, macro_inner in macro.content.branches.branch_else.macros.iteritems():
+				for macro_inner_index, macro_inner in macro.content.branches.branch_else.macros.items():
 					data_macro_inner = self._parse_macro(macro_inner)
 					data_macro.params.branches.branch_else.macros[str(macro_inner_index)] = data_macro_inner
 
@@ -468,9 +468,9 @@ class CommonRemaker(object):
 
 		else:
 			if self.source.library == "screens":
-				print "Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
+				print("Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index))
 			if self.source.library == "texts":
-				print "Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
+				print("Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index))
 			sys.exit()
 
 		return data_macro
@@ -511,6 +511,6 @@ class CommonRemaker(object):
 
 
 	def print_stats(self):
-		print "Total: %s" % self.items_total
-		print "Hit: %s" % self.items_hit
-		print "Miss: %s" % self.items_miss
+		print("Total: %s" % self.items_total)
+		print("Hit: %s" % self.items_hit)
+		print("Miss: %s" % self.items_miss)

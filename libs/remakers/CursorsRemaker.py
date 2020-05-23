@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 # specific imports
 from PIL import Image
-from CommonRemaker import CommonRemaker
+from .CommonRemaker import CommonRemaker
 
 
 
@@ -19,7 +19,7 @@ class CursorsRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
+		for frame_index, frame in self.meta_decompiled.data.frames.items():
 			if frame.content:
 				self.items_total += 1
 				status = True
@@ -46,7 +46,7 @@ class CursorsRemaker(CommonRemaker):
 
 		self.meta_remaked.frames = ObjDict()
 
-		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
+		for frame_index, frame in self.meta_decompiled.data.frames.items():
 			if frame.content:
 				data_frame = ObjDict()
 				data_frame.width = 32

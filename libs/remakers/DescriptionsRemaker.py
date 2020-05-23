@@ -7,7 +7,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-from CommonRemaker import CommonRemaker
+from .CommonRemaker import CommonRemaker
 
 
 
@@ -18,7 +18,7 @@ class DescriptionsRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		for description_index, description in self.meta_decompiled.data.descriptions.iteritems():
+		for description_index, description in self.meta_decompiled.data.descriptions.items():
 			if description.content:
 				self.items_total += 1
 				status = True
@@ -35,19 +35,19 @@ class DescriptionsRemaker(CommonRemaker):
 
 		self.meta_remaked.descriptions = ObjDict()
 
-		for description_index, description in self.meta_decompiled.data.descriptions.iteritems():
+		for description_index, description in self.meta_decompiled.data.descriptions.items():
 			if description.content:
 				description_title = ""
 				with open(description.content.data.title.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					description_title_temp = f.read()
 
 				for char_index, char in enumerate(description_title_temp):
-					if ord(char) < 32:
+					if char < 32:
 						break
-					elif ord(char) < 128:
-						description_title += char
+					elif char < 128:
+						description_title += chr(char)
 					else:
-						description_title += self.CHARTABLE[ord(char) - 128]
+						description_title += self.CHARTABLE[char - 128]
 
 				data_description = ObjDict()
 				data_description.title = description_title

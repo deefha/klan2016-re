@@ -1,7 +1,9 @@
-import requests, hashlib
+# -*- coding: utf-8 -*-
+
+import hashlib, json, requests
 from objdict import ObjDict
 from tqdm import tqdm
-from yaml import load as yaml_load
+from yaml import unsafe_load as yaml_load
 
 
 
@@ -9,7 +11,8 @@ def config_load(config_path):
 	with open(config_path) as f:
 		config_yaml = yaml_load(f)
 
-	config = ObjDict(ObjDict(config_yaml).dumps())
+	#config = ObjDict(ObjDict(config_yaml).dumps())
+	config = ObjDict(json.dumps(config_yaml))
 
 	return config
 

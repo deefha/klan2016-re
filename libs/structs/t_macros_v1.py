@@ -1,11 +1,12 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
 class TMacrosV1(KaitaiStruct):
     """
@@ -22,97 +23,97 @@ class TMacrosV1(KaitaiStruct):
         self.type = self._io.read_u2le()
         _on = self.type
         if _on == 14:
-            self.content = self._root.TMacrosV1Macro000e(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro000e(self._io, self, self._root)
         elif _on == 10:
-            self.content = self._root.TMacrosV1Macro000a(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro000a(self._io, self, self._root)
         elif _on == 16717:
-            self.content = self._root.TMacrosV1Macro414d(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro414d(self._io, self, self._root)
         elif _on == 17:
-            self.content = self._root.TMacrosV1Macro0011(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0011(self._io, self, self._root)
         elif _on == 4:
-            self.content = self._root.TMacrosV1Macro0004(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0004(self._io, self, self._root)
         elif _on == 39:
-            self.content = self._root.TMacrosV1Macro0027(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0027(self._io, self, self._root)
         elif _on == 24:
-            self.content = self._root.TMacrosV1Macro0018(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0018(self._io, self, self._root)
         elif _on == 35:
-            self.content = self._root.TMacrosV1Macro0023(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0023(self._io, self, self._root)
         elif _on == 6:
-            self.content = self._root.TMacrosV1Macro0006(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0006(self._io, self, self._root)
         elif _on == 20:
-            self.content = self._root.TMacrosV1Macro0014(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0014(self._io, self, self._root)
         elif _on == 32:
-            self.content = self._root.TMacrosV1Macro0020(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0020(self._io, self, self._root)
         elif _on == 7:
-            self.content = self._root.TMacrosV1Macro0007(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0007(self._io, self, self._root)
         elif _on == 1:
-            self.content = self._root.TMacrosV1Macro0001(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0001(self._io, self, self._root)
         elif _on == 55:
-            self.content = self._root.TMacrosV1Macro0037(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0037(self._io, self, self._root)
         elif _on == 13:
-            self.content = self._root.TMacrosV1Macro000d(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro000d(self._io, self, self._root)
         elif _on == 56:
-            self.content = self._root.TMacrosV1Macro0038(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0038(self._io, self, self._root)
         elif _on == 45:
-            self.content = self._root.TMacrosV1Macro002d(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro002d(self._io, self, self._root)
         elif _on == 11:
-            self.content = self._root.TMacrosV1Macro000b(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro000b(self._io, self, self._root)
         elif _on == 12:
-            self.content = self._root.TMacrosV1Macro000c(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro000c(self._io, self, self._root)
         elif _on == 5:
-            self.content = self._root.TMacrosV1Macro0005(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0005(self._io, self, self._root)
         elif _on == 33:
-            self.content = self._root.TMacrosV1Macro0021(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0021(self._io, self, self._root)
         elif _on == 49407:
-            self.content = self._root.TMacrosV1MacroC0ff(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1MacroC0ff(self._io, self, self._root)
         elif _on == 99:
-            self.content = self._root.TMacrosV1Macro0063(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0063(self._io, self, self._root)
         elif _on == 19:
-            self.content = self._root.TMacrosV1Macro0013(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0013(self._io, self, self._root)
         elif _on == 51:
-            self.content = self._root.TMacrosV1Macro0033(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0033(self._io, self, self._root)
         elif _on == 23:
-            self.content = self._root.TMacrosV1Macro0017(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0017(self._io, self, self._root)
         elif _on == 65282:
-            self.content = self._root.TMacrosV1MacroFf02(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1MacroFf02(self._io, self, self._root)
         elif _on == 53:
-            self.content = self._root.TMacrosV1Macro0035(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0035(self._io, self, self._root)
         elif _on == 15:
-            self.content = self._root.TMacrosV1Macro000f(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro000f(self._io, self, self._root)
         elif _on == 38:
-            self.content = self._root.TMacrosV1Macro0026(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0026(self._io, self, self._root)
         elif _on == 40:
-            self.content = self._root.TMacrosV1Macro0028(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0028(self._io, self, self._root)
         elif _on == 24909:
-            self.content = self._root.TMacrosV1Macro614d(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro614d(self._io, self, self._root)
         elif _on == 44:
-            self.content = self._root.TMacrosV1Macro002c(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro002c(self._io, self, self._root)
         elif _on == 9:
-            self.content = self._root.TMacrosV1Macro0009(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0009(self._io, self, self._root)
         elif _on == 240:
-            self.content = self._root.TMacrosV1Macro00f0(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro00f0(self._io, self, self._root)
         elif _on == 21:
-            self.content = self._root.TMacrosV1Macro0015(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0015(self._io, self, self._root)
         elif _on == 37:
-            self.content = self._root.TMacrosV1Macro0025(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0025(self._io, self, self._root)
         elif _on == 41:
-            self.content = self._root.TMacrosV1Macro0029(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0029(self._io, self, self._root)
         elif _on == 36:
-            self.content = self._root.TMacrosV1Macro0024(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0024(self._io, self, self._root)
         elif _on == 18:
-            self.content = self._root.TMacrosV1Macro0012(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0012(self._io, self, self._root)
         elif _on == 20302:
-            self.content = self._root.TMacrosV1Macro4f4e(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro4f4e(self._io, self, self._root)
         elif _on == 49676:
-            self.content = self._root.TMacrosV1MacroC20c(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1MacroC20c(self._io, self, self._root)
         elif _on == 34:
-            self.content = self._root.TMacrosV1Macro0022(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0022(self._io, self, self._root)
         elif _on == 54:
-            self.content = self._root.TMacrosV1Macro0036(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0036(self._io, self, self._root)
         elif _on == 43:
-            self.content = self._root.TMacrosV1Macro002b(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro002b(self._io, self, self._root)
         elif _on == 22:
-            self.content = self._root.TMacrosV1Macro0016(self._io, self, self._root)
+            self.content = TMacrosV1.TMacrosV1Macro0016(self._io, self, self._root)
 
     class TMacrosV1Macro000c(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -249,11 +250,11 @@ class TMacrosV1(KaitaiStruct):
 
         def _read(self):
             self._raw_branch_if = self._io.read_bytes((self._parent.data_length_2 - 8))
-            io = KaitaiStream(BytesIO(self._raw_branch_if))
-            self.branch_if = self._root.TMacrosV1Macro0063BranchIf(self._parent.foo_1, io, self, self._root)
+            _io__raw_branch_if = KaitaiStream(BytesIO(self._raw_branch_if))
+            self.branch_if = TMacrosV1.TMacrosV1Macro0063BranchIf(self._parent.foo_1, _io__raw_branch_if, self, self._root)
             self._raw_branch_else = self._io.read_bytes((self._parent.data_length_1 - self._parent.data_length_2))
-            io = KaitaiStream(BytesIO(self._raw_branch_else))
-            self.branch_else = self._root.TMacrosV1Macro0063BranchElse(io, self, self._root)
+            _io__raw_branch_else = KaitaiStream(BytesIO(self._raw_branch_else))
+            self.branch_else = TMacrosV1.TMacrosV1Macro0063BranchElse(_io__raw_branch_else, self, self._root)
 
 
     class TMacrosV1Macro0016(KaitaiStruct):
@@ -294,8 +295,8 @@ class TMacrosV1(KaitaiStruct):
 
         def _read(self):
             self._raw_branch_if = self._io.read_bytes((self._parent.data_length_1 - 8))
-            io = KaitaiStream(BytesIO(self._raw_branch_if))
-            self.branch_if = self._root.TMacrosV1Macro0063BranchIf(self._parent.foo_1, io, self, self._root)
+            _io__raw_branch_if = KaitaiStream(BytesIO(self._raw_branch_if))
+            self.branch_if = TMacrosV1.TMacrosV1Macro0063BranchIf(self._parent.foo_1, _io__raw_branch_if, self, self._root)
 
 
     class TMacrosV1Macro0025(KaitaiStruct):
@@ -575,9 +576,9 @@ class TMacrosV1(KaitaiStruct):
             self.foo_2 = self._io.read_u2le()
             _on = self.mode
             if _on == 1:
-                self.branches = self._root.TMacrosV1Macro0063ModeIfElse(self._io, self, self._root)
+                self.branches = TMacrosV1.TMacrosV1Macro0063ModeIfElse(self._io, self, self._root)
             else:
-                self.branches = self._root.TMacrosV1Macro0063ModeIfOnly(self._io, self, self._root)
+                self.branches = TMacrosV1.TMacrosV1Macro0063ModeIfOnly(self._io, self, self._root)
 
         @property
         def mode(self):

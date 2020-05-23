@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # common imports
@@ -33,18 +33,18 @@ TEMPLATE_FILE_ISSUE = "../data/initialized/%s.iso"
 
 def initialize_loop_issues(config, issue_number):
 	if issue_number == "all":
-		for issue_id, issue in sorted(config.issues.iteritems()):
+		for issue_id, issue in sorted(config.issues.items()):
 			initialize(config, issue)
 	else:
 		try:
 			initialize(config, config.issues[issue_number])
-		except KeyError, e:
-			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+		except KeyError as err:
+			print('I got a KeyError - reason "%s"' % str(err)) # TODO message
 
 
 
 def initialize(config, issue):
-	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number
+	print(Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number)
 
 	file_check = TEMPLATE_FILE_CHECK % issue.number
 	file_issue_packed = TEMPLATE_FILE_ISSUE_PACKED % issue.number
@@ -55,41 +55,41 @@ def initialize(config, issue):
 
 	# download packed issue
 	if os.path.isfile(file_issue_packed):
-		print "\tPacked origin exists, not downloading (%s)" % os.path.basename(file_issue_packed)
+		print("\tPacked origin exists, not downloading (%s)" % os.path.basename(file_issue_packed))
 	elif os.path.isfile(file_issue):
-		print "\tPacked origin not needed"
+		print("\tPacked origin not needed")
 	else:
-		print "\tDownloading packed origin... (%s => %s)" % (issue.origin.key, os.path.basename(file_issue_packed))
+		print("\tDownloading packed origin... (%s => %s)" % (issue.origin.key, os.path.basename(file_issue_packed)))
 
 		KlanTools.issue_download(config, issue, file_issue_packed)
 
 	# check packed size by config
 	if os.path.isfile(file_issue_packed):
-		print "\tChecking packed size..."
+		print("\tChecking packed size...")
 
 		issue_packed_size = os.path.getsize(file_issue_packed)
 
 		if issue_packed_size == issue.origin.size_packed:
-			print "\tPacked size OK (%s)" % issue_packed_size
+			print("\tPacked size OK (%s)" % issue_packed_size)
 		else:
-			print Fore.RED + "\tPacked size error (%s != %s)" % (issue_packed_size, issue.origin.size_packed)
+			print(Fore.RED + "\tPacked size error (%s != %s)" % (issue_packed_size, issue.origin.size_packed))
 			return
 
 	# check packed md5 by config
 	if os.path.isfile(file_issue_packed):
-		print "\tChecking packed MD5..."
+		print("\tChecking packed MD5...")
 
 		issue_packed_md5 = KlanTools.issue_packed_md5(config, issue, file_issue_packed)
 
 		if issue_packed_md5 == issue.origin.md5_packed:
-			print "\tPacked MD5 OK (%s)" % issue_packed_md5
+			print("\tPacked MD5 OK (%s)" % issue_packed_md5)
 		else:
-			print Fore.RED + "\tPacked MD5 error (%s != %s)" % (issue_packed_md5, issue.origin.md5_packed)
+			print(Fore.RED + "\tPacked MD5 error (%s != %s)" % (issue_packed_md5, issue.origin.md5_packed))
 			return
 
 	# unpack issue
 	if os.path.isfile(file_issue_packed):
-		print "\tUnpacking origin... (%s/%s => %s)" % (os.path.basename(file_issue_packed), issue.origin.filename, os.path.basename(file_issue))
+		print("\tUnpacking origin... (%s/%s => %s)" % (os.path.basename(file_issue_packed), issue.origin.filename, os.path.basename(file_issue)))
 
 		if os.path.isfile(file_issue):
 			os.remove(file_issue)
@@ -105,9 +105,9 @@ def initialize(config, issue):
 								pbar.update(len(block))
 
 	if os.path.isfile(file_issue):
-		print "\tUnpacking OK"
+		print("\tUnpacking OK")
 	else:
-		print Fore.RED + "\tUnpacking error, file %s not found" % issue.origin.filename
+		print(Fore.RED + "\tUnpacking error, file %s not found" % issue.origin.filename)
 		return
 
 	## skip checking if checked
@@ -115,43 +115,43 @@ def initialize(config, issue):
 		#with open(file_check, "r") as f:
 			#check_date = f.read()
 
-		#print Fore.GREEN + "\tChecked already (%s)" % check_date
+		#print(Fore.GREEN + "\tChecked already (%s)" % check_date)
 		#return
 
 	# check size by config
 	if os.path.isfile(file_issue):
-		print "\tChecking size..."
+		print("\tChecking size...")
 
 		issue_size = os.path.getsize(file_issue)
 
 		if issue_size == issue.origin.size:
-			print "\tSize OK (%s)" % issue_size
+			print("\tSize OK (%s)" % issue_size)
 		else:
-			print Fore.RED + "\tSize error (%s != %s)" % (issue_size, issue.origin.size)
+			print(Fore.RED + "\tSize error (%s != %s)" % (issue_size, issue.origin.size))
 			return
 
 	# check md5 by config
 	if os.path.isfile(file_issue):
-		print "\tChecking MD5..."
+		print("\tChecking MD5...")
 
 		issue_md5 = KlanTools.issue_md5(config, issue, file_issue)
 
 		if issue_md5 == issue.origin.md5:
-			print "\tMD5 OK (%s)" % issue_md5
+			print("\tMD5 OK (%s)" % issue_md5)
 		else:
-			print Fore.RED + "\tMD5 error (%s != %s)" % (issue_md5, issue.origin.md5)
+			print(Fore.RED + "\tMD5 error (%s != %s)" % (issue_md5, issue.origin.md5))
 			return
 
 	# issue done
 	if os.path.isfile(file_issue):
-		print Fore.GREEN + "\tChecking OK"
+		print(Fore.GREEN + "\tChecking OK")
 	else:
-		print Fore.RED + "\tChecking error"
+		print(Fore.RED + "\tChecking error")
 		return
 
 	# write check file
 	with open(file_check, "w") as f:
-		print "\tWriting check file..."
+		print("\tWriting check file...")
 		f.write(datetime.datetime.utcnow().replace(microsecond=0).isoformat())
 
 

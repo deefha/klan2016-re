@@ -1,13 +1,14 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-from t_header import THeader
+import t_header
 class KlanTextsV6(KaitaiStruct):
     """
     .. seealso::
@@ -20,9 +21,9 @@ class KlanTextsV6(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.header = THeader(self._io)
-        self.fat = self._root.TFat(self._io, self, self._root)
-        self.data = self._root.TData(self._io, self, self._root)
+        self.header = t_header.THeader(self._io)
+        self.fat = KlanTextsV6.TFat(self._io, self, self._root)
+        self.data = KlanTextsV6.TData(self._io, self, self._root)
 
     class TData(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -41,7 +42,7 @@ class KlanTextsV6(KaitaiStruct):
 
             self._m_texts = [None] * (500)
             for i in range(500):
-                self._m_texts[i] = self._root.TText(self._parent.fat.offsets[i].offset_1, self._parent.fat.offsets[i].offset_2, self._parent.fat.offsets[i].offset_3, self._parent.fat.offsets[i].offset_4, self._io, self, self._root)
+                self._m_texts[i] = KlanTextsV6.TText(self._parent.fat.offsets[i].offset_1, self._parent.fat.offsets[i].offset_2, self._parent.fat.offsets[i].offset_3, self._parent.fat.offsets[i].offset_4, self._io, self, self._root)
 
             return self._m_texts if hasattr(self, '_m_texts') else None
 
@@ -80,11 +81,11 @@ class KlanTextsV6(KaitaiStruct):
             for i in range(3):
                 _on = i
                 if _on == 0:
-                    self._m_variants[i] = self._root.TTextVariantFull(self.param_offset_1, (self.param_offset_2 - self.param_offset_1), self._io, self, self._root)
+                    self._m_variants[i] = KlanTextsV6.TTextVariantFull(self.param_offset_1, (self.param_offset_2 - self.param_offset_1), self._io, self, self._root)
                 elif _on == 1:
-                    self._m_variants[i] = self._root.TTextVariantFull(self.param_offset_2, (self.param_offset_3 - self.param_offset_2), self._io, self, self._root)
+                    self._m_variants[i] = KlanTextsV6.TTextVariantFull(self.param_offset_2, (self.param_offset_3 - self.param_offset_2), self._io, self, self._root)
                 elif _on == 2:
-                    self._m_variants[i] = self._root.TTextVariantPlain(self.param_offset_3, (self.param_offset_4 - self.param_offset_3), self._io, self, self._root)
+                    self._m_variants[i] = KlanTextsV6.TTextVariantPlain(self.param_offset_3, (self.param_offset_4 - self.param_offset_3), self._io, self, self._root)
 
             return self._m_variants if hasattr(self, '_m_variants') else None
 
@@ -110,8 +111,8 @@ class KlanTextsV6(KaitaiStruct):
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
                 self._raw__m_content = self._io.read_bytes(self.param_length)
-                io = KaitaiStream(BytesIO(self._raw__m_content))
-                self._m_content = self._root.TTextContentFull(io, self, self._root)
+                _io__raw__m_content = KaitaiStream(BytesIO(self._raw__m_content))
+                self._m_content = KlanTextsV6.TTextContentFull(_io__raw__m_content, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None
@@ -138,8 +139,8 @@ class KlanTextsV6(KaitaiStruct):
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
                 self._raw__m_content = self._io.read_bytes(self.param_length)
-                io = KaitaiStream(BytesIO(self._raw__m_content))
-                self._m_content = self._root.TTextContentPlain(io, self, self._root)
+                _io__raw__m_content = KaitaiStream(BytesIO(self._raw__m_content))
+                self._m_content = KlanTextsV6.TTextContentPlain(_io__raw__m_content, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None
@@ -167,7 +168,7 @@ class KlanTextsV6(KaitaiStruct):
             self.count = self._io.read_u2le()
             self.offsets = [None] * (500)
             for i in range(500):
-                self.offsets[i] = self._root.TFatOffset(self._io, self, self._root)
+                self.offsets[i] = KlanTextsV6.TFatOffset(self._io, self, self._root)
 
 
 

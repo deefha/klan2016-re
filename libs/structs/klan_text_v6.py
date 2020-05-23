@@ -1,13 +1,14 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-from t_macros_v4 import TMacrosV4
+import t_macros_v4
 class KlanTextV6(KaitaiStruct):
     """
     .. seealso::
@@ -36,7 +37,7 @@ class KlanTextV6(KaitaiStruct):
             if self.height != 0:
                 self.rows = [None] * (self.height)
                 for i in range(self.height):
-                    self.rows[i] = self._root.TLinetableContentPiece8Row(self._io, self, self._root)
+                    self.rows[i] = KlanTextV6.TLinetableContentPiece8Row(self._io, self, self._root)
 
 
 
@@ -53,19 +54,19 @@ class KlanTextV6(KaitaiStruct):
             if  ((self.raw == 1) or (self.raw == 8) or (self.raw == 9) or (self.raw == 10) or (self.raw == 11) or (self.raw == 12) or (self.raw == 32)) :
                 _on = self.raw
                 if _on == 10:
-                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece8(self._io, self, self._root)
                 elif _on == 32:
-                    self.data = self._root.TLinetableContentPiece32(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece32(self._io, self, self._root)
                 elif _on == 1:
-                    self.data = self._root.TLinetableContentPiece1(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece1(self._io, self, self._root)
                 elif _on == 11:
-                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece8(self._io, self, self._root)
                 elif _on == 12:
-                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece8(self._io, self, self._root)
                 elif _on == 8:
-                    self.data = self._root.TLinetableContentPiece8(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece8(self._io, self, self._root)
                 elif _on == 9:
-                    self.data = self._root.TLinetableContentPiece9(self._io, self, self._root)
+                    self.data = KlanTextV6.TLinetableContentPiece9(self._io, self, self._root)
 
 
 
@@ -89,7 +90,7 @@ class KlanTextV6(KaitaiStruct):
             if self.param_offset > 0:
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
-                self._m_content = self._root.TLinktableContent(self._io, self, self._root)
+                self._m_content = KlanTextV6.TLinktableContent(self._io, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None
@@ -129,8 +130,8 @@ class KlanTextV6(KaitaiStruct):
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
             self._raw__m_content = self._io.read_bytes(self.param_length)
-            io = KaitaiStream(BytesIO(self._raw__m_content))
-            self._m_content = self._root.TLinetableContent(io, self, self._root)
+            _io__raw__m_content = KaitaiStream(BytesIO(self._raw__m_content))
+            self._m_content = KlanTextV6.TLinetableContent(_io__raw__m_content, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 
@@ -186,7 +187,7 @@ class KlanTextV6(KaitaiStruct):
             self.content = []
             i = 0
             while True:
-                _ = self._root.TLinetableContentPiece8RowData(self._io, self, self._root)
+                _ = KlanTextV6.TLinetableContentPiece8RowData(self._io, self, self._root)
                 self.content.append(_)
                 if _.data == 192:
                     break
@@ -211,7 +212,7 @@ class KlanTextV6(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
-            self._m_content = self._root.TLinetableMetaContent(self._io, self, self._root)
+            self._m_content = KlanTextV6.TLinetableMetaContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 
@@ -227,7 +228,7 @@ class KlanTextV6(KaitaiStruct):
             self.pieces = []
             i = 0
             while not self._io.is_eof():
-                self.pieces.append(self._root.TLinetableContentPiece(self._io, self, self._root))
+                self.pieces.append(KlanTextV6.TLinetableContentPiece(self._io, self, self._root))
                 i += 1
 
 
@@ -273,7 +274,7 @@ class KlanTextV6(KaitaiStruct):
 
             _pos = self._io.pos()
             self._io.seek(self.param_offset)
-            self._m_content = self._root.TLinktableMetaContent(self._io, self, self._root)
+            self._m_content = KlanTextV6.TLinktableMetaContent(self._io, self, self._root)
             self._io.seek(_pos)
             return self._m_content if hasattr(self, '_m_content') else None
 
@@ -300,7 +301,7 @@ class KlanTextV6(KaitaiStruct):
             self.macros = []
             i = 0
             while True:
-                _ = TMacrosV4(self._io)
+                _ = t_macros_v4.TMacrosV4(self._io)
                 self.macros.append(_)
                 if  ((_.type == 240) or (_.type == 16717) or (_.type == 24909) or (_.type == 49407) or (_.type == 49676) or (_.type == 65282) or (_.type == 65535)) :
                     break
@@ -348,7 +349,7 @@ class KlanTextV6(KaitaiStruct):
         if self.count_linetable_meta != 0:
             self._m_linetable_meta = [None] * (self.count_linetable_meta)
             for i in range(self.count_linetable_meta):
-                self._m_linetable_meta[i] = self._root.TLinetableMeta((self.offset_linetable_meta + (17 * i)), self._io, self, self._root)
+                self._m_linetable_meta[i] = KlanTextV6.TLinetableMeta((self.offset_linetable_meta + (17 * i)), self._io, self, self._root)
 
 
         return self._m_linetable_meta if hasattr(self, '_m_linetable_meta') else None
@@ -361,7 +362,7 @@ class KlanTextV6(KaitaiStruct):
         if self.count_linktable != 0:
             self._m_linktable_meta = [None] * (self.count_linktable)
             for i in range(self.count_linktable):
-                self._m_linktable_meta[i] = self._root.TLinktableMeta((self.offset_linktable_meta + (20 * i)), self._io, self, self._root)
+                self._m_linktable_meta[i] = KlanTextV6.TLinktableMeta((self.offset_linktable_meta + (20 * i)), self._io, self, self._root)
 
 
         return self._m_linktable_meta if hasattr(self, '_m_linktable_meta') else None
@@ -396,7 +397,7 @@ class KlanTextV6(KaitaiStruct):
         if self.count_palettetable != 0:
             self._m_palettetable = [None] * (self.count_palettetable)
             for i in range(self.count_palettetable):
-                self._m_palettetable[i] = self._root.TPalettetable((self.offset_palettetable + (768 * i)), self._io, self, self._root)
+                self._m_palettetable[i] = KlanTextV6.TPalettetable((self.offset_palettetable + (768 * i)), self._io, self, self._root)
 
 
         return self._m_palettetable if hasattr(self, '_m_palettetable') else None
@@ -435,9 +436,9 @@ class KlanTextV6(KaitaiStruct):
             for i in range(self.count_linetable_meta):
                 _on = i
                 if _on == (self.count_linetable_meta - 1):
-                    self._m_linetable[i] = self._root.TLinetable(self.linetable_meta[i].content.offset, (self.offset_palettetable - self.linetable_meta[i].content.offset), self._io, self, self._root)
+                    self._m_linetable[i] = KlanTextV6.TLinetable(self.linetable_meta[i].content.offset, (self.offset_palettetable - self.linetable_meta[i].content.offset), self._io, self, self._root)
                 else:
-                    self._m_linetable[i] = self._root.TLinetable(self.linetable_meta[i].content.offset, (self.linetable_meta[(i + 1)].content.offset - self.linetable_meta[i].content.offset), self._io, self, self._root)
+                    self._m_linetable[i] = KlanTextV6.TLinetable(self.linetable_meta[i].content.offset, (self.linetable_meta[(i + 1)].content.offset - self.linetable_meta[i].content.offset), self._io, self, self._root)
 
 
         return self._m_linetable if hasattr(self, '_m_linetable') else None
@@ -452,9 +453,9 @@ class KlanTextV6(KaitaiStruct):
             for i in range(self.count_linktable):
                 _on = i
                 if _on == (self.count_linktable - 1):
-                    self._m_linktable[i] = self._root.TLinktable(self.linktable_meta[i].content.offset, (self.offset_linktable_meta - self.linktable_meta[i].content.offset), self._io, self, self._root)
+                    self._m_linktable[i] = KlanTextV6.TLinktable(self.linktable_meta[i].content.offset, (self.offset_linktable_meta - self.linktable_meta[i].content.offset), self._io, self, self._root)
                 else:
-                    self._m_linktable[i] = self._root.TLinktable(self.linktable_meta[i].content.offset, (self.linktable_meta[(i + 1)].content.offset - self.linktable_meta[i].content.offset), self._io, self, self._root)
+                    self._m_linktable[i] = KlanTextV6.TLinktable(self.linktable_meta[i].content.offset, (self.linktable_meta[(i + 1)].content.offset - self.linktable_meta[i].content.offset), self._io, self, self._root)
 
 
         return self._m_linktable if hasattr(self, '_m_linktable') else None

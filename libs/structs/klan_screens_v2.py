@@ -1,13 +1,14 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-from t_macros_v2 import TMacrosV2
+import t_macros_v2
 class KlanScreensV2(KaitaiStruct):
     """
     .. seealso::
@@ -20,9 +21,9 @@ class KlanScreensV2(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.header = self._root.THeader(self._io, self, self._root)
-        self.fat = self._root.TFat(self._io, self, self._root)
-        self.data = self._root.TData(self._io, self, self._root)
+        self.header = KlanScreensV2.THeader(self._io, self, self._root)
+        self.fat = KlanScreensV2.TFat(self._io, self, self._root)
+        self.data = KlanScreensV2.TData(self._io, self, self._root)
 
     class THeader(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -53,7 +54,7 @@ class KlanScreensV2(KaitaiStruct):
 
             self._m_screens = [None] * (255)
             for i in range(255):
-                self._m_screens[i] = self._root.TScreen(self._parent.fat.offsets[i], self._io, self, self._root)
+                self._m_screens[i] = KlanScreensV2.TScreen(self._parent.fat.offsets[i], self._io, self, self._root)
 
             return self._m_screens if hasattr(self, '_m_screens') else None
 
@@ -68,8 +69,8 @@ class KlanScreensV2(KaitaiStruct):
         def _read(self):
             self.data_length = self._io.read_u2le()
             self._raw_data = self._io.read_bytes((self.data_length - 4))
-            io = KaitaiStream(BytesIO(self._raw_data))
-            self.data = self._root.TScreenDataEventMacros(io, self, self._root)
+            _io__raw_data = KaitaiStream(BytesIO(self._raw_data))
+            self.data = KlanScreensV2.TScreenDataEventMacros(_io__raw_data, self, self._root)
 
 
     class TScreenContent(KaitaiStruct):
@@ -87,7 +88,7 @@ class KlanScreensV2(KaitaiStruct):
                 self.foo = self._io.read_u2le()
             else:
                 self.foo = self._io.read_u1()
-            self.data = self._root.TScreenData(self._io, self, self._root)
+            self.data = KlanScreensV2.TScreenData(self._io, self, self._root)
 
 
     class TScreenData(KaitaiStruct):
@@ -101,7 +102,7 @@ class KlanScreensV2(KaitaiStruct):
             self.macros = []
             i = 0
             while True:
-                _ = TMacrosV2(self._io)
+                _ = t_macros_v2.TMacrosV2(self._io)
                 self.macros.append(_)
                 if _.type == 65535:
                     break
@@ -109,7 +110,7 @@ class KlanScreensV2(KaitaiStruct):
             self.events = []
             i = 0
             while True:
-                _ = self._root.TScreenDataEvent(self._io, self, self._root)
+                _ = KlanScreensV2.TScreenDataEvent(self._io, self, self._root)
                 self.events.append(_)
                 if _.binding == 65535:
                     break
@@ -126,7 +127,7 @@ class KlanScreensV2(KaitaiStruct):
         def _read(self):
             self.binding = self._io.read_u2le()
             if self.binding != 65535:
-                self.content = self._root.TScreenDataEventContent(self._io, self, self._root)
+                self.content = KlanScreensV2.TScreenDataEventContent(self._io, self, self._root)
 
 
 
@@ -141,7 +142,7 @@ class KlanScreensV2(KaitaiStruct):
             self.macros = []
             i = 0
             while not self._io.is_eof():
-                self.macros.append(TMacrosV2(self._io))
+                self.macros.append(t_macros_v2.TMacrosV2(self._io))
                 i += 1
 
 
@@ -165,7 +166,7 @@ class KlanScreensV2(KaitaiStruct):
             if self.param_offset != 4294967295:
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
-                self._m_content = self._root.TScreenContent(self._io, self, self._root)
+                self._m_content = KlanScreensV2.TScreenContent(self._io, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None

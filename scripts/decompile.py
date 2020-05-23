@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # common imports
@@ -35,16 +35,16 @@ def decompile_loop_issues(config, issue_number, library):
 	else:
 		try:
 			decompile_loop_libraries(config, config.issues[issue_number], library)
-		except KeyError, e:
-			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+		except KeyError as err:
+			print('I got a KeyError - reason "%s"' % str(err)) # TODO message
 
 
 
 def decompile_loop_libraries(config, issue, library):
-	print Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number
+	print(Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number)
 
 	if library == "all":
-		for library, sources in issue.libraries.iteritems():
+		for library, sources in issue.libraries.items():
 			if sources:
 				for source_index, source in enumerate(sources):
 					decompile(config, issue, source, source_index)
@@ -87,7 +87,7 @@ def decompile(config, issue, source, source_index):
 
 	decompiler.decompile()
 
-	print Fore.GREEN + "\tDecompiling OK"
+	print(Fore.GREEN + "\tDecompiling OK")
 
 	return True
 

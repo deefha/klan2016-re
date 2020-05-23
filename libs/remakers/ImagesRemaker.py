@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 # specific imports
 from PIL import Image
-from CommonRemaker import CommonRemaker
+from .CommonRemaker import CommonRemaker
 
 
 
@@ -19,7 +19,7 @@ class ImagesRemaker(CommonRemaker):
 
 		self.descriptions = ObjDict()
 
-		print "Loading descriptions..."
+		print("Loading descriptions...")
 
 		if self.issue.number >= "06":
 			with open("%s%s/%s/0.json" % (self.PATH_PHASE_REMAKED, self.issue.number, "descriptions"), "r") as f:
@@ -30,7 +30,7 @@ class ImagesRemaker(CommonRemaker):
 
 
 	def export_assets(self):
-		for image_index, image in tqdm(self.meta_decompiled.data.images.iteritems(), total=len(self.meta_decompiled.data.images), desc="data.images", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+		for image_index, image in tqdm(self.meta_decompiled.data.images.items(), total=len(self.meta_decompiled.data.images), desc="data.images", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if image.content:
 				self.items_total += 1
 				status = True
@@ -65,12 +65,12 @@ class ImagesRemaker(CommonRemaker):
 
 					for content_byte in image_content:
 						if content_byte_break:
-							if ord(content_byte) > 127:
-								content_byte_break_length = ord(content_byte) - 127
+							if content_byte > 127:
+								content_byte_break_length = content_byte - 127
 								content_byte_break_count = None
 							else:
 								content_byte_break_length = None
-								content_byte_break_count = ord(content_byte) + 1
+								content_byte_break_count = content_byte + 1
 
 							content_byte_break = False
 						else:
@@ -84,9 +84,9 @@ class ImagesRemaker(CommonRemaker):
 								if not content_byte_break_length:
 									content_byte_break = True
 
-					image_content_unpacked = "".join(image_content_unpacked)
+					#image_content_unpacked = "".join(image_content_unpacked)
 
-					i = Image.frombytes("P", (image.content.width, image.content.height), image_content_unpacked)
+					i = Image.frombytes("P", (image.content.width, image.content.height), bytes(image_content_unpacked))
 					i.putpalette(image_colormap)
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
@@ -103,8 +103,8 @@ class ImagesRemaker(CommonRemaker):
 
 					image_buffer = []
 					image_buffer_index = 4096 - 18
-					for i in xrange(4096):
-						image_buffer.append(chr(0))
+					for i in range(4096):
+						image_buffer.append(0)
 
 					content_byte_flags = True
 					content_byte_flags_value = None
@@ -120,12 +120,12 @@ class ImagesRemaker(CommonRemaker):
 
 							content_byte_flags = False
 						else:
-							#print "Flags: %s, flags index: %s, flag bit: %s" % (ord(content_byte_flags_value), content_byte_flags_index, ord(content_byte_flags_value) & (2 ** content_byte_flags_index))
+							#print("Flags: %s, flags index: %s, flag bit: %s" % (ord(content_byte_flags_value), content_byte_flags_index, ord(content_byte_flags_value) & (2 ** content_byte_flags_index)))
 
-							if ord(content_byte_flags_value) & (2 ** content_byte_flags_index):
+							if content_byte_flags_value & (2 ** content_byte_flags_index):
 								image_content_unpacked.append(content_byte)
-								#print "Image index: %s, buffer index: %s, value: %s, literal" % (len(image_content_unpacked) - 1, image_buffer_index, ord(image_content_unpacked[len(image_content_unpacked) - 1]))
-								#print "---"
+								#print("Image index: %s, buffer index: %s, value: %s, literal" % (len(image_content_unpacked) - 1, image_buffer_index, ord(image_content_unpacked[len(image_content_unpacked) - 1])))
+								#print("---")
 
 								image_buffer[image_buffer_index] = content_byte
 								image_buffer_index += 1
@@ -136,23 +136,23 @@ class ImagesRemaker(CommonRemaker):
 							else:
 								if content_byte_reference:
 									content_byte_reference_value_second = content_byte
-									reference_index = ((ord(content_byte_reference_value_second) & 0xf0) << 4) + ord(content_byte_reference_value_first)
-									reference_length = ((ord(content_byte_reference_value_second) & 0x0f) + 3)
+									reference_index = ((content_byte_reference_value_second & 0xf0) << 4) + content_byte_reference_value_first
+									reference_length = ((content_byte_reference_value_second & 0x0f) + 3)
 
-									for x in xrange(reference_length):
+									for x in range(reference_length):
 										real_index = reference_index + x
 										if real_index >= 4096:
 											real_index -= 4096
 
 										image_content_unpacked.append(image_buffer[real_index])
-										#print "Image index: %s, buffer index: %s, value: %s, reference index: %s, length: %s, step: %s, real index: %s" % (len(image_content_unpacked) - 1, image_buffer_index, ord(image_content_unpacked[len(image_content_unpacked) - 1]), reference_index, reference_length, x, real_index)
+										#print("Image index: %s, buffer index: %s, value: %s, reference index: %s, length: %s, step: %s, real index: %s" % (len(image_content_unpacked) - 1, image_buffer_index, ord(image_content_unpacked[len(image_content_unpacked) - 1]), reference_index, reference_length, x, real_index))
 
 										image_buffer[image_buffer_index] = image_buffer[real_index]
 										image_buffer_index += 1
 										if image_buffer_index == 4096:
 											image_buffer_index = 0
 
-									#print "---"
+									#print("---")
 
 									content_byte_reference = False
 									content_byte_flags_index += 1
@@ -165,9 +165,9 @@ class ImagesRemaker(CommonRemaker):
 								content_byte_flags_value = None
 								content_byte_flags_index = None
 
-					image_content_unpacked = "".join(image_content_unpacked)
+					#image_content_unpacked = "".join(image_content_unpacked)
 
-					i = Image.frombytes("P", (image.content.width, image.content.height), image_content_unpacked)
+					i = Image.frombytes("P", (image.content.width, image.content.height), bytes(image_content_unpacked))
 					i.putpalette(image_colormap)
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
@@ -201,7 +201,7 @@ class ImagesRemaker(CommonRemaker):
 
 		self.meta_remaked.images = ObjDict()
 
-		for image_index, image in self.meta_decompiled.data.images.iteritems():
+		for image_index, image in self.meta_decompiled.data.images.items():
 			if image.content:
 				data_image = ObjDict()
 				data_image.width = image.content.width

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # common imports
@@ -35,14 +35,14 @@ def remake_loop_issues(config, issue_number, library):
 	else:
 		try:
 			remake_loop_libraries(config, config.issues[issue_number], library)
-		except KeyError, e:
-			print 'I got a KeyError - reason "%s"' % str(e) # TODO message
+		except KeyError as err:
+			print('I got a KeyError - reason "%s"' % str(err)) # TODO message
 
 
 
 def remake_loop_libraries(config, issue, library):
 	if library == "all":
-		for library, sources in issue.libraries.iteritems():
+		for library, sources in issue.libraries.items():
 			if sources:
 				for source_index, source in enumerate(sources):
 					remake(config, issue, source, source_index)
@@ -56,11 +56,11 @@ def remake_loop_libraries(config, issue, library):
 
 
 def remake(config, issue, source, source_index):
-	print "Issue: %s" % issue.number
-	print "Path: %s" % source.path
-	print "Library: %s" % source.library
-	print "Version: %s" % source.version
-	print "Index: %s" % source_index
+	print("Issue: %s" % issue.number)
+	print("Path: %s" % source.path)
+	print("Library: %s" % source.library)
+	print("Version: %s" % source.version)
+	print("Index: %s" % source_index)
 
 	if source.library == "audio":
 		remaker = AudioRemaker.AudioRemaker(issue, source, source_index)
@@ -77,8 +77,8 @@ def remake(config, issue, source, source_index):
 	elif source.library == "images":
 		remaker = ImagesRemaker.ImagesRemaker(issue, source, source_index)
 
-	elif source.library == "music":
-		remaker = MusicRemaker.MusicRemaker(issue, source, source_index)
+	#elif source.library == "music":
+		#remaker = MusicRemaker.MusicRemaker(issue, source, source_index)
 
 	elif source.library == "screens":
 		remaker = ScreensRemaker.ScreensRemaker(issue, source, source_index)

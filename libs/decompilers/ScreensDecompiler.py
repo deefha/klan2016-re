@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 # specific imports
 import collections
-from CommonDecompiler import CommonDecompiler
+from .CommonDecompiler import CommonDecompiler
 
 
 
@@ -72,8 +72,8 @@ class ScreensDecompiler(CommonDecompiler):
 			else:
 				self.meta.data.screens[str(self.screen_index + 1)] = None
 
-		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
-			print "Type %s: %s" % (count_index, count)
+		for count_index, count in collections.OrderedDict(sorted(self.counts.items())).items():
+			print("Type %s: %s" % (count_index, count))
 
 
 

@@ -7,7 +7,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-from CommonDecompiler import CommonDecompiler
+from .CommonDecompiler import CommonDecompiler
 
 
 

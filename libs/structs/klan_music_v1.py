@@ -1,13 +1,14 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-from t_header import THeader
+import t_header
 class KlanMusicV1(KaitaiStruct):
     """
     .. seealso::
@@ -20,11 +21,11 @@ class KlanMusicV1(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.header = THeader(self._io)
-        self.header2 = self._root.THeader2(self._io, self, self._root)
-        self.fat_mods = self._root.TFatMods(self._io, self, self._root)
-        self.fat_samples = self._root.TFatSamples(self._io, self, self._root)
-        self.data = self._root.TData(self._io, self, self._root)
+        self.header = t_header.THeader(self._io)
+        self.header2 = KlanMusicV1.THeader2(self._io, self, self._root)
+        self.fat_mods = KlanMusicV1.TFatMods(self._io, self, self._root)
+        self.fat_samples = KlanMusicV1.TFatSamples(self._io, self, self._root)
+        self.data = KlanMusicV1.TData(self._io, self, self._root)
 
     class TData(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -46,7 +47,7 @@ class KlanMusicV1(KaitaiStruct):
 
             self._m_mods = [None] * (130)
             for i in range(130):
-                self._m_mods[i] = self._root.TMod(self._parent.fat_mods.offsets[i], self._io, self, self._root)
+                self._m_mods[i] = KlanMusicV1.TMod(self._parent.fat_mods.offsets[i], self._io, self, self._root)
 
             return self._m_mods if hasattr(self, '_m_mods') else None
 
@@ -57,7 +58,7 @@ class KlanMusicV1(KaitaiStruct):
 
             self._m_samples = [None] * (520)
             for i in range(520):
-                self._m_samples[i] = self._root.TSample(self._parent.fat_samples.offsets[i], self._io, self, self._root)
+                self._m_samples[i] = KlanMusicV1.TSample(self._parent.fat_samples.offsets[i], self._io, self, self._root)
 
             return self._m_samples if hasattr(self, '_m_samples') else None
 
@@ -130,7 +131,7 @@ class KlanMusicV1(KaitaiStruct):
             if self.param_offset != 0:
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
-                self._m_content = self._root.TModContent(self._io, self, self._root)
+                self._m_content = KlanMusicV1.TModContent(self._io, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None
@@ -169,7 +170,7 @@ class KlanMusicV1(KaitaiStruct):
             if self.param_offset != 0:
                 _pos = self._io.pos()
                 self._io.seek(self.param_offset)
-                self._m_content = self._root.TSampleContent(self._io, self, self._root)
+                self._m_content = KlanMusicV1.TSampleContent(self._io, self, self._root)
                 self._io.seek(_pos)
 
             return self._m_content if hasattr(self, '_m_content') else None
@@ -200,7 +201,7 @@ class KlanMusicV1(KaitaiStruct):
             self.loop_start = self._io.read_u4le()
             self.loop_end = self._io.read_u4le()
             self.foo = self._io.read_bytes(4)
-            self.data = self._root.TSampleData(self.data_size, self._io, self, self._root)
+            self.data = KlanMusicV1.TSampleData(self.data_size, self._io, self, self._root)
 
 
     class TModContent(KaitaiStruct):
@@ -218,7 +219,7 @@ class KlanMusicV1(KaitaiStruct):
             self.foo_1 = self._io.read_u2le()
             self.size_patterns = self._io.read_u4le()
             self.foo_2 = self._io.read_u4le()
-            self.data = self._root.TModData(self.count_patterns, self._io, self, self._root)
+            self.data = KlanMusicV1.TModData(self.count_patterns, self._io, self, self._root)
 
 
 

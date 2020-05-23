@@ -1,12 +1,12 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
-import struct
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
 class THeader(KaitaiStruct):
     """
@@ -20,7 +20,9 @@ class THeader(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.magic = self._io.ensure_fixed_contents(struct.pack('8b', 83, 78, 79, 80, 83, 111, 102, 116))
+        self.magic = self._io.read_bytes(8)
+        if not self.magic == b"\x53\x4E\x4F\x50\x53\x6F\x66\x74":
+            raise kaitaistruct.ValidationNotEqualError(b"\x53\x4E\x4F\x50\x53\x6F\x66\x74", self.magic, self._io, u"/seq/0")
         self.version = self._io.read_u4le()
         self.type = self._io.read_u2le()
         self.filesize = self._io.read_u4le()
