@@ -2730,62 +2730,62 @@ issues:
         - path: KLAN/ANIM.LIB
           library: video
           version: 1
-  "quo-1999-05":
-    number: "quo-1999-05"
-    origin:
-      key: TODO
-      filename: quo-1999-05.iso
-      size: 611958784
-      size_packed: 123456789
-      md5: b4d7194aa97360a79a430aead14ad2ab
-      md5_packed: b4d7194aa97360a79a430aead14ad2ab
-    libraries:
-      arklanoid:
-      audio:
-        - path: QUO/WAVE.LIB
-          library: audio
-          version: 3
-      cursors:
-        - path: QUO/CURSORS.LIB
-          library: cursors
-          version: 1
-      descriptions:
-        - path: QUO/IMGTEXT.LIB
-          library: descriptions
-          version: 1
-      fonts:
-        - path: QUO/FONT.LIB
-          library: fonts
-          version: 1
-        - path: QUO/FONT2.LIB
-          library: fonts
-          version: 1
-      help:
-      images:
-        - path: QUO/IMGS.LIB
-          library: images
-          version: 1
-        - path: QUO/CACHE.LIB
-          library: images
-          version: 1
-      index:
-        - path: QUO/INDEX.LIB
-          library: index
-          version: 1
-      music:
-        - path: QUO/BGM.LIB
-          library: music
-          version: 2
-      screens:
-        - path: QUO/QUO.VMK
-          library: screens
-          version: 4
-      screensaver:
-      texts:
-        - path: QUO/TEXTS.LIB
-          library: texts
-          version: 7
-      video:
-        - path: QUO/ANIM.LIB
-          library: video
-          version: 1
+  #"quo-1999-05":
+    #number: "quo-1999-05"
+    #origin:
+      #key: TODO
+      #filename: quo-1999-05.iso
+      #size: 611958784
+      #size_packed: 123456789
+      #md5: b4d7194aa97360a79a430aead14ad2ab
+      #md5_packed: b4d7194aa97360a79a430aead14ad2ab
+    #libraries:
+      #arklanoid:
+      #audio:
+        #- path: QUO/WAVE.LIB
+          #library: audio
+          #version: 3
+      #cursors:
+        #- path: QUO/CURSORS.LIB
+          #library: cursors
+          #version: 1
+      #descriptions:
+        #- path: QUO/IMGTEXT.LIB
+          #library: descriptions
+          #version: 1
+      #fonts:
+        #- path: QUO/FONT.LIB
+          #library: fonts
+          #version: 1
+        #- path: QUO/FONT2.LIB
+          #library: fonts
+          #version: 1
+      #help:
+      #images:
+        #- path: QUO/IMGS.LIB
+          #library: images
+          #version: 1
+        #- path: QUO/CACHE.LIB
+          #library: images
+          #version: 1
+      #index:
+        #- path: QUO/INDEX.LIB
+          #library: index
+          #version: 1
+      #music:
+        #- path: QUO/BGM.LIB
+          #library: music
+          #version: 2
+      #screens:
+        #- path: QUO/QUO.VMK
+          #library: screens
+          #version: 4
+      #screensaver:
+      #texts:
+        #- path: QUO/TEXTS.LIB
+          #library: texts
+          #version: 7
+      #video:
+        #- path: QUO/ANIM.LIB
+          #library: video
+          #version: 1

@@ -23,9 +23,10 @@ class TextsRemaker(CommonRemaker):
 
 		print("Loading fonts...")
 
-		if self.issue.number == "quo-1999-05":
-			index_max = 2
-		elif self.issue.number >= "28":
+		#if self.issue.number == "quo-1999-05":
+			#index_max = 2
+		#elif self.issue.number >= "28":
+		if self.issue.number >= "28":
 			index_max = 4
 		else:
 			index_max = 2
@@ -85,23 +86,26 @@ class TextsRemaker(CommonRemaker):
 
 							if variant.content.linetable:
 								# TODO into config
-								if self.issue.number == "quo-1999-05":
-									lines_width = 560
-								elif self.source.version >= 6:
+								#if self.issue.number == "quo-1999-05":
+									#lines_width = 560
+								#elif self.source.version >= 6:
+								if self.source.version >= 6:
 									lines_width = 552
 								else:
 									lines_width = 310
 
 								lines_height = 0
 								lines = []
-								if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+								#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+								if self.issue.number >= "28":
 									inverse_lines = []
 
 								for linetable_index, linetable in variant.content.linetable.items():
 									line_width = 0
 									line_height = variant.content.linetable_meta[linetable_index].content.height
 									line_pieces = []
-									if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+									#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+									if self.issue.number >= "28":
 										inverse_line_pieces = []
 
 									flag_bold = False
@@ -158,7 +162,8 @@ class TextsRemaker(CommonRemaker):
 												i_piece.convert("RGBA")
 												line_width += piece.data.width
 												line_pieces.append(i_piece)
-												if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+												#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+												if self.issue.number >= "28":
 													inverse_line_pieces.append(i_piece)
 
 											# odkaz
@@ -172,7 +177,8 @@ class TextsRemaker(CommonRemaker):
 												i_piece = Image.new("RGBA", (piece.data.length, line_height), (0, 0, 0, 0))
 												line_width += piece.data.length
 												line_pieces.append(i_piece)
-												if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+												#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+												if self.issue.number >= "28":
 													inverse_line_pieces.append(i_piece)
 
 											# bezny znak
@@ -197,7 +203,8 @@ class TextsRemaker(CommonRemaker):
 													i_piece_width, i_piece_height = i_piece.size
 													line_width += i_piece_width
 													line_pieces.append(i_piece)
-													if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+													#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+													if self.issue.number >= "28":
 														i_piece = self.fonts[str(int(variant_index) + 2)].fonts[str(font_id)][font_variant].characters[str(piece.raw)].image
 														inverse_line_pieces.append(i_piece)
 
@@ -212,7 +219,8 @@ class TextsRemaker(CommonRemaker):
 									lines_height += line_height
 									lines.append(i_line)
 
-									if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+									#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+									if self.issue.number >= "28":
 										i_line = Image.new("RGBA", (line_width, line_height), (0, 0, 0, 0))
 										line_offset_x = 0
 
@@ -231,16 +239,18 @@ class TextsRemaker(CommonRemaker):
 									i_lines_temp.paste(line, (0, lines_offset_y))
 									lines_offset_y += line_height
 
-								if self.issue.number == "quo-1999-05":
-									i_lines = Image.new("RGBA", (lines_width, lines_height), (213, 206, 197, 255))
-								else:
-									i_lines = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 255))
+								#if self.issue.number == "quo-1999-05":
+									#i_lines = Image.new("RGBA", (lines_width, lines_height), (213, 206, 197, 255))
+								#else:
+									#i_lines = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 255))
 
+								i_lines = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 255))
 								i_lines = Image.alpha_composite(i_lines, i_lines_temp)
 								i_lines.convert("RGBA")
 								i_lines.save(self.PATTERN_FILE_TEXT_ASSET % (path_text, int(variant_index)))
 
-								if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+								#if self.issue.number != "quo-1999-05" and self.issue.number >= "28":
+								if self.issue.number >= "28":
 									i_lines_temp = Image.new("RGBA", (lines_width, lines_height), (0, 0, 0, 0))
 									lines_offset_y = 0
 
