@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # common imports
 import datetime, os, sys
@@ -8,27 +7,28 @@ from pprint import pprint
 from tqdm import tqdm
 from colorama import init as colorama_init, Fore, Back, Style
 
+DIR_SELF = os.path.dirname(os.path.realpath(__file__))
+
 # specific imports
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
+sys.path.insert(0, "%s/%s" % (DIR_SELF, "../libs/"))
 import tools.KlanTools as KlanTools
 import libarchive.public
 
 
-
 colorama_init(autoreset=True)
 
+# TODO argparse
 if len(sys.argv) != 2:
 	# TODO message
 	sys.exit()
 
 ARG_ISSUE_NUMBER = sys.argv[1]
 
-FILE_CONFIG = "../data/config.yml"
-PATH_INITIALIZED = "../data/initialized/"
-TEMPLATE_FILE_CHECK = "../data/initialized/%s.check"
-TEMPLATE_FILE_ISSUE_PACKED = "../data/initialized/%s.7z"
-TEMPLATE_FILE_ISSUE = "../data/initialized/%s.iso"
-
+FILE_CONFIG = "%s/%s" % (DIR_SELF, "../data/config.yml")
+PATH_INITIALIZED = "%s/%s" % (DIR_SELF, "../data/initialized/")
+TEMPLATE_FILE_CHECK = "%s/%s" % (DIR_SELF, "../data/initialized/%s.check")
+TEMPLATE_FILE_ISSUE_PACKED = "%s/%s" % (DIR_SELF, "../data/initialized/%s.7z")
+TEMPLATE_FILE_ISSUE = "%s/%s" % (DIR_SELF, "../data/initialized/%s.iso")
 
 
 def initialize_loop_issues(config, issue_number):
@@ -40,7 +40,6 @@ def initialize_loop_issues(config, issue_number):
 			initialize(config, config.issues[issue_number])
 		except KeyError as err:
 			print('I got a KeyError - reason "%s"' % str(err)) # TODO message
-
 
 
 def initialize(config, issue):
@@ -155,11 +154,9 @@ def initialize(config, issue):
 		f.write(datetime.datetime.utcnow().replace(microsecond=0).isoformat())
 
 
-
 def main():
 	config = KlanTools.config_load(FILE_CONFIG)
 	initialize_loop_issues(config, ARG_ISSUE_NUMBER)
-
 
 
 if __name__ == "__main__":
