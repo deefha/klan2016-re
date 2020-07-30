@@ -28,7 +28,6 @@ ARG_LIBRARY = sys.argv[2]
 CONFIG_PATH = "%s/%s" % (DIR_SELF, "../data/config.yml")
 CHECK_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.check")
 ISSUE_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.iso")
-ISSUE_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.iso")
 
 
 def decompile_loop_issues(config, issue_number, library):
