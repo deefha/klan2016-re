@@ -1,20 +1,23 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # common imports
 import datetime, os, sys
+from objdict import ObjDict
 from pprint import pprint
+from tqdm import tqdm
 from colorama import init as colorama_init, Fore, Back, Style
 
+DIR_SELF = os.path.dirname(os.path.realpath(__file__))
+
 # specific imports
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + "/../libs/")
+sys.path.insert(0, "%s/%s" % (DIR_SELF, "../libs/"))
 import tools.KlanTools as KlanTools
 from decompilers import *
 
 
-
 colorama_init(autoreset=True)
 
+# TODO argparse
 if len(sys.argv) != 3:
 	# TODO message
 	sys.exit()
@@ -22,10 +25,10 @@ if len(sys.argv) != 3:
 ARG_ISSUE_NUMBER = sys.argv[1]
 ARG_LIBRARY = sys.argv[2]
 
-CONFIG_PATH = "../data/config.yml"
-CHECK_PATH = "../data/initialized/%s.check"
-ISSUE_PATH = "../data/initialized/%s.iso"
-
+CONFIG_PATH = "%s/%s" % (DIR_SELF, "../data/config.yml")
+CHECK_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.check")
+ISSUE_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.iso")
+ISSUE_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.iso")
 
 
 def decompile_loop_issues(config, issue_number, library):
@@ -37,7 +40,6 @@ def decompile_loop_issues(config, issue_number, library):
 			decompile_loop_libraries(config, config.issues[issue_number], library)
 		except KeyError as err:
 			print('I got a KeyError - reason "%s"' % str(err)) # TODO message
-
 
 
 def decompile_loop_libraries(config, issue, library):
@@ -54,7 +56,6 @@ def decompile_loop_libraries(config, issue, library):
 				decompile(config, issue, source, source_index)
 
 	return True
-
 
 
 def decompile(config, issue, source, source_index):
@@ -92,11 +93,9 @@ def decompile(config, issue, source, source_index):
 	return True
 
 
-
 def main():
 	config = KlanTools.config_load(CONFIG_PATH)
 	decompile_loop_issues(config, ARG_ISSUE_NUMBER, ARG_LIBRARY)
-
 
 
 if __name__ == "__main__":
