@@ -7,10 +7,10 @@ from pprint import pprint
 from tqdm import tqdm
 from colorama import init as colorama_init, Fore, Back, Style
 
-DIR_SELF = os.path.dirname(os.path.realpath(__file__))
+PATH_SELF = os.path.dirname(os.path.realpath(__file__))
 
 # specific imports
-sys.path.insert(0, "%s/%s" % (DIR_SELF, "../libs/"))
+sys.path.insert(0, "%s/%s" % (PATH_SELF, "../libs/"))
 import tools.KlanTools as KlanTools
 import libarchive.public
 
@@ -24,11 +24,11 @@ if len(sys.argv) != 2:
 
 ARG_ISSUE_NUMBER = sys.argv[1]
 
-FILE_CONFIG = "%s/%s" % (DIR_SELF, "../data/config.yml")
-PATH_INITIALIZED = "%s/%s" % (DIR_SELF, "../data/initialized/")
-TEMPLATE_FILE_CHECK = "%s/%s" % (DIR_SELF, "../data/initialized/%s.check")
-TEMPLATE_FILE_ISSUE_PACKED = "%s/%s" % (DIR_SELF, "../data/initialized/%s.7z")
-TEMPLATE_FILE_ISSUE = "%s/%s" % (DIR_SELF, "../data/initialized/%s.iso")
+FILE_CONFIG = "%s/%s" % (PATH_SELF, "../data/config.yml")
+PATH_INITIALIZED = "%s/%s" % (PATH_SELF, "../data/initialized/")
+PATTERN_FILE_CHECK = "%s/%s" % (PATH_SELF, "../data/initialized/%s.check")
+PATTERN_FILE_ISSUE_ISO = "%s/%s" % (PATH_SELF, "../data/initialized/%s.iso")
+PATTERN_FILE_ISSUE_PACKED = "%s/%s" % (PATH_SELF, "../data/initialized/%s.7z")
 
 
 def initialize_loop_issues(config, issue_number):
@@ -45,9 +45,9 @@ def initialize_loop_issues(config, issue_number):
 def initialize(config, issue):
 	print(Fore.BLACK + Back.GREEN + "Issue #%s" % issue.number)
 
-	file_check = TEMPLATE_FILE_CHECK % issue.number
-	file_issue_packed = TEMPLATE_FILE_ISSUE_PACKED % issue.number
-	file_issue_iso = TEMPLATE_FILE_ISSUE % issue.number
+	file_check = PATTERN_FILE_CHECK % issue.number
+	file_issue_iso = PATTERN_FILE_ISSUE_ISO % issue.number
+	file_issue_packed = PATTERN_FILE_ISSUE_PACKED % issue.number
 
 	if os.path.isfile(file_check):
 		os.remove(file_check)
