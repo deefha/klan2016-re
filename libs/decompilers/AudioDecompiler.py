@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -8,7 +6,6 @@ from tqdm import tqdm
 
 # specific imports
 from .CommonDecompiler import CommonDecompiler
-
 
 
 class AudioDecompiler(CommonDecompiler):
@@ -21,7 +18,6 @@ class AudioDecompiler(CommonDecompiler):
 
 	PATTERN_DECOMPILED_CONTENT = "decompiled://%s/%s/%s/%04d/content.bin"
 	PATTERN_DECOMPILED_TITLE = "decompiled://%s/%s/%s/%04d/title/content.bin"
-
 
 
 	def fill_meta_data(self):

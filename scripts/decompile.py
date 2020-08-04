@@ -7,10 +7,10 @@ from pprint import pprint
 from tqdm import tqdm
 from colorama import init as colorama_init, Fore, Back, Style
 
-DIR_SELF = os.path.dirname(os.path.realpath(__file__))
+PATH_SELF = os.path.dirname(os.path.realpath(__file__))
 
 # specific imports
-sys.path.insert(0, "%s/%s" % (DIR_SELF, "../libs/"))
+sys.path.insert(0, "%s/%s" % (PATH_SELF, "../libs/"))
 import tools.KlanTools as KlanTools
 from decompilers import *
 
@@ -25,14 +25,12 @@ if len(sys.argv) != 3:
 ARG_ISSUE_NUMBER = sys.argv[1]
 ARG_LIBRARY = sys.argv[2]
 
-CONFIG_PATH = "%s/%s" % (DIR_SELF, "../data/config.yml")
-CHECK_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.check")
-ISSUE_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.iso")
+FILE_CONFIG = "%s/%s" % (PATH_SELF, "../data/config.yml")
 
 
 def decompile_loop_issues(config, issue_number, library):
 	if issue_number == "all":
-		for issue_id, issue in sorted(config.issues.iteritems()):
+		for issue_id, issue in sorted(config.issues.items()):
 			decompile_loop_libraries(config, issue, library)
 	else:
 		try:
@@ -93,7 +91,7 @@ def decompile(config, issue, source, source_index):
 
 
 def main():
-	config = KlanTools.config_load(CONFIG_PATH)
+	config = KlanTools.config_load(FILE_CONFIG)
 	decompile_loop_issues(config, ARG_ISSUE_NUMBER, ARG_LIBRARY)
 
 

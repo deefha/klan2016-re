@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -17,7 +15,6 @@ from structs.klan_text_v3 import KlanTextV3
 from structs.klan_text_v4 import KlanTextV4
 from structs.klan_text_v5 import KlanTextV5
 from structs.klan_text_v6 import KlanTextV6
-
 
 
 class TextsDecompiler(CommonDecompiler):
@@ -45,7 +42,6 @@ class TextsDecompiler(CommonDecompiler):
 		self.counts = ObjDict()
 
 
-
 	def _variant_content_init(self):
 		self.data_variant.content.offset_linktable = self.variant_content.offset_linktable
 		self.data_variant.content.count_linktable = self.variant_content.count_linktable
@@ -58,7 +54,6 @@ class TextsDecompiler(CommonDecompiler):
 		self.data_variant.content.offset_palettetable = self.variant_content.offset_palettetable
 		self.data_variant.content.palettetable = ObjDict()
 		self.data_variant.content.linetable = ObjDict()
-
 
 
 	def _variant_content_linktable_meta(self):
@@ -75,7 +70,6 @@ class TextsDecompiler(CommonDecompiler):
 				data_linktable_meta.content.offset = linktable_meta.content.offset
 
 				self.data_variant.content.linktable_meta[str(linktable_meta_index)] = data_linktable_meta
-
 
 
 	def _variant_content_linktable(self):
@@ -99,7 +93,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.linktable[str(linktable_index)] = data_linktable
 
 
-
 	def _variant_content_linetable_meta(self):
 		if self.variant_content.linetable_meta:
 			for linetable_meta_index, linetable_meta in enumerate(tqdm(self.variant_content.linetable_meta, desc="linetable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -114,7 +107,6 @@ class TextsDecompiler(CommonDecompiler):
 				data_linetable_meta.content.foo = ''
 
 				self.data_variant.content.linetable_meta[str(linetable_meta_index)] = data_linetable_meta
-
 
 
 	def _variant_content_palettetable(self):
@@ -137,7 +129,6 @@ class TextsDecompiler(CommonDecompiler):
 					f.write(palettetable.content)
 
 				self.data_variant.content.palettetable[str(palettetable_index)] = data_palettetable
-
 
 
 	def _variant_content_linetable(self):
@@ -195,7 +186,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.linetable[str(linetable_index)] = data_linetable
 
 
-
 	def _variant_content_title(self):
 		if self.source.version > 3:
 			file_title = self.PATTERN_FILE_TITLE % (self.PATH_DATA, self.text_index, self.variant_index)
@@ -209,7 +199,6 @@ class TextsDecompiler(CommonDecompiler):
 				f.write(self.variant_content.title)
 
 
-
 	def _variant_content_data(self):
 		file_data = self.PATTERN_FILE_DATA % (self.PATH_DATA, self.text_index, self.variant_index)
 		path_data = self.PATTERN_PATH_CONTENT % (self.PATH_DATA, self.text_index, self.variant_index)
@@ -220,7 +209,6 @@ class TextsDecompiler(CommonDecompiler):
 
 		with open(file_data, "wb") as f:
 			f.write(self.variant_content.data)
-
 
 
 	def fill_meta_data(self):
@@ -315,13 +303,11 @@ class TextsDecompiler(CommonDecompiler):
 			print("Type %s: %s" % (count_index, count))
 
 
-
 	def fill_meta_header(self):
 		if self.source.version == 1:
 			self.meta.header = ObjDict()
 		else:
 			super(TextsDecompiler, self).fill_meta_header()
-
 
 
 	def fill_meta_fat(self):

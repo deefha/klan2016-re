@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -8,7 +6,6 @@ from tqdm import tqdm
 
 # specific imports
 from .CommonDecompiler import CommonDecompiler
-
 
 
 class DescriptionsDecompiler(CommonDecompiler):
@@ -21,7 +18,6 @@ class DescriptionsDecompiler(CommonDecompiler):
 	PATTERN_DECOMPILED_TITLE = "decompiled://%s/%s/%s/%04d/title/content.bin"
 
 
-
 	def fill_meta_fat(self):
 		self.meta.fat = ObjDict()
 		self.meta.fat.foo_1 = self.library.fat.foo_1
@@ -32,7 +28,6 @@ class DescriptionsDecompiler(CommonDecompiler):
 
 		for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 			self.meta.fat.offsets[str(offset_index)] = offset
-
 
 
 	def fill_meta_data(self):
