@@ -1,21 +1,16 @@
-# -*- coding: utf-8 -*-
-
 import hashlib, json, requests
 from objdict import ObjDict
 from tqdm import tqdm
 from yaml import unsafe_load as yaml_load
 
 
-
 def config_load(config_path):
 	with open(config_path) as f:
 		config_yaml = yaml_load(f)
 
-	#config = ObjDict(ObjDict(config_yaml).dumps())
 	config = ObjDict(json.dumps(config_yaml))
 
 	return config
-
 
 
 def issue_download(config, issue, issue_path):
@@ -34,7 +29,6 @@ def issue_download(config, issue, issue_path):
 					pbar.update(len(chunk))
 
 
-
 def issue_packed_md5(config, issue, file_issue_packed):
 	hash_md5 = hashlib.md5()
 
@@ -49,7 +43,6 @@ def issue_packed_md5(config, issue, file_issue_packed):
 	return hash_md5.hexdigest()
 
 
-
 def issue_md5(config, issue, file_issue):
 	hash_md5 = hashlib.md5()
 
@@ -62,6 +55,3 @@ def issue_md5(config, issue, file_issue):
 		pbar.update(abs(issue.origin.size - pbar.n))
 
 	return hash_md5.hexdigest()
-
-
-
