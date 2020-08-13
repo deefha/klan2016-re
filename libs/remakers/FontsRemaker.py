@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -9,7 +7,6 @@ from tqdm import tqdm
 # specific imports
 from PIL import Image
 from .CommonRemaker import CommonRemaker
-
 
 
 class FontsRemaker(CommonRemaker):
@@ -31,7 +28,6 @@ class FontsRemaker(CommonRemaker):
 		self.PATTERN_FILE_FONT_ITALIC = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/italic.png")
 		self.PATTERN_FILE_FONT_ITALIC_LINK = "%s%s" % (self.PATH_DATA_REMAKED, "%02d/italic_link.png")
 		self.PATTERN_FILE_CHARACTER = "%s%03d.png"
-
 
 
 	def export_assets(self):
@@ -171,7 +167,6 @@ class FontsRemaker(CommonRemaker):
 					self.items_hit += 1
 				else:
 					self.items_miss += 1
-
 
 
 	def fill_meta(self):

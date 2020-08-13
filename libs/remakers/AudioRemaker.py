@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -13,7 +11,6 @@ import string
 import struct
 import wave as wavelib
 from .CommonRemaker import CommonRemaker
-
 
 
 class AudioRemaker(CommonRemaker):
@@ -48,7 +45,6 @@ class AudioRemaker(CommonRemaker):
 	#adpcm_table = [ 0, 1, 2, 4, 8, 16, 32, 64, -1, -2, -4, -8, -16, -32, -48, -64 ]
 
 
-
 	def _adpcm_decode_sample(self, nibble):
 		if self.adpcm_step_index < 0:
 			self.adpcm_step_index = 0
@@ -79,7 +75,6 @@ class AudioRemaker(CommonRemaker):
 		return self.adpcm_predictor
 
 
-
 	#def _decode_ulaw(self, number):
 		#ULAW_BIAS = 33
 		#sign = 0
@@ -103,7 +98,6 @@ class AudioRemaker(CommonRemaker):
 			#return (-(decoded))
 
 
-
 	#def _decode_ulaw(self, ulawbyte):
 		#ulawbyte = ~ulawbyte
 		#sign = (ulawbyte & 0x80)
@@ -114,7 +108,6 @@ class AudioRemaker(CommonRemaker):
 			#sample = -sample
 
 		#return sample
-
 
 
 	def export_assets(self):
@@ -288,7 +281,6 @@ class AudioRemaker(CommonRemaker):
 					f.close()
 
 					self.items_miss += 1
-
 
 
 	def fill_meta(self):

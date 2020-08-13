@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -10,7 +8,6 @@ from tqdm import tqdm
 import string
 from PIL import Image
 from .CommonRemaker import CommonRemaker
-
 
 
 class TextsRemaker(CommonRemaker):
@@ -51,7 +48,6 @@ class TextsRemaker(CommonRemaker):
 		self.PATTERN_FILE_TEXT_ASSET_INVERSE = "%s%d_inverse.png"
 		self.PATTERN_FILE_TEXT_PLAIN = "%s%d.txt"
 		self.PATTERN_FILE_TEXT_LINKS = "%s%d.json"
-
 
 
 	def export_assets(self):
@@ -310,7 +306,6 @@ class TextsRemaker(CommonRemaker):
 						self.items_hit += 1
 					else:
 						self.items_miss += 1
-
 
 
 	def fill_meta(self):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -10,7 +8,6 @@ from tqdm import tqdm
 # NONE
 
 ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
-
 
 
 class CommonRemaker(object):
@@ -51,7 +48,6 @@ class CommonRemaker(object):
 				self.initialized = True
 		except IOError:
 			print("Not decompiled")
-
 
 
 	def _parse_macro(self, macro):
@@ -476,7 +472,6 @@ class CommonRemaker(object):
 		return data_macro
 
 
-
 	def fill_meta(self):
 		self.meta_remaked.header = ObjDict()
 		self.meta_remaked.header.issue = self.issue.number
@@ -503,11 +498,9 @@ class CommonRemaker(object):
 		self.meta_remaked.header.remaked = datetime.datetime.now().isoformat()
 
 
-
 	def export_meta(self):
 		with open(self.FILE_META_REMAKED, "w") as f:
 			f.write(self.meta_remaked.dumps())
-
 
 
 	def print_stats(self):

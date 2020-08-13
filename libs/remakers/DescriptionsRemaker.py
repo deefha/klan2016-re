@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -10,11 +8,9 @@ from tqdm import tqdm
 from .CommonRemaker import CommonRemaker
 
 
-
 class DescriptionsRemaker(CommonRemaker):
 
 	CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™   "
-
 
 
 	def export_assets(self):
@@ -27,7 +23,6 @@ class DescriptionsRemaker(CommonRemaker):
 					self.items_hit += 1
 				else:
 					self.items_miss += 1
-
 
 
 	def fill_meta(self):

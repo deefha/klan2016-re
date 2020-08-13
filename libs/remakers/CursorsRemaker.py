@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -11,11 +9,9 @@ from PIL import Image
 from .CommonRemaker import CommonRemaker
 
 
-
 class CursorsRemaker(CommonRemaker):
 
 	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%02d.png"
-
 
 
 	def export_assets(self):
@@ -38,7 +34,6 @@ class CursorsRemaker(CommonRemaker):
 					self.items_hit += 1
 				else:
 					self.items_miss += 1
-
 
 
 	def fill_meta(self):

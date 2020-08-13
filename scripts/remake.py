@@ -32,7 +32,7 @@ ISSUE_PATH = "%s/%s" % (DIR_SELF, "../data/initialized/%%s.iso")
 
 def remake_loop_issues(config, issue_number, library):
 	if issue_number == "all":
-		for issue_id, issue in sorted(config.issues.iteritems()):
+		for issue_id, issue in sorted(config.issues.items()):
 			remake_loop_libraries(config, issue, library)
 	else:
 		try:

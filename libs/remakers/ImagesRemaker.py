@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -9,7 +7,6 @@ from tqdm import tqdm
 # specific imports
 from PIL import Image
 from .CommonRemaker import CommonRemaker
-
 
 
 class ImagesRemaker(CommonRemaker):
@@ -26,7 +23,6 @@ class ImagesRemaker(CommonRemaker):
 				lines = f.readlines() # TODO
 				content = ''.join(lines) # TODO
 				self.descriptions = ObjDict(content)
-
 
 
 	def export_assets(self):
@@ -193,7 +189,6 @@ class ImagesRemaker(CommonRemaker):
 					self.items_hit += 1
 				else:
 					self.items_miss += 1
-
 
 
 	def fill_meta(self):

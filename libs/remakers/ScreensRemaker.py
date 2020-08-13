@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -9,7 +7,6 @@ from tqdm import tqdm
 # specific imports
 import string
 from .CommonRemaker import CommonRemaker
-
 
 
 class ScreensRemaker(CommonRemaker):
@@ -22,10 +19,8 @@ class ScreensRemaker(CommonRemaker):
 		self.PATTERN_FILE_SCREEN = "%s%03d.json"
 
 
-
 	def export_assets(self):
 		return
-
 
 
 	def fill_meta(self):
