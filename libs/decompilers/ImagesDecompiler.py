@@ -14,11 +14,11 @@ class ImagesDecompiler(CommonDecompiler):
 
 	PATTERN_FILE_COLORMAP = "%s%04d/colormap.bin"
 	PATTERN_FILE_CONTENT = "%s%04d/content.bin"
-	PATTERN_FILE_HEADER = "%s%04d/header.bin"
+	PATTERN_FILE_HUFFTREE = "%s%04d/hufftree.bin"
 
 	PATTERN_DECOMPILED_COLORMAP = "decompiled://%s/%s/%s/%04d/colormap.bin"
 	PATTERN_DECOMPILED_CONTENT = "decompiled://%s/%s/%s/%04d/content.bin"
-	PATTERN_DECOMPILED_HEADER = "decompiled://%s/%s/%s/%04d/header.bin"
+	PATTERN_DECOMPILED_HUFFTREE = "decompiled://%s/%s/%s/%04d/hufftree.bin"
 
 
 	def fill_meta_data(self):
@@ -36,7 +36,7 @@ class ImagesDecompiler(CommonDecompiler):
 
 				file_colormap = self.PATTERN_FILE_COLORMAP % (self.PATH_DATA, image_index)
 				file_content = self.PATTERN_FILE_CONTENT % (self.PATH_DATA, image_index)
-				file_header = self.PATTERN_FILE_HEADER % (self.PATH_DATA, image_index)
+				file_hufftree = self.PATTERN_FILE_HUFFTREE % (self.PATH_DATA, image_index)
 
 				path_image = self.PATTERN_PATH_IMAGE % (self.PATH_DATA, image_index)
 
@@ -58,13 +58,13 @@ class ImagesDecompiler(CommonDecompiler):
 						f.write(image.content.data.colormap)
 
 				elif image.content.mode == 4:
-					data_image.content.data.foo = image.content.data.foo
-					data_image.content.data.header_size = image.content.data.header_size
-					data_image.content.data.header = self.PATTERN_DECOMPILED_HEADER % (self.issue.number, self.source.library, self.source_index, image_index)
+					data_image.content.data.quality = image.content.data.quality
+					data_image.content.data.hufftree_size = image.content.data.hufftree_size
+					data_image.content.data.hufftree = self.PATTERN_DECOMPILED_HUFFTREE % (self.issue.number, self.source.library, self.source_index, image_index)
 
-					#print "\tHeader"
-					with open(file_header, "wb") as f:
-						f.write(image.content.data.header)
+					#print "\tHuffTree"
+					with open(file_hufftree, "wb") as f:
+						f.write(image.content.data.hufftree)
 
 				data_image.content.data.content = self.PATTERN_DECOMPILED_CONTENT % (self.issue.number, self.source.library, self.source_index, image_index)
 
