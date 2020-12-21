@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -10,8 +8,7 @@ from tqdm import tqdm
 import array
 import binascii
 import struct
-from CommonRemaker import CommonRemaker
-
+from .CommonRemaker import CommonRemaker
 
 
 class MusicRemaker(CommonRemaker):
@@ -21,9 +18,8 @@ class MusicRemaker(CommonRemaker):
 	PERIODS = [ 1712, 1616, 1525, 1440, 1357, 1281, 1209, 1141, 1077, 1017, 961, 907, 856, 808, 762, 720, 678, 640, 604, 570, 538, 508, 480, 453, 428, 404, 381, 360, 339, 320, 302, 285, 269, 254, 240, 226, 214, 202, 190, 180, 170, 160, 151, 143, 135, 127, 120, 113, 107, 101, 95, 90, 85, 80, 76, 71, 67, 64, 60, 57 ]
 
 
-
 	def export_assets(self):
-		for mod_index, mod in self.meta.data.mods.iteritems():
+		for mod_index, mod in self.meta_decompiled.data.mods.items():
 			#if mod.content:
 			if mod_index == "0" or mod_index == "1" or mod_index == "2":
 				struct_sources = []
@@ -36,7 +32,8 @@ class MusicRemaker(CommonRemaker):
 					if sample_index > 0:
 						if sample_id == 65535:
 							# sample name - 22 B
-							struct_sources.append(("22s", binascii.hexlify(array.array("c", "\0" * 22))))
+							#struct_sources.append(("22s", binascii.hexlify(array.array("c", "\0" * 22))))
+							struct_sources.append(("22s", 'SampleNameSampleNameSa'))
 							# sample length in words - 2 B
 							struct_sources.append((">H", 0))
 							# sample finetune - 1 B
@@ -48,7 +45,7 @@ class MusicRemaker(CommonRemaker):
 							# sample repeatlength in words - 2 B
 							struct_sources.append((">H", 0))
 						else:
-							sample = self.meta.data.samples[str(sample_id)]
+							sample = self.meta_decompiled.data.samples[str(sample_id)]
 
 							# sample name - 22 B
 							struct_sources.append(("22s", "SampleNameSampleNameSa"))
@@ -77,7 +74,7 @@ class MusicRemaker(CommonRemaker):
 				struct_sources.append(("4s", "M.K."))
 
 				# patterns - 64x 16 B
-				for pattern_index, pattern in mod.content.data.patterns.iteritems():
+				for pattern_index, pattern in mod.content.data.patterns.items():
 					with open(pattern.replace("blobs://", self.ROOT_BLOBS), "rb") as f:
 						for row_index in range(64):
 							# first 4 channels
@@ -118,13 +115,12 @@ class MusicRemaker(CommonRemaker):
 									f.write(sample_data)
 
 
-
 	def fill_scheme(self):
 		super(MusicRemaker, self).fill_scheme()
 
 		self.scheme.mods = ObjDict()
 
-		for mod_index, mod in self.meta.data.mods.iteritems():
+		for mod_index, mod in self.meta.data.mods.items():
 			if mod.content:
 				data_mod = ObjDict()
 				#data_mod.width = mod.content.width

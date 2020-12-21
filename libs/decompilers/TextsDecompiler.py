@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -7,18 +5,16 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-import collections, gc, humanize, psutil, re, string, struct
-from CommonDecompiler import CommonDecompiler
-from memory_profiler import profile
-from mem_top import mem_top
-from guppy import hpy
+import collections, gc, humanize, re, struct
+from .CommonDecompiler import CommonDecompiler
+
+# structs imports
 from structs.klan_text_v1 import KlanTextV1
 from structs.klan_text_v2 import KlanTextV2
 from structs.klan_text_v3 import KlanTextV3
 from structs.klan_text_v4 import KlanTextV4
 from structs.klan_text_v5 import KlanTextV5
 from structs.klan_text_v6 import KlanTextV6
-
 
 
 class TextsDecompiler(CommonDecompiler):
@@ -46,8 +42,6 @@ class TextsDecompiler(CommonDecompiler):
 		self.counts = ObjDict()
 
 
-
-	#@profile
 	def _variant_content_init(self):
 		self.data_variant.content.offset_linktable = self.variant_content.offset_linktable
 		self.data_variant.content.count_linktable = self.variant_content.count_linktable
@@ -62,8 +56,6 @@ class TextsDecompiler(CommonDecompiler):
 		self.data_variant.content.linetable = ObjDict()
 
 
-
-	#@profile
 	def _variant_content_linktable_meta(self):
 		if self.variant_content.linktable_meta:
 			for linktable_meta_index, linktable_meta in enumerate(tqdm(self.variant_content.linktable_meta, desc="linktable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -80,8 +72,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.linktable_meta[str(linktable_meta_index)] = data_linktable_meta
 
 
-
-	#@profile
 	def _variant_content_linktable(self):
 		if self.variant_content.linktable:
 			for linktable_index, linktable in enumerate(tqdm(self.variant_content.linktable, desc="linktable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -103,8 +93,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.linktable[str(linktable_index)] = data_linktable
 
 
-
-	#@profile
 	def _variant_content_linetable_meta(self):
 		if self.variant_content.linetable_meta:
 			for linetable_meta_index, linetable_meta in enumerate(tqdm(self.variant_content.linetable_meta, desc="linetable_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -121,8 +109,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.linetable_meta[str(linetable_meta_index)] = data_linetable_meta
 
 
-
-	#@profile
 	def _variant_content_palettetable(self):
 		if self.variant_content.palettetable:
 			for palettetable_index, palettetable in enumerate(tqdm(self.variant_content.palettetable, desc="palettetable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -145,8 +131,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.palettetable[str(palettetable_index)] = data_palettetable
 
 
-
-	#@profile
 	def _variant_content_linetable(self):
 		if self.variant_content.linetable:
 			for linetable_index, linetable in enumerate(tqdm(self.variant_content.linetable, desc="linetable", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
@@ -202,8 +186,6 @@ class TextsDecompiler(CommonDecompiler):
 				self.data_variant.content.linetable[str(linetable_index)] = data_linetable
 
 
-
-	#@profile
 	def _variant_content_title(self):
 		if self.source.version > 3:
 			file_title = self.PATTERN_FILE_TITLE % (self.PATH_DATA, self.text_index, self.variant_index)
@@ -217,8 +199,6 @@ class TextsDecompiler(CommonDecompiler):
 				f.write(self.variant_content.title)
 
 
-
-	#@profile
 	def _variant_content_data(self):
 		file_data = self.PATTERN_FILE_DATA % (self.PATH_DATA, self.text_index, self.variant_index)
 		path_data = self.PATTERN_PATH_CONTENT % (self.PATH_DATA, self.text_index, self.variant_index)
@@ -229,7 +209,6 @@ class TextsDecompiler(CommonDecompiler):
 
 		with open(file_data, "wb") as f:
 			f.write(self.variant_content.data)
-
 
 
 	def fill_meta_data(self):
@@ -320,9 +299,8 @@ class TextsDecompiler(CommonDecompiler):
 				else:
 					self.meta.data.texts[str(text_index)] = None
 
-		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
-			print "Type %s: %s" % (count_index, count)
-
+		for count_index, count in collections.OrderedDict(sorted(self.counts.items())).items():
+			print("Type %s: %s" % (count_index, count))
 
 
 	def fill_meta_header(self):
@@ -330,7 +308,6 @@ class TextsDecompiler(CommonDecompiler):
 			self.meta.header = ObjDict()
 		else:
 			super(TextsDecompiler, self).fill_meta_header()
-
 
 
 	def fill_meta_fat(self):
@@ -349,11 +326,12 @@ class TextsDecompiler(CommonDecompiler):
 			self.meta.fat.count = self.library.fat.count
 			self.meta.fat.offsets = ObjDict()
 
-			all_bytes = string.maketrans("", "")
+			#all_bytes = maketrans("", "")
 
 			for offset_index, offset in enumerate(tqdm(self.library.fat.offsets, desc="fat.offsets", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")):
 				data_offset = ObjDict()
-				data_offset.name = offset.name.translate(all_bytes, all_bytes[:32])
+				#data_offset.name = offset.name.decode('utf-8').translate(all_bytes, all_bytes[:32])
+				data_offset.name = offset.name.decode().rstrip('\x00')
 				data_offset.offset_1 = offset.offset_1
 				data_offset.offset_2 = offset.offset_2
 				data_offset.offset_3 = offset.offset_3

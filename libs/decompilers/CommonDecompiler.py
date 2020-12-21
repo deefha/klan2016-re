@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -10,6 +8,11 @@ from tqdm import tqdm
 import json, re, string
 from io import BytesIO
 from pycdlib import PyCdlib
+
+PATH_SELF = os.path.dirname(os.path.realpath(__file__))
+
+# structs imports
+sys.path.insert(0, "%s/%s" % (PATH_SELF, "../structs/")) # TODO not very nice...
 from structs.klan_audio_v1 import KlanAudioV1
 from structs.klan_audio_v2 import KlanAudioV2
 from structs.klan_audio_v3 import KlanAudioV3
@@ -31,13 +34,11 @@ from structs.klan_texts_v5 import KlanTextsV5
 from structs.klan_texts_v6 import KlanTextsV6
 from structs.klan_texts_v7 import KlanTextsV7
 
-ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
-
-PATH_PHASE = "%sdecompiled/" % ROOT_DATA
-PATH_ORIGINS = "%sinitialized/" % ROOT_DATA
+PATH_DATA = "%s/%s" % (PATH_SELF, "../../data/")
+PATH_ORIGINS = "%sinitialized/" % PATH_DATA
+PATH_PHASE = "%sdecompiled/" % PATH_DATA
 
 PATTERN_FILE_ORIGIN = "%s%%s.iso" % PATH_ORIGINS
-
 
 
 class CommonDecompiler(object):
@@ -47,13 +48,13 @@ class CommonDecompiler(object):
 		self.source = source
 		self.source_index = source_index
 
-		print "\tPath: %s" % self.source.path
-		print "\tLibrary: %s" % self.source.library
-		print "\tVersion: %s" % self.source.version
-		print "\tIndex: %s" % self.source_index
+		print("\tPath: %s" % self.source.path)
+		print("\tLibrary: %s" % self.source.library)
+		print("\tVersion: %s" % self.source.version)
+		print("\tIndex: %s" % self.source_index)
 
 		if not os.path.isfile(PATTERN_FILE_ORIGIN % self.issue.number):
-			print "\tOrigin not exists, initialize first"
+			print("\tOrigin not exists, initialize first")
 			sys.exit()
 
 		self.PATH_DATA = "%s/%s/%s/%s/" % (PATH_PHASE, self.issue.number, self.source.library, self.source_index)
@@ -75,14 +76,13 @@ class CommonDecompiler(object):
 			self.iso_paths.append("/%s;1" % self.source.path)
 		else:
 			path = os.path.dirname(self.source.path)
-			mask = string.replace(os.path.basename(self.source.path), '.', '\.')
-			mask = string.replace(mask, '*', '.*')
+			mask = os.path.basename(self.source.path).replace('.', '\.')
+			mask = mask.replace('*', '.*')
 			regex = re.compile(mask)
 
 			for child in self.iso.list_children(iso_path="/%s" % path):
-				if re.match(regex, child.file_identifier()):
-					self.iso_paths.append("/%s/%s" % (path, child.file_identifier()))
-
+				if regex.match(child.file_identifier().decode()):
+					self.iso_paths.append("/%s/%s" % (path, child.file_identifier().decode()))
 
 
 	def _parse_macro(self, macro):
@@ -111,7 +111,7 @@ class CommonDecompiler(object):
 				data_macro.content.slider_topleft_x = macro.content.slider_topleft_x
 				data_macro.content.slider_topleft_y = macro.content.slider_topleft_y
 				data_macro.content.textfile_length = macro.content.textfile_length
-				data_macro.content.textfile = macro.content.textfile
+				data_macro.content.textfile = macro.content.textfile.decode('ascii')
 				# macros >= 3
 				if self.source.library == "screens" and self.source.version >= 3:
 					data_macro.content.foo = macro.content.foo
@@ -191,7 +191,10 @@ class CommonDecompiler(object):
 			elif macro.type == 0x000d:
 				data_macro.content.variable = macro.content.variable
 				data_macro.content.value_length = macro.content.value_length
-				data_macro.content.value = unicode(macro.content.value.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
+				if self.source.library == "screens" and self.source.version < 3:
+					data_macro.content.value = macro.content.value.decode('ascii')
+				else:
+					data_macro.content.value = macro.content.value.decode('unicode-escape')
 
 			# ivar / mov
 			elif macro.type == 0x000e:
@@ -295,7 +298,7 @@ class CommonDecompiler(object):
 				data_macro.content.foo_3 = macro.content.foo_3
 				data_macro.content.foo_4 = macro.content.foo_4
 				data_macro.content.text_length = macro.content.text_length
-				data_macro.content.text = unicode(macro.content.text.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
+				data_macro.content.text = macro.content.text.decode('unicode-escape')
 				data_macro.content.foo_5 = macro.content.foo_5
 
 			# ???
@@ -342,7 +345,7 @@ class CommonDecompiler(object):
 			elif macro.type == 0x002c:
 				data_macro.content.foo = macro.content.foo
 				data_macro.content.textfile_length = macro.content.textfile_length
-				data_macro.content.textfile = unicode(macro.content.textfile.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
+				data_macro.content.textfile = macro.content.textfile.decode('ascii')
 
 			# ???
 			elif macro.type == 0x002d:
@@ -352,9 +355,9 @@ class CommonDecompiler(object):
 			# link?
 			elif macro.type == 0x0033:
 				data_macro.content.text_1_length = macro.content.text_1_length
-				data_macro.content.text_1 = unicode(macro.content.text_1.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
+				data_macro.content.text_1 = macro.content.text_1.decode('ascii')
 				data_macro.content.text_2_length = macro.content.text_2_length
-				data_macro.content.text_2 = unicode(macro.content.text_2.replace('\\U', '\\\\U').replace('\\N', '\\\\N'), 'unicode-escape')
+				data_macro.content.text_2 = macro.content.text_2.decode('ascii')
 				data_macro.content.foo = macro.content.foo
 
 			# ???
@@ -450,26 +453,25 @@ class CommonDecompiler(object):
 
 			else:
 				if self.source.library == "screens":
-					print "Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
+					print("Unknown macro: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index))
 				if self.source.library == "texts":
-					print "Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
+					print("Unknown macro: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index))
 				sys.exit()
 
 		else:
 			if macro.type != 0x0010 and macro.type != 0x002a and macro.type != 0x003a and macro.type != 0xffff:
 				if self.source.library == "screens":
-					print "Macro without content: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index)
+					print("Macro without content: %s (%s), screen %s, macro %s" % (macro.type, macro_type_hex, self.screen_index, self.macro_index))
 				if self.source.library == "texts":
-					print "Macro without content: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index)
+					print("Macro without content: %s (%s), text %s, macro %s" % (macro.type, macro_type_hex, self.text_index, self.macro_index))
 				sys.exit()
 
 		return data_macro
 
 
-
 	def decompile(self):
 		for self.iso_path_index, self.iso_path in enumerate(self.iso_paths):
-			print "\t\tISO path #%s/%s: %s" % (self.iso_path_index, len(self.iso_paths), self.iso_path)
+			print("\t\tISO path #%s/%s: %s" % (self.iso_path_index, len(self.iso_paths), self.iso_path))
 
 			self.iso_content = BytesIO()
 			self.iso.get_file_from_iso_fp(self.iso_content, iso_path=self.iso_path)
@@ -536,10 +538,9 @@ class CommonDecompiler(object):
 		self.export_meta()
 
 
-
 	def fill_meta_header(self):
 		self.meta.header = ObjDict()
-		self.meta.header.magic = self.library.header.magic
+		self.meta.header.magic = self.library.header.magic.decode('ascii')
 		self.meta.header.version = self.library.header.version # TODO hexa?
 		self.meta.header.type = self.library.header.type
 		self.meta.header.filesize = self.library.header.filesize
@@ -548,7 +549,6 @@ class CommonDecompiler(object):
 		self.meta.header.foo_1 = self.library.header.foo_1
 		self.meta.header.foo_2 = self.library.header.foo_2
 		self.meta.header.crc = self.library.header.crc # TODO check?!
-
 
 
 	def fill_meta_fat(self):
@@ -563,17 +563,14 @@ class CommonDecompiler(object):
 			self.meta.fat.offsets[str(offset_index)] = offset
 
 
-
 	def fill_meta_data(self):
 		self.meta.data = ObjDict()
-
 
 
 	def export_meta(self):
 		with open(self.FILE_META, "w") as f:
 			f.write(self.meta.dumps())
 			#f.write(json.dumps(json.loads(self.meta.dumps()), indent=4))
-
 
 
 	def __del__(self):

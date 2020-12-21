@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -8,8 +6,7 @@ from tqdm import tqdm
 
 # specific imports
 import string
-from CommonRemaker import CommonRemaker
-
+from .CommonRemaker import CommonRemaker
 
 
 class ScreensRemaker(CommonRemaker):
@@ -22,10 +19,8 @@ class ScreensRemaker(CommonRemaker):
 		self.PATTERN_FILE_SCREEN = "%s%03d.json"
 
 
-
 	def export_assets(self):
 		return
-
 
 
 	def fill_meta(self):
@@ -33,7 +28,7 @@ class ScreensRemaker(CommonRemaker):
 
 		self.meta_remaked.screens = ObjDict()
 
-		for self.screen_index, self.screen in tqdm(self.meta_decompiled.data.screens.iteritems(), total=len(self.meta_decompiled.data.screens), desc="fill_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+		for self.screen_index, self.screen in tqdm(self.meta_decompiled.data.screens.items(), total=len(self.meta_decompiled.data.screens), desc="fill_meta", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if self.screen:
 				self.meta_remaked.screens[str(self.screen_index)] = (self.PATTERN_FILE_SCREEN % (self.PATH_DATA_REMAKED, int(self.screen_index))).replace(self.PATH_PHASE_REMAKED, "remaked://")
 
@@ -50,17 +45,17 @@ class ScreensRemaker(CommonRemaker):
 				data_screen.macros = ObjDict()
 				data_screen.events = ObjDict()
 
-				for self.macro_index, self.macro in screen_content.content.data.macros.iteritems():
+				for self.macro_index, self.macro in screen_content.content.data.macros.items():
 					data_macro = self._parse_macro(self.macro)
 					data_screen.macros[str(self.macro_index)] = data_macro
 
-				for event_index, event in screen_content.content.data.events.iteritems():
+				for event_index, event in screen_content.content.data.events.items():
 					data_event = ObjDict()
 					data_event.binding = event.binding
 					data_event.macros = ObjDict()
 
 					if hasattr(event, "content"):
-						for self.macro_index, self.macro in event.content.data.macros.iteritems():
+						for self.macro_index, self.macro in event.content.data.macros.items():
 							data_macro = self._parse_macro(self.macro)
 							data_event.macros[str(self.macro_index)] = data_macro
 

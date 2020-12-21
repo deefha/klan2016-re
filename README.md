@@ -9,21 +9,8 @@ https://www.python.org
 Instalace:
 
 ```bash
-sudo apt-get install python python-pip python-pil
-pip install colorama hashlib pyyaml objdict requests tqdm
-```
-
-### PyCdlib
-
-https://github.com/clalancette/pycdlib
-
-Instalace aktuální verze ze zdrojových kódů (jako Python modul):
-
-```bash
-sudo apt-get install git python
-git clone https://github.com/clalancette/pycdlib.git
-cd pycdlib
-sudo python setup.py install
+sudo apt-get install python libarchive-dev
+TODO venv
 ```
 
 ## Kaitai Struct
@@ -44,13 +31,15 @@ Instalace aktuální verze ze zdrojových kódů (jako DEB balíček pro Debian/
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt.list
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
 sudo apt-get update
-sudo apt-get install git dpkg-dev dpkg-sig fakeroot lintian sbt
-git clone https://github.com/kaitai-io/kaitai_struct_compiler
+sudo apt-get install git dpkg-dev dpkg-sig fakeroot lintian sbt default-jre-headless
+git clone https://github.com/kaitai-io/kaitai_struct_compiler.git
 cd kaitai_struct_compiler
 sbt compilerJVM/debian:packageBin
 cd jvm/target
 sudo dpkg -i *.deb
 ```
+
+TODO nebo deb z unstable repository?
 
 ### Kaitai Struct: visualizer (ksv)
 
@@ -60,7 +49,7 @@ Instalace aktuální verze ze zdrojových kódů (jako Ruby gem):
 
 ```bash
 sudo apt-get install git ruby
-git clone https://github.com/kaitai-io/kaitai_struct_visualizer
+git clone https://github.com/kaitai-io/kaitai_struct_visualizer.git
 cd kaitai_struct_visualizer
 gem build kaitai-struct-visualizer.gemspec
 sudo gem install kaitai-struct-visualizer-0.7.gem
@@ -75,10 +64,11 @@ http://doc.kaitai.io/lang_python.html
 Instalace aktuální verze ze zdrojových kódů (jako Python modul):
 
 ```bash
+TODO in venv!
 sudo apt-get install git python python-enum34
 git clone https://github.com/kaitai-io/kaitai_struct_python_runtime.git
 cd kaitai_struct_python_runtime
-sudo python setup.py install
+python setup.py install
 ```
 
 ## Pomocné nástroje

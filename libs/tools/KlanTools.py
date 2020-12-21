@@ -1,18 +1,16 @@
-import requests, hashlib
+import hashlib, json, requests
 from objdict import ObjDict
 from tqdm import tqdm
-from yaml import load as yaml_load
-
+from yaml import unsafe_load as yaml_load
 
 
 def config_load(config_path):
 	with open(config_path) as f:
 		config_yaml = yaml_load(f)
 
-	config = ObjDict(ObjDict(config_yaml).dumps())
+	config = ObjDict(json.dumps(config_yaml))
 
 	return config
-
 
 
 def issue_download(config, issue, issue_path):
@@ -31,7 +29,7 @@ def issue_download(config, issue, issue_path):
 					pbar.update(len(chunk))
 
 
-
+# TODO unify functions
 def issue_packed_md5(config, issue, file_issue_packed):
 	hash_md5 = hashlib.md5()
 
@@ -41,17 +39,17 @@ def issue_packed_md5(config, issue, file_issue_packed):
 				hash_md5.update(chunk)
 				pbar.update(len(chunk))
 
-		pbar.update(abs(issue.origin.size - pbar.n))
+		pbar.update(abs(issue.origin.size_packed - pbar.n))
 
 	return hash_md5.hexdigest()
 
 
-
-def issue_md5(config, issue, file_issue):
+# TODO unify functions
+def issue_iso_md5(config, issue, file_issue_iso):
 	hash_md5 = hashlib.md5()
 
 	with tqdm(total=issue.origin.size, unit="B", unit_scale=True, ascii=True, leave=False) as pbar:
-		with open(file_issue, "rb") as f:
+		with open(file_issue_iso, "rb") as f:
 			for chunk in iter(lambda: f.read(4 * 1024), b""):
 				hash_md5.update(chunk)
 				pbar.update(len(chunk))
@@ -59,6 +57,3 @@ def issue_md5(config, issue, file_issue):
 		pbar.update(abs(issue.origin.size - pbar.n))
 
 	return hash_md5.hexdigest()
-
-
-

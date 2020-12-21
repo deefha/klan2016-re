@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -7,8 +5,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-from CommonDecompiler import CommonDecompiler
-
+from .CommonDecompiler import CommonDecompiler
 
 
 class FontsDecompiler(CommonDecompiler):
@@ -20,7 +17,6 @@ class FontsDecompiler(CommonDecompiler):
 
 	PATTERN_DECOMPILED_COLORMAP = "decompiled://%s/%s/%s/%02d/colormap.bin"
 	PATTERN_DECOMPILED_MATRIX = "decompiled://%s/%s/%s/%02d/matrices/%03d.bin"
-
 
 
 	def fill_meta_data(self):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -8,8 +6,7 @@ from tqdm import tqdm
 
 # specific imports
 from PIL import Image
-from CommonRemaker import CommonRemaker
-
+from .CommonRemaker import CommonRemaker
 
 
 class CursorsRemaker(CommonRemaker):
@@ -17,9 +14,8 @@ class CursorsRemaker(CommonRemaker):
 	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%02d.png"
 
 
-
 	def export_assets(self):
-		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
+		for frame_index, frame in self.meta_decompiled.data.frames.items():
 			if frame.content:
 				self.items_total += 1
 				status = True
@@ -40,13 +36,12 @@ class CursorsRemaker(CommonRemaker):
 					self.items_miss += 1
 
 
-
 	def fill_meta(self):
 		super(CursorsRemaker, self).fill_meta()
 
 		self.meta_remaked.frames = ObjDict()
 
-		for frame_index, frame in self.meta_decompiled.data.frames.iteritems():
+		for frame_index, frame in self.meta_decompiled.data.frames.items():
 			if frame.content:
 				data_frame = ObjDict()
 				data_frame.width = 32

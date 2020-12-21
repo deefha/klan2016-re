@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -7,8 +5,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-from CommonDecompiler import CommonDecompiler
-
+from .CommonDecompiler import CommonDecompiler
 
 
 class CursorsDecompiler(CommonDecompiler):
@@ -29,7 +26,6 @@ class CursorsDecompiler(CommonDecompiler):
 	PATTERN_DECOMPILED_COLORTABLE = "decompiled://%s/%s/%s/colortables/%02d/content.bin"
 
 
-
 	def fill_meta_fat(self):
 		self.meta.fat = ObjDict()
 		self.meta.fat.frames_offset = self.library.fat.frames_offset
@@ -48,7 +44,6 @@ class CursorsDecompiler(CommonDecompiler):
 			data_foo_2.foo = foo_2.foo
 
 			self.meta.fat.foo_2[str(foo_2_index)] = data_foo_2
-
 
 
 	def fill_meta_data(self):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -8,8 +6,7 @@ from tqdm import tqdm
 
 # specific imports
 from PIL import Image
-from CommonRemaker import CommonRemaker
-
+from .CommonRemaker import CommonRemaker
 
 
 class FontsRemaker(CommonRemaker):
@@ -33,9 +30,8 @@ class FontsRemaker(CommonRemaker):
 		self.PATTERN_FILE_CHARACTER = "%s%03d.png"
 
 
-
 	def export_assets(self):
-		for font_index, font in tqdm(self.meta_decompiled.data.fonts.iteritems(), total=len(self.meta_decompiled.data.fonts), desc="data.fonts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
+		for font_index, font in tqdm(self.meta_decompiled.data.fonts.items(), total=len(self.meta_decompiled.data.fonts), desc="data.fonts", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if font.content:
 				self.items_total += 1
 				status = True
@@ -77,7 +73,7 @@ class FontsRemaker(CommonRemaker):
 				i_font_italic = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
 				i_font_italic_link = Image.new("RGBA", (16 * font.content.height, 16 * font.content.height), (255, 255, 255, 0))
 
-				for matrix_index, matrix in font.content.matrices.iteritems():
+				for matrix_index, matrix in font.content.matrices.items():
 					if matrix.content:
 						with open(matrix.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 							matrix_content = f.read()
@@ -140,9 +136,9 @@ class FontsRemaker(CommonRemaker):
 						i_character_temp = i_character_normal.crop((0, 0, i_character_normal_width, i_character_normal_height / 3))
 						i_character_italic.paste(i_character_temp, (2, 0))
 						i_character_temp = i_character_normal.crop((0, i_character_normal_height / 3, i_character_normal_width, (i_character_normal_height / 3) * 2))
-						i_character_italic.paste(i_character_temp, (1, i_character_normal_height / 3))
+						i_character_italic.paste(i_character_temp, (1, int(i_character_normal_height / 3)))
 						i_character_temp = i_character_normal.crop((0, (i_character_normal_height / 3) * 2, i_character_normal_width, (i_character_normal_height / 3) * 3))
-						i_character_italic.paste(i_character_temp, (0, (i_character_normal_height / 3) * 2))
+						i_character_italic.paste(i_character_temp, (0, int((i_character_normal_height / 3) * 2)))
 						i_character_italic.save(self.PATTERN_FILE_CHARACTER % (path_font_italic, int(matrix_index)))
 						i_font_italic.paste(i_character_italic, ((int(matrix_index) % 16) * font.content.height, (int(matrix_index) // 16) * font.content.height))
 
@@ -173,13 +169,12 @@ class FontsRemaker(CommonRemaker):
 					self.items_miss += 1
 
 
-
 	def fill_meta(self):
 		super(FontsRemaker, self).fill_meta()
 
 		self.meta_remaked.fonts = ObjDict()
 
-		for font_index, font in self.meta_decompiled.data.fonts.iteritems():
+		for font_index, font in self.meta_decompiled.data.fonts.items():
 			if font.content:
 				data_variants = ObjDict()
 
@@ -220,7 +215,7 @@ class FontsRemaker(CommonRemaker):
 				data_font_italic_link.asset = (self.PATTERN_FILE_FONT_ITALIC_LINK % int(font_index)).replace(self.PATH_PHASE_REMAKED, "remaked://")
 				data_font_italic_link.characters = ObjDict()
 
-				for matrix_index, matrix in font.content.matrices.iteritems():
+				for matrix_index, matrix in font.content.matrices.items():
 					if matrix.content:
 						data_matrix_normal = ObjDict()
 						data_matrix_normal.width = font.content.characters[matrix_index].computed_width

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -8,8 +6,7 @@ from tqdm import tqdm
 
 # specific imports
 import collections
-from CommonDecompiler import CommonDecompiler
-
+from .CommonDecompiler import CommonDecompiler
 
 
 class ScreensDecompiler(CommonDecompiler):
@@ -22,7 +19,6 @@ class ScreensDecompiler(CommonDecompiler):
 		self.PATTERN_DECOMPILED_SCREEN = "decompiled://%s/%s/%s/%03d.json"
 
 		self.counts = ObjDict()
-
 
 
 	def fill_meta_data(self):
@@ -72,16 +68,14 @@ class ScreensDecompiler(CommonDecompiler):
 			else:
 				self.meta.data.screens[str(self.screen_index + 1)] = None
 
-		for count_index, count in collections.OrderedDict(sorted(self.counts.iteritems())).iteritems():
-			print "Type %s: %s" % (count_index, count)
-
+		for count_index, count in collections.OrderedDict(sorted(self.counts.items())).items():
+			print("Type %s: %s" % (count_index, count))
 
 
 	def fill_meta_header(self):
 		self.meta.header = ObjDict()
 		self.meta.header.version = self.library.header.version
 		self.meta.header.foo = self.library.header.foo
-
 
 
 	def fill_meta_fat(self):

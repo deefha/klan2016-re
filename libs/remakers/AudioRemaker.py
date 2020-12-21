@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -12,8 +10,7 @@ import contextlib
 import string
 import struct
 import wave as wavelib
-from CommonRemaker import CommonRemaker
-
+from .CommonRemaker import CommonRemaker
 
 
 class AudioRemaker(CommonRemaker):
@@ -48,7 +45,6 @@ class AudioRemaker(CommonRemaker):
 	#adpcm_table = [ 0, 1, 2, 4, 8, 16, 32, 64, -1, -2, -4, -8, -16, -32, -48, -64 ]
 
 
-
 	def _adpcm_decode_sample(self, nibble):
 		if self.adpcm_step_index < 0:
 			self.adpcm_step_index = 0
@@ -79,7 +75,6 @@ class AudioRemaker(CommonRemaker):
 		return self.adpcm_predictor
 
 
-
 	#def _decode_ulaw(self, number):
 		#ULAW_BIAS = 33
 		#sign = 0
@@ -103,7 +98,6 @@ class AudioRemaker(CommonRemaker):
 			#return (-(decoded))
 
 
-
 	#def _decode_ulaw(self, ulawbyte):
 		#ulawbyte = ~ulawbyte
 		#sign = (ulawbyte & 0x80)
@@ -116,9 +110,8 @@ class AudioRemaker(CommonRemaker):
 		#return sample
 
 
-
 	def export_assets(self):
-		for wave_index, wave in self.meta_decompiled.data.waves.iteritems():
+		for wave_index, wave in self.meta_decompiled.data.waves.items():
 			if wave.content:
 				self.items_total += 1
 				status = True
@@ -279,14 +272,15 @@ class AudioRemaker(CommonRemaker):
 					f.setparams((1, 2, 11025, 0, "NONE", "Uncompressed"))
 					values = []
 
-					for i in range(0, 11025):
-						values.append(struct.pack('h', 0))
+					for i in range(0, 22050):
+						#values.append(struct.pack('h', 0))
+						values.append(0)
 
-					f.writeframes(''.join(values))
+					#f.writeframes(''.join(values))
+					f.writeframes(bytes(values))
 					f.close()
 
 					self.items_miss += 1
-
 
 
 	def fill_meta(self):
@@ -294,7 +288,7 @@ class AudioRemaker(CommonRemaker):
 
 		self.meta_remaked.waves = ObjDict()
 
-		for wave_index, wave in self.meta_decompiled.data.waves.iteritems():
+		for wave_index, wave in self.meta_decompiled.data.waves.items():
 			if wave.content:
 				wave_path = "%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index))
 				wave_duration = 0
@@ -308,12 +302,12 @@ class AudioRemaker(CommonRemaker):
 						wave_title_temp = f.read()
 
 					for char_index, char in enumerate(wave_title_temp):
-						if ord(char) < 32:
+						if char < 32:
 							break
-						elif ord(char) < 128:
-							wave_title += char
+						elif char < 128:
+							wave_title += chr(char)
 						else:
-							wave_title += self.CHARTABLE[ord(char) - 128]
+							wave_title += self.CHARTABLE[char - 128]
 
 				data_wave = ObjDict()
 				data_wave.duration = wave_duration

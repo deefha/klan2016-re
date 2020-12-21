@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # common imports
 import datetime, os, sys
 from objdict import ObjDict
@@ -7,8 +5,7 @@ from pprint import pprint
 from tqdm import tqdm
 
 # specific imports
-from CommonDecompiler import CommonDecompiler
-
+from .CommonDecompiler import CommonDecompiler
 
 
 class MusicDecompiler(CommonDecompiler):
@@ -24,7 +21,6 @@ class MusicDecompiler(CommonDecompiler):
 	PATTERN_DECOMPILED_MOD_PATTERN = "blobs://%s/%s/%s/mods/%04d/patterns/%04d.bin"
 	PATTERN_DECOMPILED_MOD_PATTERNS = "blobs://%s/%s/%s/mods/%04d/patterns/content.bin"
 	PATTERN_DECOMPILED_SAMPLE = "blobs://%s/%s/%s/samples/%04d.bin"
-
 
 
 	def fill_meta_data(self):
@@ -178,7 +174,6 @@ class MusicDecompiler(CommonDecompiler):
 			self.meta.data.samples[str(sample_index)] = data_sample
 
 
-
 	def fill_meta_header(self):
 		super(MusicDecompiler, self).fill_meta_header()
 
@@ -186,7 +181,6 @@ class MusicDecompiler(CommonDecompiler):
 		self.meta.header2.count_mods = self.library.header2.count_mods
 		self.meta.header2.count_samples = self.library.header2.count_samples
 		self.meta.header2.foo = self.library.header2.foo
-
 
 
 	def fill_meta_fat(self):
