@@ -43,6 +43,8 @@ class AudioDecompiler(CommonDecompiler):
 				data_wave.content.data_size = wave.content.data_size
 				data_wave.content.wave_size = wave.content.wave_size
 				data_wave.content.mode = wave.content.mode
+				data_wave.content.stereo = wave.content.stereo
+				data_wave.content.cache = wave.content.cache
 				data_wave.content.foo_1 = wave.content.foo_1
 				data_wave.content.foo_2 = wave.content.foo_2
 				data_wave.content.data = ObjDict()
