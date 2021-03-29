@@ -154,7 +154,7 @@ class AudioRemaker(CommonRemaker):
 				with open(wave.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					wave_content = f.read()
 
-				# PCM, 16? bit ----> 8 bit, 11025 Hz?, mono (#00+)
+				# PCM, 16? bit ----> 8 bit, 11025 Hz?, mono (#00+), stereo (#35+)
 				if wave.content.mode == 0:
 					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
@@ -166,11 +166,14 @@ class AudioRemaker(CommonRemaker):
 				elif wave.content.mode == 1:
 					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
+					if wave.content.stereo:
+						f.setparams((2, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
+					else:
+						f.setparams((1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
 					f.writeframes(wave_content)
 					f.close()
 
-				# uLaw, 8 bit, mono (#05+), stereo (#35+)
+				# uLaw, 8 bit, mono (#05+), stereo (#28+)
 				elif wave.content.mode == 2:
 					values = []
 
@@ -183,11 +186,14 @@ class AudioRemaker(CommonRemaker):
 
 					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 2, 22050, len(values), "NONE", "Uncompressed"))
+					if wave.content.stereo:
+						f.setparams((2, 2, 22050, len(values), "NONE", "Uncompressed"))
+					else:
+						f.setparams((1, 2, 22050, len(values), "NONE", "Uncompressed"))
 					f.writeframes(bytes(values))
 					f.close()
 
-				# ADPCM, 4 bit, mono (#04+), stereo (#28+)
+				# ADPCM, 4 bit, mono (#04+), stereo (#35+)
 				elif wave.content.mode == 3:
 					self.DemandVoice.ADPCM11 = 0
 					self.DemandVoice.ADPCM12 = 0
@@ -216,7 +222,10 @@ class AudioRemaker(CommonRemaker):
 
 					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 2, 22050, len(values), "NONE", "Uncompressed"))
+					if wave.content.stereo:
+						f.setparams((2, 2, 22050, len(values), "NONE", "Uncompressed"))
+					else:
+						f.setparams((1, 2, 22050, len(values), "NONE", "Uncompressed"))
 					f.writeframes(bytes(values))
 					f.close()
 
@@ -264,6 +273,7 @@ class AudioRemaker(CommonRemaker):
 				data_wave = ObjDict()
 				data_wave.duration = wave_duration
 				data_wave.mode = wave.content.mode
+				data_wave.stereo = wave.content.stereo
 				data_wave.title = wave_title
 				data_wave.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
