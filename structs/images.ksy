@@ -98,14 +98,14 @@ types:
       - id: param_data_size
         type: u4
     seq:
-      - id: foo
+      - id: quality
         type: u4
-      - id: header_size
+      - id: hufftree_size
         type: u4
-      - id: header
-        size: header_size
+      - id: hufftree
+        size: hufftree_size
       - id: content
-        size: param_data_size - 4 - 4 - header_size
+        size: param_data_size - 4 - 4 - hufftree_size
 
   t_image_data_rgb565:
     params:

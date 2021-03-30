@@ -39,7 +39,14 @@ cd jvm/target
 sudo dpkg -i *.deb
 ```
 
-TODO nebo deb z unstable repository?
+There is an official .deb repository available for Debian and Ubuntu-based distributions. Just add it and install a package:
+
+```bash
+sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv 379CE192D401AB61
+echo "deb https://dl.bintray.com/kaitai-io/debian_unstable jessie main" | sudo tee /etc/apt/sources.list.d/kaitai.list
+sudo apt-get update
+sudo apt-get install kaitai-struct-compiler
+```
 
 ### Kaitai Struct: visualizer (ksv)
 
@@ -61,14 +68,14 @@ https://github.com/kaitai-io/kaitai_struct_python_runtime
 https://pypi.python.org/pypi/kaitaistruct  
 http://doc.kaitai.io/lang_python.html
 
-Instalace aktuální verze ze zdrojových kódů (jako Python modul):
+Instalace aktuální verze ze zdrojových kódů (jako Python modul):  
+TODO in venv!
 
 ```bash
-TODO in venv!
-sudo apt-get install git python python-enum34
+sudo apt-get install git python3 python-enum34 python3-setuptools
 git clone https://github.com/kaitai-io/kaitai_struct_python_runtime.git
 cd kaitai_struct_python_runtime
-python setup.py install
+sudo python3 setup.py install
 ```
 
 ## Pomocné nástroje

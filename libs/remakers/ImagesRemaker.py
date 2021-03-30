@@ -167,7 +167,7 @@ class ImagesRemaker(CommonRemaker):
 					i.putpalette(image_colormap)
 					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
-				# RGB565
+				# RGB565, no compression
 				# 0x0005 - M5 (#11+)
 				# 0x0105 - M261 (#11+)
 				elif image.content.mode == 0x0005 or image.content.mode == 0x0105:
@@ -177,13 +177,34 @@ class ImagesRemaker(CommonRemaker):
 						i = Image.frombytes("RGB", (image.content.width, image.content.height), image_content, "raw", "BGR;16")
 						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
-				# TODO, red placeholder
+				# RGBX8888, custom Huffman compression
 				# 0x0004 - M4 (#06+)
 				elif image.content.mode == 0x0004:
-					status = False
+					file_temp = "%s%04d.tmp" % (self.PATH_DATA_REMAKED, int(image_index))
 
-					i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
-					i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
+					os.system("%s/scripts/unhuff.so %s %s %s %s %s %s" % (
+						self.ROOT_ROOT,
+						image.content.width,
+						image.content.height,
+						image.content.data.quality,
+						image.content.data.hufftree.replace("decompiled://", self.PATH_PHASE_DECOMPILED),
+						image.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED),
+						file_temp
+					))
+
+					if os.path.isfile(file_temp):
+						with open(file_temp, "rb") as f:
+							image_content = f.read()
+
+							i = Image.frombytes("RGB", (image.content.width, image.content.height), image_content, "raw", "BGRX")
+							i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
+
+						os.remove(file_temp)
+					else:
+						status = False
+
+						i = Image.new("RGB", (image.content.width, image.content.height), (255, 0, 0))
+						i.save("%s%04d.png" % (self.PATH_DATA_REMAKED, int(image_index)))
 
 				if status:
 					self.items_hit += 1

@@ -12,6 +12,8 @@ ROOT_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../../data/"
 
 class CommonRemaker(object):
 
+	ROOT_ROOT = os.path.dirname(os.path.realpath(__file__)) + "/../../"
+
 	def __init__(self, issue, source, source_index):
 		self.initialized = False
 		self.issue = issue
