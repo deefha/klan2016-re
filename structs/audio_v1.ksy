@@ -40,7 +40,7 @@ types:
         type: t_wave(_parent.fat.offsets[_index])
         repeat: expr
         repeat-expr: 8192
-      
+
   t_wave:
     params:
       - id: param_offset
@@ -58,9 +58,13 @@ types:
       - id: wave_size
         type: u4
       - id: mode
-        type: u2
+        type: u1
+      - id: stereo
+        type: u1
+      - id: cache
+        type: u1
       - id: foo_1
-        type: u2
+        type: u1
       - id: foo_2
         type: u4
       - id: data

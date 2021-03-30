@@ -19,9 +19,11 @@ class AudioRemaker(CommonRemaker):
 
 	CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™   "
 
-	adpcm_predictor = 0
-	adpcm_step_index = 0
-	adpcm_step = 0
+	DemandVoice = ObjDict()
+	DemandVoice.ADPCM11 = 0
+	DemandVoice.ADPCM12 = 0
+	DemandVoice.ADPCM21 = 0
+	DemandVoice.ADPCM22 = 0
 
 	adpcm_index_table = [
 		-1, -1, -1, -1, 2, 4, 6, 8,
@@ -29,89 +31,122 @@ class AudioRemaker(CommonRemaker):
 	]
 
 	adpcm_stepsize_table = [
-		7, 8, 9, 10, 11, 12, 13, 14, 16, 17,
-		19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
-		50, 55, 60, 66, 73, 80, 88, 97, 107, 118,
-		130, 143, 157, 173, 190, 209, 230, 253, 279, 307,
-		337, 371, 408, 449, 494, 544, 598, 658, 724, 796,
-		876, 963, 1060, 1166, 1282, 1411, 1552, 1707, 1878, 2066,
-		2272, 2499, 2749, 3024, 3327, 3660, 4026, 4428, 4871, 5358,
-		5894, 6484, 7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899,
-		15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
+		1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      2,      2,      2,      2,      2,      2,
+		2,      2,      2,      2,      2,      2,      2,      3,      3,      3,      3,      3,      3,      3,      3,      4,
+		4,      4,      4,      4,      4,      5,      5,      5,      5,      5,      6,      6,      6,      6,      7,      7,
+		7,      7,      8,      8,      8,      9,      9,      9,     10,     10,     11,     11,     12,     12,     13,     13,
+		14,     14,     15,     15,     16,     17,     17,     18,     19,     20,     20,     21,     22,     23,     24,     25,
+		26,     27,     28,     29,     31,     32,     33,     35,     36,     38,     39,     41,     43,     44,     46,     48,
+		50,     52,     54,     57,     59,     61,     64,     67,     69,     72,     75,     78,     82,     85,     89,     92,
+		96,    100,    104,    109,    113,    118,    123,    128,    133,    139,    145,    151,    157,    163,    170,    177,
+		185,    192,    200,    209,    217,    227,    236,    246,    256,    267,    278,    289,    301,    314,    327,    341,
+		355,    369,    385,    401,    418,    435,    453,    472,    492,    512,    533,    555,    579,    603,    628,    654,
+		681,    709,    739,    770,    802,    835,    870,    906,    944,    983,   1024,   1067,   1111,   1157,   1205,   1256,
+		1308,   1362,   1419,   1478,   1539,   1604,   1670,   1740,   1812,   1888,   1966,   2048,   2133,   2222,   2314,   2411,
+		2511,   2616,   2724,   2838,   2956,   3079,   3207,   3340,   3479,   3624,   3775,   3932,   4096,   4266,   4444,   4629,
+		4821,   5022,   5231,   5449,   5676,   5912,   6158,   6414,   6681,   6959,   7249,   7550,   7864,   8192,   8533,   8888,
+		9258,   9643,  10044,  10462,  10898,  11351,  11823,  12316,  12828,  13362,  13918,  14497,  15101,  15729,  16383,  17065,
+		17776,  18515,  19286,  20088,  20924,  21795,  22702,  23647,  24631,  25656,  26724,  27836,  28994,  30201,  31458,  32767
 	]
 
-	#ulaw_lut = [ 0, 132, 396, 924, 1980, 4092, 8316, 16764 ]
-
-	#adpcm_table = [ 0, 1, 2, 4, 8, 16, 32, 64, -1, -2, -4, -8, -16, -32, -48, -64 ]
-
-
-	def _adpcm_decode_sample(self, nibble):
-		if self.adpcm_step_index < 0:
-			self.adpcm_step_index = 0
-		elif self.adpcm_step_index > 88:
-			self.adpcm_step_index = 88
-
-		self.adpcm_step = self.adpcm_stepsize_table[self.adpcm_step_index]
-		self.adpcm_step_index += self.adpcm_index_table[nibble]
-
-		difference = self.adpcm_step >> 3
-
-		if nibble & 1:
-			difference += self.adpcm_step >> 2
-		if nibble & 2:
-			difference += self.adpcm_step >> 1
-		if nibble & 4:
-			difference += self.adpcm_step
-		if nibble & 8:
-			difference = -difference
-  
-		self.adpcm_predictor += difference
-
-		if self.adpcm_predictor < -0x8000:
-			self.adpcm_predictor = -0x8000
-		elif self.adpcm_predictor > 0x7FFF:
-			self.adpcm_predictor = 0x7FFF
-
-		return self.adpcm_predictor
+	ulaw_table = [
+		0x0000, 0x0008, 0x0010, 0x0018, 0x0020, 0x0028, 0x0030, 0x0038, 0x0040, 0x0048, 0x0050, 0x0058, 0x0060, 0x0068, 0x0070, 0x0078,
+		0x0084, 0x0094, 0x00a4, 0x00b4, 0x00c4, 0x00d4, 0x00e4, 0x00f4, 0x0104, 0x0114, 0x0124, 0x0134, 0x0144, 0x0154, 0x0164, 0x0174,
+		0x018c, 0x01ac, 0x01cc, 0x01ec, 0x020c, 0x022c, 0x024c, 0x026c, 0x028c, 0x02ac, 0x02cc, 0x02ec, 0x030c, 0x032c, 0x034c, 0x036c,
+		0x039c, 0x03dc, 0x041c, 0x045c, 0x049c, 0x04dc, 0x051c, 0x055c, 0x059c, 0x05dc, 0x061c, 0x065c, 0x069c, 0x06dc, 0x071c, 0x075c,
+		0x07bc, 0x083c, 0x08bc, 0x093c, 0x09bc, 0x0a3c, 0x0abc, 0x0b3c, 0x0bbc, 0x0c3c, 0x0cbc, 0x0d3c, 0x0dbc, 0x0e3c, 0x0ebc, 0x0f3c,
+		0x0ffc, 0x10fc, 0x11fc, 0x12fc, 0x13fc, 0x14fc, 0x15fc, 0x16fc, 0x17fc, 0x18fc, 0x19fc, 0x1afc, 0x1bfc, 0x1cfc, 0x1dfc, 0x1efc,
+		0x207c, 0x227c, 0x247c, 0x267c, 0x287c, 0x2a7c, 0x2c7c, 0x2e7c, 0x307c, 0x327c, 0x347c, 0x367c, 0x387c, 0x3a7c, 0x3c7c, 0x3e7c,
+		0x417c, 0x457c, 0x497c, 0x4d7c, 0x517c, 0x557c, 0x597c, 0x5d7c, 0x617c, 0x657c, 0x697c, 0x6d7c, 0x717c, 0x757c, 0x797c, 0x7d7c,
+		0x0000, 0xfff8, 0xfff0, 0xffe8, 0xffe0, 0xffd8, 0xffd0, 0xffc8, 0xffc0, 0xffb8, 0xffb0, 0xffa8, 0xffa0, 0xff98, 0xff90, 0xff88,
+		0xff7c, 0xff6c, 0xff5c, 0xff4c, 0xff3c, 0xff2c, 0xff1c, 0xff0c, 0xfefc, 0xfeec, 0xfedc, 0xfecc, 0xfebc, 0xfeac, 0xfe9c, 0xfe8c,
+		0xfe74, 0xfe54, 0xfe34, 0xfe14, 0xfdf4, 0xfdd4, 0xfdb4, 0xfd94, 0xfd74, 0xfd54, 0xfd34, 0xfd14, 0xfcf4, 0xfcd4, 0xfcb4, 0xfc94,
+		0xfc64, 0xfc24, 0xfbe4, 0xfba4, 0xfb64, 0xfb24, 0xfae4, 0xfaa4, 0xfa64, 0xfa24, 0xf9e4, 0xf9a4, 0xf964, 0xf924, 0xf8e4, 0xf8a4,
+		0xf844, 0xf7c4, 0xf744, 0xf6c4, 0xf644, 0xf5c4, 0xf544, 0xf4c4, 0xf444, 0xf3c4, 0xf344, 0xf2c4, 0xf244, 0xf1c4, 0xf144, 0xf0c4,
+		0xf004, 0xef04, 0xee04, 0xed04, 0xec04, 0xeb04, 0xea04, 0xe904, 0xe804, 0xe704, 0xe604, 0xe504, 0xe404, 0xe304, 0xe204, 0xe104,
+		0xdf84, 0xdd84, 0xdb84, 0xd984, 0xd784, 0xd584, 0xd384, 0xd184, 0xcf84, 0xcd84, 0xcb84, 0xc984, 0xc784, 0xc584, 0xc384, 0xc184,
+		0xbe84, 0xba84, 0xb684, 0xb284, 0xae84, 0xaa84, 0xa684, 0xa284, 0x9e84, 0x9a84, 0x9684, 0x9284, 0x8e84, 0x8a84, 0x8684, 0x8284,
+	]
 
 
-	#def _decode_ulaw(self, number):
-		#ULAW_BIAS = 33
-		#sign = 0
-		#position = 0
-		#decoded = 0;
+	def UnAdpcmL(self, delta):
+		sign = 0		# Current adpcm sign bit
+		step = 0		# Stepsize */
+		valprev = 0		# Virtual previous output value */
+		vpdiff = 0		# Current change to valprev */
 
-		#number = ~number
+		valprev = self.DemandVoice.ADPCM12
+		step = self.adpcm_stepsize_table[self.DemandVoice.ADPCM11]
 
-		#if number & 0x80:
-			#number &= ~(1 << 7)
-			#sign = -1
+		# Step 2 - Find new index value (for later)
+		self.DemandVoice.ADPCM11 += self.adpcm_index_table[delta];
+		if self.DemandVoice.ADPCM11 < 0:
+			self.DemandVoice.ADPCM11 = 0
+		if self.DemandVoice.ADPCM11 > 255:
+			self.DemandVoice.ADPCM11 = 255
 
-		#position = ((number & 0xF0) >> 4) + 5
-		#decoded = (
-			#(1 << position) | ((number & 0x0F) << (position - 4)) | (1 << (position - 5))
-		#) - ULAW_BIAS;
+		# Step 3 - Separate sign and magnitude
+		sign = delta & 8
+		delta = delta & 7
 
-		#if sign == 0:
-			#return decoded
-		#else:
-			#return (-(decoded))
+		# Step 4 - update output value
+		vpdiff = ((delta * step) >> 2) + (step >> 3)
+		if sign:
+			valprev -= vpdiff
+		else:
+			valprev += vpdiff
+
+		# Step 5 - clamp output value
+		if valprev > 32767:
+			valprev = 32767
+		elif valprev < -32768:
+			valprev = -32768
+
+		# Step 6 - Update step value
+		self.DemandVoice.ADPCM12 = valprev
+		return valprev
 
 
-	#def _decode_ulaw(self, ulawbyte):
-		#ulawbyte = ~ulawbyte
-		#sign = (ulawbyte & 0x80)
-		#exponent = (ulawbyte >> 4) & 0x07
-		#mantissa = ulawbyte & 0x0F
-		#sample = self.ulaw_lut[exponent] + (mantissa << (exponent + 3));
-		#if sign != 0:
-			#sample = -sample
+	def UnAdpcmR(self, delta):
+		sign = 0		# Current adpcm sign bit
+		step = 0		# Stepsize */
+		valprev = 0		# Virtual previous output value */
+		vpdiff = 0		# Current change to valprev */
 
-		#return sample
+		valprev = self.DemandVoice.ADPCM22
+		step = self.adpcm_stepsize_table[self.DemandVoice.ADPCM21]
+
+		# Step 2 - Find new index value (for later)
+		self.DemandVoice.ADPCM21 += self.adpcm_index_table[delta];
+		if self.DemandVoice.ADPCM21 < 0:
+			self.DemandVoice.ADPCM21 = 0
+		if self.DemandVoice.ADPCM21 > 255:
+			self.DemandVoice.ADPCM21 = 255
+
+		# Step 3 - Separate sign and magnitude
+		sign = delta & 8
+		delta = delta & 7
+
+		# Step 4 - update output value
+		vpdiff = ((delta * step) >> 2) + (step >> 3)
+		if sign:
+			valprev -= vpdiff
+		else:
+			valprev += vpdiff
+
+		# Step 5 - clamp output value
+		if valprev > 32767:
+			valprev = 32767
+		elif valprev < -32768:
+			valprev = -32768
+
+		# Step 6 - Update step value
+		self.DemandVoice.ADPCM22 = valprev
+		return valprev
 
 
 	def export_assets(self):
-		for wave_index, wave in self.meta_decompiled.data.waves.items():
+		for wave_index, wave in tqdm(self.meta_decompiled.data.waves.items(), total=len(self.meta_decompiled.data.waves), desc="data.waves", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if wave.content:
 				self.items_total += 1
 				status = True
@@ -119,151 +154,64 @@ class AudioRemaker(CommonRemaker):
 				with open(wave.content.data.content.replace("decompiled://", self.PATH_PHASE_DECOMPILED), "rb") as f:
 					wave_content = f.read()
 
-				# PCM, mono, 16 bit, 11025 Hz (#00+)
+				# PCM, 16? bit ----> 8 bit, 11025 Hz?, mono (#00+), stereo (#35+)
 				if wave.content.mode == 0:
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 2, 11025, len(wave_content), "NONE", "Uncompressed"))
+					f.setparams((2 if wave.content.stereo else 1, 2, 11025, len(wave_content), "NONE", "Uncompressed"))
 					f.writeframes(wave_content)
 					f.close()
 
-				# ? PCM, mono, 24 bit, 11025 Hz (#02+)
+				# PCM, 24? bit ----> 12 bit, 11025 Hz?, mono (#02+), stereo (#35+)
 				elif wave.content.mode == 1:
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
+					f.setparams((2 if wave.content.stereo else 1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
 					f.writeframes(wave_content)
 					f.close()
 
-				# ?? (#05+)
+				# uLaw, 8 bit, mono (#05+), stereo (#28+)
 				elif wave.content.mode == 2:
-					status = False
+					values = []
 
-				# ? ADPCM (#04+)
+					for original_sample in wave_content:
+						result = self.ulaw_table[original_sample]
+						result = struct.pack('i', result)
+
+						values.append(result[0])
+						values.append(result[1])
+
+					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
+					f.setparams((2 if wave.content.stereo else 1, 2, 22050, len(values), "NONE", "Uncompressed"))
+					f.writeframes(bytes(values))
+					f.close()
+
+				# ADPCM, 4 bit, mono (#04+), stereo (#35+)
 				elif wave.content.mode == 3:
-					status = False
-					##state = None
-					##pcm, state = audioop.adpcm2lin(wave_content, 2, state)
+					self.DemandVoice.ADPCM11 = 0
+					self.DemandVoice.ADPCM12 = 0
+					self.DemandVoice.ADPCM21 = 0
+					self.DemandVoice.ADPCM22 = 0
 
-					##f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					##f.setparams((1, 2, 22050, len(wave_content), "NONE", "Uncompressed"))
-					##f.writeframes(pcm)
-					##f.close()
-					##continue
+					values = []
 
-					##self.adpcm_predictor = 0
-					##self.adpcm_step_index = 0
-					##self.adpcm_step = self.adpcm_stepsize_table[self.adpcm_step_index]
+					for original_sample in wave_content:
+						first_sample = original_sample >> 4
+						second_sample = original_sample & 0xf
 
-					#result = ''
-					#index = 0
-					#old = 0
+						first_result = self.UnAdpcmL(first_sample)
+						second_result = self.UnAdpcmR(second_sample) if wave.content.stereo else self.UnAdpcmL(second_sample)
 
-					##for original_sample in tqdm(wave_content):
-						###if index == 500:
-							###index = 0
-							###self.adpcm_predictor = 0
-							###self.adpcm_step_index = 0
-							###self.adpcm_step = self.adpcm_stepsize_table[self.adpcm_step_index]
+						first_result = struct.pack('h', first_result)
+						second_result = struct.pack('h', second_result)
 
-						##original_sample = ord(original_sample)
-						##second_sample = original_sample >> 4
-						##first_sample = (second_sample << 4) ^ original_sample
-						###first_sample = original_sample >> 4
-						###second_sample = (first_sample << 4) ^ original_sample
-						###print(hex(original_sample), hex(first_sample), hex(second_sample))
+						values.append(first_result[0])
+						values.append(first_result[1])
+						values.append(second_result[0])
+						values.append(second_result[1])
 
-						###high, low = ord(content_byte) >> 4, ord(content_byte) & 0x0F
-						###print(content_byte, hex(high), hex(low))
-
-						##result += struct.pack('h', self._adpcm_decode_sample(first_sample))
-						##result += struct.pack('h', self._adpcm_decode_sample(second_sample))
-
-						##index += 1
-
-					##for original_sample in tqdm(wave_content, ascii=True, leave=False):
-						###result += original_sample + original_sample
-						##original_sample = ord(original_sample)
-						##print original_sample
-						##decoded = self._decode_ulaw(original_sample)
-						###print(hex(original_sample), hex(decoded))
-						##result += struct.pack('h', decoded)
-
-					##f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					##f.setparams((1, 2, 22050, len(result), "NONE", "Uncompressed"))
-					##f.writeframes(result)
-					##f.close()
-
-					##for original_sample in tqdm(wave_content, ascii=True):
-						##original_sample = ord(original_sample)
-						##first_sample = original_sample & 0xF
-						##second_sample = original_sample >> 4
-						###print "* %s => %s, %s" % (hex(original_sample), first_sample, second_sample)
-
-						##result += struct.pack('h', self._adpcm_decode_sample(first_sample))
-						##result += struct.pack('h', self._adpcm_decode_sample(second_sample))
-
-					##with open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb") as f:
-						##f.write(result)
-
-					##for original_sample in tqdm(wave_content, ascii=True):
-						##print "*"
-						##print hex(ord(original_sample))
-						##original_sample = struct.unpack('b', original_sample)[0]
-						##print original_sample
-						##old += original_sample
-						##print old
-
-						##result += struct.pack('h', old)
-
-					##f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					##f.setparams((2, 2, 11025, len(result), "NONE", "Uncompressed"))
-					##f.writeframes(result)
-					##f.close()
-
-					##for original_sample in tqdm(wave_content, ascii=True):
-						##original_sample = ord(original_sample)
-						##first_sample = original_sample & 0xF
-						##second_sample = original_sample >> 4
-						###print "* %s => %s, %s" % (hex(original_sample), first_sample, second_sample)
-
-						##result += struct.pack('b', first_sample)
-						##result += struct.pack('b', second_sample)
-
-					##with open("%s%04d.bin" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb") as f:
-						##f.write(result)
-
-					#for original_sample in tqdm(wave_content, ascii=True):
-						#original_sample = ord(original_sample)
-
-						#if original_sample < 128:
-							#old = old + (original_sample * original_sample) 
-						#else:
-							#old = old - ((128 - original_sample) * (128 - original_sample))
-
-						#if old < -0x8000:
-							#old = -0x8000
-						#elif old > 0x7FFF:
-							#old = 0x7FFF
-
-						##print old
-
-						#result += struct.pack('h', old)
-
-					#f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					#f.setparams((1, 2, 11025, len(result), "NONE", "Uncompressed"))
-					#f.writeframes(result)
-					#f.close()
-
-				# ?? (#35+)
-				elif wave.content.mode == 256:
-					status = False
-
-				# ?? (#35+)
-				elif wave.content.mode == 257:
-					status = False
-
-				# ?? (#28+)
-				elif wave.content.mode == 258:
-					status = False
+					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
+					f.setparams((2 if wave.content.stereo else 1, 2, 22050, len(values), "NONE", "Uncompressed"))
+					f.writeframes(bytes(values))
+					f.close()
 
 				if status:
 					self.items_hit += 1
@@ -273,10 +221,8 @@ class AudioRemaker(CommonRemaker):
 					values = []
 
 					for i in range(0, 22050):
-						#values.append(struct.pack('h', 0))
 						values.append(0)
 
-					#f.writeframes(''.join(values))
 					f.writeframes(bytes(values))
 					f.close()
 
@@ -291,10 +237,9 @@ class AudioRemaker(CommonRemaker):
 		for wave_index, wave in self.meta_decompiled.data.waves.items():
 			if wave.content:
 				wave_path = "%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index))
-				wave_duration = 0
-				if wave.content.mode == 0 or wave.content.mode == 1:
-					with contextlib.closing(wavelib.open(wave_path, "rb")) as f:
-						wave_duration = f.getnframes() / float(f.getframerate())
+
+				with contextlib.closing(wavelib.open(wave_path, "rb")) as f:
+					wave_duration = f.getnframes() / float(f.getframerate())
 
 				wave_title = ""
 				if self.issue.number >= "03":
@@ -312,6 +257,7 @@ class AudioRemaker(CommonRemaker):
 				data_wave = ObjDict()
 				data_wave.duration = wave_duration
 				data_wave.mode = wave.content.mode
+				data_wave.stereo = wave.content.stereo
 				data_wave.title = wave_title
 				data_wave.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
