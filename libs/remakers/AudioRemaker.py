@@ -156,20 +156,15 @@ class AudioRemaker(CommonRemaker):
 
 				# PCM, 16? bit ----> 8 bit, 11025 Hz?, mono (#00+), stereo (#35+)
 				if wave.content.mode == 0:
-					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					f.setparams((1, 2, 11025, len(wave_content), "NONE", "Uncompressed"))
+					f.setparams((2 if wave.content.stereo else 1, 2, 11025, len(wave_content), "NONE", "Uncompressed"))
 					f.writeframes(wave_content)
 					f.close()
 
 				# PCM, 24? bit ----> 12 bit, 11025 Hz?, mono (#02+), stereo (#35+)
 				elif wave.content.mode == 1:
-					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					if wave.content.stereo:
-						f.setparams((2, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
-					else:
-						f.setparams((1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
+					f.setparams((2 if wave.content.stereo else 1, 3, 11025, len(wave_content), "NONE", "Uncompressed"))
 					f.writeframes(wave_content)
 					f.close()
 
@@ -184,12 +179,8 @@ class AudioRemaker(CommonRemaker):
 						values.append(result[0])
 						values.append(result[1])
 
-					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					if wave.content.stereo:
-						f.setparams((2, 2, 22050, len(values), "NONE", "Uncompressed"))
-					else:
-						f.setparams((1, 2, 22050, len(values), "NONE", "Uncompressed"))
+					f.setparams((2 if wave.content.stereo else 1, 2, 22050, len(values), "NONE", "Uncompressed"))
 					f.writeframes(bytes(values))
 					f.close()
 
@@ -207,10 +198,7 @@ class AudioRemaker(CommonRemaker):
 						second_sample = original_sample & 0xf
 
 						first_result = self.UnAdpcmL(first_sample)
-						if wave.content.stereo:
-							second_result = self.UnAdpcmR(second_sample)
-						else:
-							second_result = self.UnAdpcmL(second_sample)
+						second_result = self.UnAdpcmR(second_sample) if wave.content.stereo else self.UnAdpcmL(second_sample)
 
 						first_result = struct.pack('h', first_result)
 						second_result = struct.pack('h', second_result)
@@ -220,12 +208,8 @@ class AudioRemaker(CommonRemaker):
 						values.append(second_result[0])
 						values.append(second_result[1])
 
-					# TODO stereo
 					f = wavelib.open("%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index)), "wb")
-					if wave.content.stereo:
-						f.setparams((2, 2, 22050, len(values), "NONE", "Uncompressed"))
-					else:
-						f.setparams((1, 2, 22050, len(values), "NONE", "Uncompressed"))
+					f.setparams((2 if wave.content.stereo else 1, 2, 22050, len(values), "NONE", "Uncompressed"))
 					f.writeframes(bytes(values))
 					f.close()
 
