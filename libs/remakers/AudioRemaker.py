@@ -71,9 +71,9 @@ class AudioRemaker(CommonRemaker):
 
 	def UnAdpcmL(self, delta):
 		sign = 0		# Current adpcm sign bit
-		step = 0		# Stepsize */
-		valprev = 0		# Virtual previous output value */
-		vpdiff = 0		# Current change to valprev */
+		step = 0		# Stepsize
+		valprev = 0		# Virtual previous output value
+		vpdiff = 0		# Current change to valprev
 
 		valprev = self.DemandVoice.ADPCM12
 		step = self.adpcm_stepsize_table[self.DemandVoice.ADPCM11]
@@ -109,9 +109,9 @@ class AudioRemaker(CommonRemaker):
 
 	def UnAdpcmR(self, delta):
 		sign = 0		# Current adpcm sign bit
-		step = 0		# Stepsize */
-		valprev = 0		# Virtual previous output value */
-		vpdiff = 0		# Current change to valprev */
+		step = 0		# Stepsize
+		valprev = 0		# Virtual previous output value
+		vpdiff = 0		# Current change to valprev
 
 		valprev = self.DemandVoice.ADPCM22
 		step = self.adpcm_stepsize_table[self.DemandVoice.ADPCM21]
