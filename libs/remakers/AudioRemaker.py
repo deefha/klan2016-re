@@ -7,6 +7,8 @@ from tqdm import tqdm
 # specific imports
 import audioop
 import contextlib
+import json
+import math
 import string
 import struct
 import wave as wavelib
@@ -16,6 +18,7 @@ from .CommonRemaker import CommonRemaker
 class AudioRemaker(CommonRemaker):
 
 	PATTERN_REMAKED_ASSET = "remaked://%s/%s/%s/%04d.wav"
+	PATTERN_REMAKED_PEAKS = "remaked://%s/%s/%s/%04d.json"
 
 	CHARTABLE = u"ČüéďäĎŤčěĚĹÍľĺÄÁÉžŽôöÓůÚýÖÜŠĽÝŘťáíóúňŇŮÔšřŕŔ¼§▴▾                           Ë   Ï                 ß         ë   ï ±  ®©  °   ™   "
 
@@ -145,6 +148,49 @@ class AudioRemaker(CommonRemaker):
 		return valprev
 
 
+	def waveform_scale_json(self, filename):
+		with open(filename, "r") as f:
+			file_content = f.read()
+
+		json_content = json.loads(file_content)
+		data = json_content["data"]
+		channels = json_content["channels"]
+		# number of decimals to use when rounding the peak value
+		digits = 2
+
+		max_val = float(max(data))
+		new_data = []
+		for x in data:
+			new_data.append(round(x / max_val, digits))
+		# audiowaveform is generating interleaved peak data when using the --split-channels flag, so we have to deinterleave it
+		if channels > 1:
+			deinterleaved_data = self.waveform_deinterleave(new_data, channels)
+			json_content["data"] = deinterleaved_data
+		else:
+			json_content["data"] = new_data
+		file_content = json.dumps(json_content, separators=(',', ':'))
+
+		with open(filename, "w") as f:
+			f.write(file_content)
+
+
+	def waveform_deinterleave(self, data, channelCount):
+		# first step is to separate the values for each audio channel and min/max value pair, hence we get an array with channelCount * 2 arrays
+		deinterleaved = [data[idx::channelCount * 2] for idx in range(channelCount * 2)]
+		new_data = []
+
+		# this second step combines each min and max value again in one array so we have one array for each channel
+		for ch in range(channelCount):
+			idx1 = 2 * ch
+			idx2 = 2 * ch + 1
+			ch_data = [None] * (len(deinterleaved[idx1]) + len(deinterleaved[idx2]))
+			ch_data[::2] = deinterleaved[idx1]
+			ch_data[1::2] = deinterleaved[idx2]
+			new_data.append(ch_data)
+
+		return new_data
+
+
 	def export_assets(self):
 		for wave_index, wave in tqdm(self.meta_decompiled.data.waves.items(), total=len(self.meta_decompiled.data.waves), desc="data.waves", ascii=True, leave=False, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"):
 			if wave.content:
@@ -228,6 +274,21 @@ class AudioRemaker(CommonRemaker):
 
 					self.items_miss += 1
 
+				file_input = "%s%04d.wav" % (self.PATH_DATA_REMAKED, int(wave_index))
+				file_output = "%s%04d.json" % (self.PATH_DATA_REMAKED, int(wave_index))
+
+				with contextlib.closing(wavelib.open(file_input, "rb")) as f:
+					wave_duration = f.getnframes() / float(f.getframerate())
+
+				os.system("%s/scripts/audiowaveform --input-filename %s --output-filename %s --pixels-per-second %d" % (
+					self.ROOT_ROOT,
+					file_input,
+					file_output,
+					math.ceil(600 / wave_duration)
+				))
+
+				self.waveform_scale_json(file_output)
+
 
 	def fill_meta(self):
 		super(AudioRemaker, self).fill_meta()
@@ -260,5 +321,6 @@ class AudioRemaker(CommonRemaker):
 				data_wave.stereo = wave.content.stereo
 				data_wave.title = wave_title
 				data_wave.asset = self.PATTERN_REMAKED_ASSET % (self.issue.number, self.source.library, self.source_index, int(wave_index))
+				data_wave.peaks = self.PATTERN_REMAKED_PEAKS % (self.issue.number, self.source.library, self.source_index, int(wave_index))
 
 				self.meta_remaked.waves[wave_index] = data_wave
