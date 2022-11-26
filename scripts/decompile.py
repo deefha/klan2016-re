@@ -80,6 +80,9 @@ def decompile(config, issue, source, source_index):
 	elif source.library == "texts":
 		decompiler = TextsDecompiler.TextsDecompiler(issue, source, source_index)
 
+	elif source.library == "video":
+		decompiler = VideoDecompiler.VideoDecompiler(issue, source, source_index)
+
 	else:
 		return False
 

@@ -1,11 +1,10 @@
 .venv/*
-data/decompiled/**/
-data/exported/**/
-data/exported/*.json
-data/initialized/*.7z
-data/initialized/*.check
-data/initialized/*.iso
-data/remaked/**/
+data/decompiled/*
+data/exported/*
+data/initialized/*
+data/remaked/*
+data/sources/*
+!data/**/README.md
 libs/**/*.pyc
 libs/structs/*.py
 libs/vendors/**/

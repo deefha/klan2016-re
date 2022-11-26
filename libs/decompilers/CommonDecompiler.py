@@ -33,6 +33,7 @@ from structs.klan_texts_v4 import KlanTextsV4
 from structs.klan_texts_v5 import KlanTextsV5
 from structs.klan_texts_v6 import KlanTextsV6
 from structs.klan_texts_v7 import KlanTextsV7
+from structs.klan_video import KlanVideo
 
 PATH_DATA = "%s/%s" % (PATH_SELF, "../../data/")
 PATH_ORIGINS = "%sinitialized/" % PATH_DATA
@@ -528,6 +529,9 @@ class CommonDecompiler(object):
 					self.library = KlanTextsV6.from_io(self.iso_content)
 				elif self.source.version == 7:
 					self.library = KlanTextsV7.from_io(self.iso_content)
+
+			elif self.source.library == "video":
+				self.library = KlanVideo.from_io(self.iso_content)
 
 			self.fill_meta_header()
 			self.fill_meta_fat()
