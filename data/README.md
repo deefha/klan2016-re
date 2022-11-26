@@ -1,18 +1,18 @@
 # data
 
-## assets
+## decompiled
 
 TODO
 
-## blobs
+## exported
 
 TODO
 
-## meta
+## initialized
 
 TODO
 
-## schemes
+## remaked
 
 TODO
 
