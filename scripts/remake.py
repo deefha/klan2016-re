@@ -86,6 +86,9 @@ def remake(config, issue, source, source_index):
 	elif source.library == "texts":
 		remaker = TextsRemaker.TextsRemaker(issue, source, source_index)
 
+	elif source.library == "video":
+		remaker = VideoRemaker.VideoRemaker(issue, source, source_index)
+
 	else:
 		return False
 

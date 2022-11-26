@@ -1,0 +1,81 @@
+#include "common_blank.bt"
+#include "common_padding.bt"
+#include "common_header.bt"
+
+typedef struct {
+    UINT count <bgcolor=cRed, fgcolor=cWhite>;
+    UINT foo_1;
+    UINT foo_2;
+    UINT foo_3;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 1024; lOffsetIndex++) {
+        if (lOffsetIndex % 2) {
+            UINT offsets <format=hex>;
+        }
+        else {
+            UINT offsets <bgcolor=cDkPurple, fgcolor=cLtGray, format=hex>;
+        }
+    }
+} tFAT <bgcolor=cLtPurple>;
+
+typedef struct {
+    UINT Len;
+    USHORT ID;
+    USHORT Actions;
+} tAnimFrame <bgcolor=cLtRed>;
+
+typedef struct {
+    UINT Len;
+    USHORT ID;
+    USHORT Action;
+    UBYTE data[Len];
+} tAnimAction <bgcolor=cLtBlue, comment=Str("0x%04X", Action)>;
+
+typedef struct {
+    tAnimFrame animFrame;
+
+    local UINT actionIndex;
+    for (actionIndex = 0; actionIndex < animFrame.Actions; actionIndex++) {
+        tAnimAction animAction;
+    }
+} tFrame <bgcolor=cLtGreen, comment=animFrame.Actions>;
+
+typedef struct {
+    struct aHeader {
+        UINT Len;
+        UINT Frames;
+        UINT Xr;
+        UINT Yr;
+        UINT foo_1;
+        UINT foo_2;
+        UINT foo_3;
+        UINT foo_4;
+    } header <bgcolor=cGreen>;
+
+    local UINT frameIndex;
+    for (frameIndex = 0; frameIndex < header.Frames; frameIndex++) {
+        tFrame frame;
+    }
+} tAnim <bgcolor=cLtGreen>;
+
+typedef struct {
+    tPadding anim;
+
+    for (lOffsetIndex = 0; lOffsetIndex < 1024; lOffsetIndex++) {
+        lOffset = fat.offsets[lOffsetIndex];
+        if (lOffset != 0x00000000) {
+            FSeek(lOffset);
+            tAnim anim;
+        }
+        else {
+            tBlank anim;
+        }
+    }
+} tAnims;
+
+local UINT lOffsetIndex;
+local UINT lOffset;
+
+tHeader header;
+tFAT fat;
+tAnims anims;

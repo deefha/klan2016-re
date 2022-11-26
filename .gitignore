@@ -6,6 +6,7 @@ data/initialized/*.7z
 data/initialized/*.check
 data/initialized/*.iso
 data/remaked/**/
+data/sources/**/
 libs/**/*.pyc
 libs/structs/*.py
 libs/vendors/**/
