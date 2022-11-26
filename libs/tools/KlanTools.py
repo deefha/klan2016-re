@@ -2,6 +2,7 @@ import hashlib, json, requests
 from objdict import ObjDict
 from tqdm import tqdm
 from yaml import unsafe_load as yaml_load
+from bs4 import BeautifulSoup
 
 
 def config_load(config_path):
@@ -17,13 +18,13 @@ def issue_download(config, issue, issue_path):
 	session = requests.Session()
 	response = session.get(config.origin.main % issue.origin.key, stream = True)
 
-	for key, value in response.cookies.items():
-		if key.startswith(config.origin.confirm_key):
-			response = session.get(config.origin.confirm % (issue.origin.key, value), stream = True)
+	soup = BeautifulSoup(response.text, features="html.parser")
+	download_url = soup.select(config.origin.download_element)[0][config.origin.download_attribute]
+	response_download = session.get(download_url, stream = True)
 
 	with open(issue_path, "wb") as f:
 		with tqdm(total=issue.origin.size_packed, unit="B", unit_scale=True, ascii=True, leave=False) as pbar: 
-			for chunk in response.iter_content(32 * 1024):
+			for chunk in response_download.iter_content(32 * 1024):
 				if chunk:
 					f.write(chunk)
 					pbar.update(len(chunk))

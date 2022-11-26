@@ -1,7 +1,7 @@
 origin:
-  main: https://docs.google.com/uc?export=download&id=%s
-  confirm: https://docs.google.com/uc?export=download&id=%s&confirm=%s
-  confirm_key: download_warning
+  main: https://drive.google.com/u/0/uc?export=download&id=%s
+  download_element: "form#download-form"
+  download_attribute: "action"
 issues:
   "00":
     number: "00"
