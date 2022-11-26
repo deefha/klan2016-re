@@ -192,7 +192,7 @@ class CommonDecompiler(object):
 			elif macro.type == 0x000d:
 				data_macro.content.variable = macro.content.variable
 				data_macro.content.value_length = macro.content.value_length
-				if self.source.library == "screens" and self.source.version < 3:
+				if (self.source.library == "screens" and self.source.version < 3) or (self.source.library == "texts" and self.source.version < 2):
 					data_macro.content.value = macro.content.value.decode('ascii')
 				else:
 					data_macro.content.value = macro.content.value.decode('unicode-escape')
